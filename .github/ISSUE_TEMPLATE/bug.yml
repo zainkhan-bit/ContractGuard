@@ -1,0 +1,36 @@
+name: Bug report
+description: ContractGuard crashed, hung, or behaved incorrectly (not a rule verdict — use the false positive/negative templates for those).
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: ContractGuard version
+      placeholder: 'contractguard --version'
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      placeholder: 'OS, Node.js version, CI provider'
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Command line, config, and minimal spec files (remove anything sensitive).
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs actual behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: debug
+    attributes:
+      label: Output with --debug
+      render: text

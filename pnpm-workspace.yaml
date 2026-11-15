@@ -1,0 +1,7 @@
+packages:
+  - packages/*
+  - integrations/*
+
+# Supply-chain hardening (pnpm 11 defaults are kept; stated explicitly for reviewers).
+# New versions must be at least one day old before they can be installed.
+minimumReleaseAge: 1440

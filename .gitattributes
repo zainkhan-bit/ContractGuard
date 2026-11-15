@@ -1,0 +1,5 @@
+* text=auto eol=lf
+# Fixtures are byte-exact (CRLF/BOM cases for source-position tests).
+fixtures/** -text
+integrations/*/dist/** -diff linguist-generated
+pnpm-lock.yaml -diff linguist-generated

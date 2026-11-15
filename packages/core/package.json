@@ -1,0 +1,40 @@
+{
+  "name": "@contractguard/core",
+  "version": "0.0.0",
+  "description": "ContractGuard core domain: canonical contract model, findings, rule and perspective contracts, diagnostics and deterministic utilities.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=24"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.tsbuildinfo",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zainkhan-bit/ContractGuard.git",
+    "directory": "packages/core"
+  },
+  "keywords": [
+    "openapi",
+    "api",
+    "breaking-changes",
+    "compatibility",
+    "contract"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

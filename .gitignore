@@ -1,0 +1,14 @@
+node_modules/
+dist/
+!integrations/*/dist/
+coverage/
+*.tsbuildinfo
+.contractguard/reports/
+.contractguard/cache/
+.DS_Store
+*.log
+.env
+.env.*
+.idea/
+.vscode/*
+!.vscode/extensions.json

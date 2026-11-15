@@ -1,0 +1,36 @@
+name: Rule proposal
+description: Propose a new compatibility rule or a change to an existing rule's semantics.
+labels: [rule, proposal]
+body:
+  - type: textarea
+    id: change
+    attributes:
+      label: Change detected
+      description: Which contract element changes, and how is it detected?
+    validations:
+      required: true
+  - type: dropdown
+    id: effect
+    attributes:
+      label: Effect on valid instances (blueprint §10.3)
+      options: [widens, narrows, incomparable, equivalent, unknown]
+    validations:
+      required: true
+  - type: dropdown
+    id: strength
+    attributes:
+      label: Strength
+      options: [structural, enumerated, value-space, additive, behavioral]
+    validations:
+      required: true
+  - type: textarea
+    id: examples
+    attributes:
+      label: Positive and negative examples
+      description: At least one case where the rule must fire and one where it must stay silent.
+    validations:
+      required: true
+  - type: textarea
+    id: limitations
+    attributes:
+      label: Known limitations / uncertainty

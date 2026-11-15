@@ -1,0 +1,29 @@
+name: False negative
+description: A breaking (or risky) change was missed or classified too weakly.
+labels: [rule, false-negative]
+body:
+  - type: textarea
+    id: base
+    attributes:
+      label: Baseline snippet
+      render: yaml
+    validations:
+      required: true
+  - type: textarea
+    id: candidate
+    attributes:
+      label: Candidate snippet
+      render: yaml
+    validations:
+      required: true
+  - type: input
+    id: expected
+    attributes:
+      label: Expected rule / classification
+      placeholder: 'CG-RES-001 breaking'
+  - type: textarea
+    id: impact
+    attributes:
+      label: Which clients break, and how?
+    validations:
+      required: true
