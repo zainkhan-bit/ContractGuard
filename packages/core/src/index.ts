@@ -22,7 +22,7 @@ export {
   unescapeToken,
   type JsonPointer,
 } from './ids/pointer.js';
-export { JsonNumber, MAX_DECIMAL_EXPONENT, MAX_MULTIPLE_OF_EXPONENT_GAP } from './ids/decimal.js';
+export { JsonNumber, MAX_DECIMAL_EXPONENT, MAX_MULTIPLE_OF_EXPONENT_GAP, integerBound } from './ids/decimal.js';
 export {
   canonicalObject,
   compareJson,

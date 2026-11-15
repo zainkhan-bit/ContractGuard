@@ -112,6 +112,8 @@ export interface Discriminator {
 
 export interface UnsupportedKeyword {
   readonly keyword: string;
+  /** Short hash of the keyword's canonical value, so value changes are detectable without the raw document. */
+  readonly valueHash: string;
   readonly source: SourceRef;
 }
 

@@ -174,3 +174,20 @@ function formatParts(p: DecimalParts): string {
   const tail = p.digits.slice(1);
   return `${sign}${head}${tail === '' ? '' : `.${tail}`}e${msd >= 0 ? '+' : ''}${msd}`;
 }
+
+/**
+ * The equivalent inclusive integer bound for integer-only schemas:
+ * min: exclusive → floor(x)+1, inclusive → ceil(x); max: exclusive → ceil(x)-1, inclusive → floor(x).
+ */
+export function integerBound(value: JsonNumber, side: 'min' | 'max', exclusive: boolean): JsonNumber {
+  const text = value.text;
+  if (/e/i.test(text)) return value; // extreme magnitudes: leave as is
+  const negative = text.startsWith('-');
+  const [intPart = '0', frac = ''] = text.split('.');
+  const truncated = BigInt(intPart);
+  const hasFraction = /[1-9]/.test(frac);
+  const floor = hasFraction && negative ? truncated - 1n : truncated;
+  const ceil = hasFraction && !negative ? truncated + 1n : truncated;
+  if (side === 'min') return JsonNumber.fromBigInt(exclusive ? floor + 1n : ceil);
+  return JsonNumber.fromBigInt(exclusive ? ceil - 1n : floor);
+}

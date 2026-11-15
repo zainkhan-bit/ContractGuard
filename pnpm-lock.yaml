@@ -47,6 +47,16 @@ importers:
 
   packages/core: {}
 
+  packages/engine:
+    dependencies:
+      '@contractguard/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@contractguard/openapi':
+        specifier: workspace:*
+        version: link:../openapi
+
   packages/openapi:
     dependencies:
       '@contractguard/core':

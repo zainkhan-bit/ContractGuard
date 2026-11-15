@@ -1,8 +1,10 @@
 import {
-  JsonNumber,
+  type JsonNumber,
   ROOT_POINTER,
   appendPointer,
   compareCodeUnits,
+  integerBound,
+  shortHash,
   isCanonicalArray,
   isCanonicalObject,
   isJsonNumber,
@@ -28,7 +30,7 @@ import {
   type UnsupportedKeyword,
 } from '@contractguard/core';
 import { followReferences } from '../resolve/follow.js';
-import { siteKey, valueAt } from '../resolve/resolver.js';
+import { siteKey, valueAt, type ResolvedReference } from '../resolve/resolver.js';
 import { arrayAt, bool, child, count, extensions, objectAt, str, type Loc, type NormalizeContext } from './context.js';
 
 const JSON_TYPE_NAMES = new Set<string>(['null', 'boolean', 'object', 'array', 'number', 'integer', 'string']);
@@ -155,7 +157,7 @@ export class SchemaGraphBuilder {
     });
     if (followed.value === undefined) {
       this.ctx.pushUnique(followed.diagnostics);
-      return { kind: 'unresolved', raw: r.raw };
+      return { kind: 'unresolved', raw: this.#failingRef(r) };
     }
     const target = followed.value.location;
     return {
@@ -164,6 +166,17 @@ export class SchemaGraphBuilder {
       ref: { raw: r.raw, resolved: target, site: r.site, kind: r.kind },
       via: followed.value.via,
     };
+  }
+
+  /** The raw text of the first reference in a chain that does not resolve (cycles: the starting one). */
+  #failingRef(start: ResolvedReference): string {
+    let r: ResolvedReference | undefined = start;
+    const seen = new Set<string>();
+    while (r?.status === 'resolved' && !seen.has(r.raw + r.target.pointer)) {
+      seen.add(r.raw + r.target.pointer);
+      r = this.ctx.set.references.get(siteKey(r.target.uri, r.target.pointer));
+    }
+    return r === undefined || r.status === 'resolved' ? start.raw : r.raw;
   }
 
   /** A synthetic unconstrained schema for parameters/headers that declare neither schema nor content. */
@@ -181,7 +194,7 @@ export class SchemaGraphBuilder {
       this.nodes.set(id, {
         ...emptyNode(id, this.ctx.dialect, source, []),
         trivial: 'any',
-        unsupported: [{ keyword: `$ref-unresolved:${raw}`, source }],
+        unsupported: [{ keyword: `$ref-unresolved:${raw}`, valueHash: shortHash(raw, 16), source }],
       });
     }
     return id;
@@ -323,9 +336,16 @@ export class SchemaGraphBuilder {
     // --- unsupported (N16) ---
     const unsupported: UnsupportedKeyword[] = [];
     for (const keyword of dialect === 'oas31' ? UNSUPPORTED_31 : UNSUPPORTED_30) {
-      if (Object.hasOwn(o, keyword)) unsupported.push({ keyword, source: this.ctx.source(child(loc, keyword)) });
+      if (Object.hasOwn(o, keyword)) {
+        unsupported.push({
+          keyword,
+          valueHash: shortHash(o[keyword] as CanonicalJson, 16),
+          source: this.ctx.source(child(loc, keyword)),
+        });
+      }
     }
-    if (siteRef?.kind === 'dynamicRef') unsupported.push({ keyword: '$dynamicRef', source: source });
+    if (siteRef?.kind === 'dynamicRef')
+      unsupported.push({ keyword: '$dynamicRef', valueHash: shortHash(siteRef.raw, 16), source });
 
     const defaultValue = o['default'];
     const title = str(o, 'title');
@@ -549,23 +569,6 @@ function tighter(a: Bound, b: Bound, side: 'min' | 'max'): Bound {
   const c = a.value.compare(b.value);
   if (c === 0) return a.exclusive ? a : b;
   return (side === 'min' ? c > 0 : c < 0) ? a : b;
-}
-
-/**
- * The equivalent inclusive integer bound for integer-only schemas:
- * min: exclusive → floor(x)+1, inclusive → ceil(x); max: exclusive → ceil(x)-1, inclusive → floor(x).
- */
-function integerBound(value: JsonNumber, side: 'min' | 'max', exclusive: boolean): JsonNumber {
-  const text = value.text;
-  if (/e/i.test(text)) return value; // extreme magnitudes: leave as is
-  const negative = text.startsWith('-');
-  const [intPart = '0', frac = ''] = text.split('.');
-  const truncated = BigInt(intPart);
-  const hasFraction = /[1-9]/.test(frac);
-  const floor = hasFraction && negative ? truncated - 1n : truncated;
-  const ceil = hasFraction && !negative ? truncated + 1n : truncated;
-  if (side === 'min') return JsonNumber.fromBigInt(exclusive ? floor + 1n : ceil);
-  return JsonNumber.fromBigInt(exclusive ? ceil - 1n : floor);
 }
 
 function isEmptySchema(raw: CanonicalJson | undefined): boolean {

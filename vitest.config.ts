@@ -13,6 +13,14 @@ export default defineConfig({
       },
       {
         test: {
+          name: 'engine',
+          root: './packages/engine',
+          include: ['test/**/*.test.ts'],
+          environment: 'node',
+        },
+      },
+      {
+        test: {
           name: 'core',
           root: './packages/core',
           include: ['test/**/*.test.ts'],

@@ -20,7 +20,7 @@ module.exports = {
       name: 'engine-not-openapi',
       severity: 'error',
       comment: 'The engine is protocol-independent and must not import @contractguard/openapi (§5.2).',
-      from: { path: '^packages/engine/' },
+      from: { path: '^packages/engine/src/' },
       to: { path: '^packages/openapi/' },
     },
     {

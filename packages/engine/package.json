@@ -1,0 +1,46 @@
+{
+  "name": "@contractguard/engine",
+  "version": "0.0.0",
+  "description": "ContractGuard engine: protocol-independent semantic diff of canonical API contracts and compatibility evaluation.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=24"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.tsbuildinfo",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zainkhan-bit/ContractGuard.git",
+    "directory": "packages/engine"
+  },
+  "keywords": [
+    "openapi",
+    "api",
+    "breaking-changes",
+    "compatibility",
+    "diff"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "dependencies": {
+    "@contractguard/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@contractguard/openapi": "workspace:*"
+  }
+}

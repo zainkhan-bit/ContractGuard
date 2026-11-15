@@ -21,6 +21,7 @@ export default tseslint.config(
       },
     },
     rules: {
+      '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true, argsIgnorePattern: '^_' }],
       '@typescript-eslint/no-explicit-any': 'error',
       // Explicit `as T` is preferred over `!`; both are reviewed the same way.
       '@typescript-eslint/non-nullable-type-assertion-style': 'off',

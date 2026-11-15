@@ -133,6 +133,8 @@ export type ContractChange =
         readonly removed: readonly CanonicalJson[];
         readonly added: readonly CanonicalJson[];
         readonly extensible: boolean;
+        /** Whether an enum is present on [base, candidate]; absent means unconstrained. */
+        readonly constrained: readonly [boolean, boolean];
       }
     >
   | ChangeOf<
