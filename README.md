@@ -19,10 +19,10 @@ ContractGuard compares a baseline and a candidate API specification and tells yo
 | Milestone | Scope                                          | Status  |
 | --------- | ---------------------------------------------- | ------- |
 | M0        | Repository foundations + `@contractguard/core` | ✅ Done |
-| M1        | Parsing with source maps                       | ⏳ Next |
+| M1        | Parsing with source maps                       | ✅ Done |
 | M2        | Reference resolution + validation              | ✅ Done |
 | M3        | Normalization to the canonical model           | ✅ Done |
-| M4        | Diff engine                                    |         |
+| M4        | Diff engine                                    | ⏳ Next |
 | M5        | Compatibility engine + 83-rule catalog         |         |
 | M6        | Reporters (console, Markdown, JSON, SARIF)     |         |
 | M7        | CLI                                            |         |
