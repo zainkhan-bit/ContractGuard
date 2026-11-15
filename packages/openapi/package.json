@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@contractguard/core": "workspace:*",
-    "yaml": "^2.9.1"
+    "yaml": "^2.9.1",
+    "@hyperjump/json-schema": "~1.18.0"
   }
 }

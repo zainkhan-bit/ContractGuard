@@ -8,3 +8,22 @@ export { CompositeSourceLoader, MemorySourceLoader } from './load/memory-loader.
 export { parseDocument, type ParseOptions, type ParsedDocument } from './parse/parser.js';
 export type { OffsetRange, PointerIndex } from './parse/pointer-index.js';
 export { detectVersion, type DetectedVersion } from './version/detect.js';
+export {
+  RemoteSourceLoader,
+  createDefaultBlockList,
+  isPublicAddress,
+  type RemoteLoaderOptions,
+} from './load/remote-loader.js';
+export { walkReferences, type IdentifierSite, type RefSite, type WalkResult } from './resolve/walk.js';
+export {
+  hasUnresolved,
+  locate,
+  resolveReferences,
+  siteKey,
+  valueAt,
+  type DocumentSet,
+  type ResolveOptions,
+  type ResolvedReference,
+} from './resolve/resolver.js';
+export { followReferences, type FollowOptions, type FollowedValue } from './resolve/follow.js';
+export { HyperjumpSpecValidator, toPlainJson, type SpecValidator } from './validate/structural.js';
