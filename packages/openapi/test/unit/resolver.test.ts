@@ -69,6 +69,33 @@ props:
     ]);
   });
 
+  it('treats keyword-like names inside name maps as names (regression)', () => {
+    const doc = parseOk(`
+paths:
+  /a:
+    get:
+      responses:
+        default: {$ref: '#/components/responses/Error'}
+components:
+  schemas:
+    Thing:
+      properties:
+        default: {$ref: '#/components/schemas/D'}
+        example: {$ref: '#/components/schemas/E'}
+        enum: {$ref: '#/components/schemas/F'}
+        x-id: {$ref: '#/components/schemas/G'}
+      default: {$ref: 'data-not-a-ref'}
+`);
+    const r = walkReferences(doc.value, 'file:///api/openapi.yaml', 'oas30');
+    expect(r.refs.map((x) => x.site)).toEqual([
+      '#/components/schemas/Thing/properties/default',
+      '#/components/schemas/Thing/properties/enum',
+      '#/components/schemas/Thing/properties/example',
+      '#/components/schemas/Thing/properties/x-id',
+      '#/paths/~1a/get/responses/default',
+    ]);
+  });
+
   it('tracks $id re-basing, $anchor and $dynamicRef in 3.1 only', () => {
     const text = `
 components:

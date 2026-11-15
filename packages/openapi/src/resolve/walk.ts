@@ -30,8 +30,36 @@ export interface WalkResult {
   readonly identifiers: readonly IdentifierSite[];
 }
 
-/** Keywords whose values are instance data, never references (§8.5). */
+/** Keywords whose values are instance data, never references (§8.5). Only applies in keyword position. */
 const DATA_KEYWORDS = new Set(['example', 'default', 'enum', 'const']);
+
+/**
+ * Keywords whose value is a map from user-chosen names to objects. Inside such maps, keys are
+ * names (a response called "default", a property called "example" or "x-id"), never keywords.
+ */
+const NAME_MAP_KEYWORDS = new Set([
+  'paths',
+  'webhooks',
+  'callbacks',
+  'schemas',
+  'responses',
+  'parameters',
+  'requestBodies',
+  'headers',
+  'securitySchemes',
+  'links',
+  'pathItems',
+  'properties',
+  'patternProperties',
+  '$defs',
+  'definitions',
+  'dependentSchemas',
+  'content',
+  'encoding',
+  'variables',
+  'mapping',
+  'scopes',
+]);
 
 function stripFragment(uri: string): string {
   const hash = uri.indexOf('#');
@@ -50,11 +78,15 @@ export function walkReferences(value: CanonicalJson, documentUri: string, dialec
     readonly pointer: JsonPointer;
     readonly base: string;
     readonly inExamplesMap: boolean;
+    /** The node is a name map: its keys are names, not keywords. */
+    readonly inNameMap: boolean;
   }
-  const stack: Item[] = [{ node: value, pointer: ROOT_POINTER, base: documentUri, inExamplesMap: false }];
+  const stack: Item[] = [
+    { node: value, pointer: ROOT_POINTER, base: documentUri, inExamplesMap: false, inNameMap: false },
+  ];
 
   while (stack.length > 0) {
-    const { node, pointer, base: inheritedBase, inExamplesMap } = stack.pop() as Item;
+    const { node, pointer, base: inheritedBase, inExamplesMap, inNameMap } = stack.pop() as Item;
     if (isCanonicalArray(node)) {
       for (let i = node.length - 1; i >= 0; i--) {
         stack.push({
@@ -62,6 +94,7 @@ export function walkReferences(value: CanonicalJson, documentUri: string, dialec
           pointer: appendPointer(pointer, i),
           base: inheritedBase,
           inExamplesMap: false,
+          inNameMap: false,
         });
       }
       continue;
@@ -101,9 +134,14 @@ export function walkReferences(value: CanonicalJson, documentUri: string, dialec
     const keys = Object.keys(node);
     for (let i = keys.length - 1; i >= 0; i--) {
       const key = keys[i] as string;
+      const child = node[key] as CanonicalJson;
+      if (inNameMap) {
+        // Entry of a name map: the key is a user-chosen name; the value is an object to walk.
+        stack.push({ node: child, pointer: appendPointer(pointer, key), base, inExamplesMap: false, inNameMap: false });
+        continue;
+      }
       if (key === '$ref' || key === '$dynamicRef' || DATA_KEYWORDS.has(key) || key.startsWith('x-')) continue;
       if (inExamplesMap && key === 'value') continue; // Example Object value is data
-      const child = node[key] as CanonicalJson;
       if (key === 'examples') {
         // Schema `examples` (array) is data; Media/Parameter `examples` (map) holds Example/Reference objects.
         if (isCanonicalObject(child)) {
@@ -115,12 +153,19 @@ export function walkReferences(value: CanonicalJson, documentUri: string, dialec
               pointer: appendPointer(pointer, key, name),
               base,
               inExamplesMap: true,
+              inNameMap: false,
             });
           }
         }
         continue;
       }
-      stack.push({ node: child, pointer: appendPointer(pointer, key), base, inExamplesMap: false });
+      stack.push({
+        node: child,
+        pointer: appendPointer(pointer, key),
+        base,
+        inExamplesMap: false,
+        inNameMap: NAME_MAP_KEYWORDS.has(key) && isCanonicalObject(child),
+      });
     }
   }
   return { refs, identifiers };

@@ -27,3 +27,6 @@ export {
 } from './resolve/resolver.js';
 export { followReferences, type FollowOptions, type FollowedValue } from './resolve/follow.js';
 export { HyperjumpSpecValidator, toPlainJson, type SpecValidator } from './validate/structural.js';
+export { normalize, type NormalizeOptions } from './normalize/normalize.js';
+export { basePathOf, pathSegments } from './normalize/operations.js';
+export { loadContract, type LoadContractOptions, type LoadedContract } from './load-contract.js';

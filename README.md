@@ -20,8 +20,8 @@ ContractGuard compares a baseline and a candidate API specification and tells yo
 | --------- | ---------------------------------------------- | ------- |
 | M0        | Repository foundations + `@contractguard/core` | ✅ Done |
 | M1        | Parsing with source maps                       | ⏳ Next |
-| M2        | Reference resolution + validation              |         |
-| M3        | Normalization to the canonical model           |         |
+| M2        | Reference resolution + validation              | ✅ Done |
+| M3        | Normalization to the canonical model           | ✅ Done |
 | M4        | Diff engine                                    |         |
 | M5        | Compatibility engine + 83-rule catalog         |         |
 | M6        | Reporters (console, Markdown, JSON, SARIF)     |         |
