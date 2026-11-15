@@ -47,6 +47,15 @@ importers:
 
   packages/core: {}
 
+  packages/openapi:
+    dependencies:
+      '@contractguard/core':
+        specifier: workspace:*
+        version: link:../core
+      yaml:
+        specifier: ^2.9.1
+        version: 2.9.1
+
 packages:
 
   '@babel/helper-string-parser@7.29.14':

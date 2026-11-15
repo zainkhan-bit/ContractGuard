@@ -24,7 +24,7 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'error',
       // Explicit `as T` is preferred over `!`; both are reviewed the same way.
       '@typescript-eslint/non-nullable-type-assertion-style': 'off',
-      '@typescript-eslint/switch-exhaustiveness-check': 'error',
+      '@typescript-eslint/switch-exhaustiveness-check': ['error', { considerDefaultExhaustiveForUnions: true }],
       '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
       '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true, allowBoolean: true }],

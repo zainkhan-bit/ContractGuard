@@ -1,0 +1,43 @@
+{
+  "name": "@contractguard/openapi",
+  "version": "0.0.0",
+  "description": "ContractGuard OpenAPI front end: loading, parsing with source maps, reference resolution, validation and normalization into the canonical contract model.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=24"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.tsbuildinfo",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zainkhan-bit/ContractGuard.git",
+    "directory": "packages/openapi"
+  },
+  "keywords": [
+    "openapi",
+    "parser",
+    "json-schema",
+    "source-map"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "dependencies": {
+    "@contractguard/core": "workspace:*",
+    "yaml": "^2.9.1"
+  }
+}

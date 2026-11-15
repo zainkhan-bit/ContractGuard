@@ -28,17 +28,11 @@ export function isCanonicalObject(value: CanonicalJson): value is CanonicalObjec
  * Keys such as "__proto__" and "constructor" are stored as ordinary own properties.
  */
 export function canonicalObject(entries: Iterable<readonly [string, CanonicalJson]>): CanonicalObject {
-  const collected = new Map<string, CanonicalJson>();
-  for (const [key, value] of entries) collected.set(key, value);
+  // Stable sort keeps insertion order among equal keys, so the last duplicate wins below.
+  const sorted = [...entries].sort((a, b) => compareCodeUnits(a[0], b[0]));
+  // A null-prototype object has no inherited `__proto__` setter: assignment creates an own property.
   const target = Object.create(null) as Record<string, CanonicalJson>;
-  for (const key of [...collected.keys()].sort(compareCodeUnits)) {
-    Object.defineProperty(target, key, {
-      value: collected.get(key),
-      enumerable: true,
-      writable: false,
-      configurable: false,
-    });
-  }
+  for (const [key, value] of sorted) target[key] = value;
   return Object.freeze(target);
 }
 
