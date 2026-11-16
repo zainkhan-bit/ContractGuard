@@ -1,14 +1,12 @@
 import { LineCounter } from 'yaml';
 import {
   JsonNumber,
-  ROOT_POINTER,
-  appendPointer,
   canonicalObject,
   type CanonicalJson,
   type DiagnosticCode,
   type JsonPointer,
 } from '@contractguard/core';
-import { PointerIndexBuilder, type OffsetRange, type PointerIndex } from './pointer-index.js';
+import { PointerIndexBuilder, type OffsetRange, type PointerIndex, type Slot } from './pointer-index.js';
 
 /**
  * Strict RFC 8259 JSON parser with source positions — the fast path for JSON documents
@@ -30,7 +28,10 @@ export type JsonParseOutcome =
 
 interface ObjectFrame {
   readonly kind: 'object';
-  readonly pointer: JsonPointer;
+  /** This container's slot in the pointer index. */
+  readonly slot: Slot;
+  /** Range of the key under which this container sits in its parent object, if any. */
+  readonly ownKeyRange?: OffsetRange;
   readonly start: number;
   readonly entries: [string, CanonicalJson][];
   readonly seen: Set<string>;
@@ -40,7 +41,8 @@ interface ObjectFrame {
 
 interface ArrayFrame {
   readonly kind: 'array';
-  readonly pointer: JsonPointer;
+  readonly slot: Slot;
+  readonly ownKeyRange?: OffsetRange;
   readonly start: number;
   readonly items: CanonicalJson[];
 }
@@ -149,32 +151,45 @@ export function parseJson(text: string, maxDepth: number): JsonParseOutcome {
     }
   };
 
-  /** Stores a completed value into its parent (or as the root). */
-  const deliver = (value: CanonicalJson, range: OffsetRange): void => {
+  /** Stores a completed value into its parent (or as the root). `own` is set for containers (already indexed). */
+  const deliver = (value: CanonicalJson, range: OffsetRange, own?: Frame): void => {
     const parent = stack[stack.length - 1];
+    if (own !== undefined) index.update(own.slot, range, own.ownKeyRange);
     if (parent === undefined) {
       root = value;
-      index.set(ROOT_POINTER, range);
+      if (own === undefined) index.root(range);
       return;
     }
     if (parent.kind === 'array') {
-      index.set(appendPointer(parent.pointer, parent.items.length), range);
+      if (own === undefined) index.child(parent.slot, parent.items.length, range);
       parent.items.push(value);
     } else {
       const key = parent.key as string;
-      index.set(appendPointer(parent.pointer, key), range, parent.keyRange);
+      if (own === undefined) index.child(parent.slot, key, range, parent.keyRange);
       parent.entries.push([key, value]);
       delete parent.key;
       delete parent.keyRange;
     }
   };
 
-  const currentPointer = (): JsonPointer => {
+  /** Token of the value about to be read within its parent (undefined at the root). */
+  const currentToken = (): string | number | undefined => {
     const parent = stack[stack.length - 1];
-    if (parent === undefined) return ROOT_POINTER;
-    return parent.kind === 'array'
-      ? appendPointer(parent.pointer, parent.items.length)
-      : appendPointer(parent.pointer, parent.key as string);
+    if (parent === undefined) return undefined;
+    return parent.kind === 'array' ? parent.items.length : parent.key;
+  };
+
+  /** Pointer of the value about to be read (computed only for diagnostics). */
+  const currentPointer = (): JsonPointer => index.pointerOf(stack[stack.length - 1]?.slot, currentToken());
+
+  /** Creates the index slot for a container that is being opened. */
+  const openSlot = (start: number): { readonly slot: Slot; readonly ownKeyRange?: OffsetRange } => {
+    const parent = stack[stack.length - 1];
+    const placeholder = { start, end: start + 1 };
+    if (parent === undefined) return { slot: index.root(placeholder) };
+    if (parent.kind === 'array') return { slot: index.child(parent.slot, parent.items.length, placeholder) };
+    const ownKeyRange = parent.keyRange as OffsetRange;
+    return { slot: index.child(parent.slot, parent.key as string, placeholder, ownKeyRange), ownKeyRange };
   };
 
   try {
@@ -186,36 +201,36 @@ export function parseJson(text: string, maxDepth: number): JsonParseOutcome {
         const start = pos;
         const c = text[pos];
         if (c === '{' || c === '[') {
-          const pointer = currentPointer();
           if (stack.length + 1 > maxDepth) {
             throw new SemanticFailure(
               'CGD-LIMIT-003',
               `Nesting exceeds maxDepth (${maxDepth})`,
               { start, end: start + 1 },
-              pointer,
+              currentPointer(),
             );
           }
+          const opened = openSlot(start);
           pos++;
           skipWs();
           if (c === '{') {
-            const frame: ObjectFrame = { kind: 'object', pointer, start, entries: [], seen: new Set() };
+            const frame: ObjectFrame = { kind: 'object', ...opened, start, entries: [], seen: new Set() };
             stack.push(frame);
             if (text[pos] === '}') {
               pos++;
               stack.pop();
-              deliver(canonicalObject([]), { start, end: pos });
+              deliver(canonicalObject([]), { start, end: pos }, frame);
               expectValue = false;
               continue;
             }
             readKey(frame);
             continue; // expect value
           }
-          const frame: ArrayFrame = { kind: 'array', pointer, start, items: [] };
+          const frame: ArrayFrame = { kind: 'array', ...opened, start, items: [] };
           stack.push(frame);
           if (text[pos] === ']') {
             pos++;
             stack.pop();
-            deliver(Object.freeze([]), { start, end: pos });
+            deliver(Object.freeze([]), { start, end: pos }, frame);
             expectValue = false;
           }
           continue;
@@ -270,7 +285,7 @@ export function parseJson(text: string, maxDepth: number): JsonParseOutcome {
         pos++;
         stack.pop();
         const value = top.kind === 'object' ? canonicalObject(top.entries) : Object.freeze(top.items);
-        deliver(value, { start: top.start, end: pos });
+        deliver(value, { start: top.start, end: pos }, top);
         continue;
       }
       throw new SyntaxFailure(
@@ -303,7 +318,7 @@ export function parseJson(text: string, maxDepth: number): JsonParseOutcome {
     const key = readString();
     const keyRange = { start, end: pos };
     if (frame.seen.has(key)) {
-      throw new SemanticFailure('CGD-PARSE-003', `Duplicate key "${key}"`, keyRange, appendPointer(frame.pointer, key));
+      throw new SemanticFailure('CGD-PARSE-003', `Duplicate key "${key}"`, keyRange, index.pointerOf(frame.slot, key));
     }
     frame.seen.add(key);
     skipWs();

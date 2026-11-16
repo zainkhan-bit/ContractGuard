@@ -11,7 +11,6 @@ import {
 import {
   JsonNumber,
   ROOT_POINTER,
-  appendPointer,
   canonicalObject,
   diagnostic,
   sha256Hex,
@@ -28,7 +27,7 @@ import {
 } from '@contractguard/core';
 import type { LoadedSource } from '../load/source.js';
 import { parseJson } from './json-parser.js';
-import { PointerIndexBuilder, positionAt, type OffsetRange, type PointerIndex } from './pointer-index.js';
+import { PointerIndexBuilder, positionAt, type OffsetRange, type PointerIndex, type Slot } from './pointer-index.js';
 
 export interface ParsedDocument {
   readonly uri: DocumentUri;
@@ -206,9 +205,11 @@ export function parseDocument(source: LoadedSource, options: ParseOptions): Stag
     code: DiagnosticCode,
     message: string,
     node: YamlNode | null | undefined,
-    pointer: JsonPointer,
+    slot: Slot,
+    extra?: string,
   ): never => {
     const [start, end] = node?.range ?? [0, 0];
+    const pointer = index.pointerOf(slot, extra);
     diagnostics.push(diagnostic(code, message, { ...side, location: locate(start, end, pointer) }));
     throw new ParseAbort(message);
   };
@@ -218,22 +219,22 @@ export function parseDocument(source: LoadedSource, options: ParseOptions): Stag
     return { start: r[0], end: r[1] };
   };
 
-  const build = (node: YamlNode | null, pointer: JsonPointer, depth: number): CanonicalJson => {
+  const build = (node: YamlNode | null, slot: Slot, depth: number): CanonicalJson => {
     if (depth > options.limits.maxDepth) {
-      fail('CGD-LIMIT-003', `Nesting exceeds maxDepth (${options.limits.maxDepth})`, node, pointer);
+      fail('CGD-LIMIT-003', `Nesting exceeds maxDepth (${options.limits.maxDepth})`, node, slot);
     }
     if (node === null) return null;
     if (isAlias(node)) {
       aliasExpansions++;
       if (aliasExpansions > maxAliases) {
-        fail('CGD-LIMIT-005', `More than ${maxAliases} YAML alias expansions`, node, pointer);
+        fail('CGD-LIMIT-005', `More than ${maxAliases} YAML alias expansions`, node, slot);
       }
       const target = node.resolve(doc);
-      if (target === undefined) fail('CGD-PARSE-001', `Unresolved alias *${node.source}`, node, pointer);
-      return build(target as YamlNode, pointer, depth + 1);
+      if (target === undefined) fail('CGD-PARSE-001', `Unresolved alias *${node.source}`, node, slot);
+      return build(target as YamlNode, slot, depth + 1);
     }
     if (node.tag !== undefined && !CORE_TAGS.has(node.tag)) {
-      fail('CGD-PARSE-012', `Unsupported YAML tag ${node.tag}`, node, pointer);
+      fail('CGD-PARSE-012', `Unsupported YAML tag ${node.tag}`, node, slot);
     }
     if (isMap(node)) {
       const entries: [string, CanonicalJson][] = [];
@@ -242,11 +243,10 @@ export function parseDocument(source: LoadedSource, options: ParseOptions): Stag
         const keyNode = pair.key as YamlNode | null;
         const key = keyString(keyNode);
         if (key === undefined) {
-          fail('CGD-PARSE-010', 'Mapping keys must be strings or scalars', keyNode, pointer);
+          fail('CGD-PARSE-010', 'Mapping keys must be strings or scalars', keyNode, slot);
         }
         const k = key as string;
-        const childPointer = appendPointer(pointer, k);
-        if (seen.has(k)) fail('CGD-PARSE-003', `Duplicate key "${k}"`, keyNode, childPointer);
+        if (seen.has(k)) fail('CGD-PARSE-003', `Duplicate key "${k}"`, keyNode, slot, k);
         seen.add(k);
         const valueNode = pair.value as YamlNode | null;
         const keyRange = keyNode === null ? undefined : rangeOf(keyNode);
@@ -254,18 +254,17 @@ export function parseDocument(source: LoadedSource, options: ParseOptions): Stag
           valueNode === null
             ? { start: keyRange?.end ?? rangeOf(node).start, end: keyRange?.end ?? rangeOf(node).start }
             : rangeOf(valueNode);
-        index.set(childPointer, valueRange, keyRange);
-        entries.push([k, build(valueNode, childPointer, depth + 1)]);
+        const childSlot = index.child(slot, k, valueRange, keyRange);
+        entries.push([k, build(valueNode, childSlot, depth + 1)]);
       }
       return canonicalObject(entries);
     }
     if (isSeq(node)) {
       const items: CanonicalJson[] = [];
       node.items.forEach((item, i) => {
-        const childPointer = appendPointer(pointer, i);
         const itemNode = item as YamlNode | null;
-        index.set(childPointer, itemNode === null ? rangeOf(node) : rangeOf(itemNode));
-        items.push(build(itemNode, childPointer, depth + 1));
+        const childSlot = index.child(slot, i, itemNode === null ? rangeOf(node) : rangeOf(itemNode));
+        items.push(build(itemNode, childSlot, depth + 1));
       });
       return Object.freeze(items);
     }
@@ -274,18 +273,18 @@ export function parseDocument(source: LoadedSource, options: ParseOptions): Stag
       if (v === null || typeof v === 'boolean' || typeof v === 'string') return v;
       if (typeof v === 'number' || typeof v === 'bigint') {
         const n = toNumber(node.source, v);
-        return typeof n === 'string' ? fail(n, `Unsupported number ${String(node.source ?? v)}`, node, pointer) : n;
+        return typeof n === 'string' ? fail(n, `Unsupported number ${String(node.source ?? v)}`, node, slot) : n;
       }
-      return fail('CGD-PARSE-013', 'Unsupported scalar value', node, pointer);
+      return fail('CGD-PARSE-013', 'Unsupported scalar value', node, slot);
     }
-    return fail('CGD-PARSE-013', 'Unsupported YAML node', node, pointer);
+    return fail('CGD-PARSE-013', 'Unsupported YAML node', node, slot);
   };
 
   let value: CanonicalJson;
   try {
     const contents = doc.contents as YamlNode | null;
-    index.set(ROOT_POINTER, contents === null ? { start: 0, end: 0 } : rangeOf(contents));
-    value = build(contents, ROOT_POINTER, 0);
+    const rootSlot = index.root(contents === null ? { start: 0, end: 0 } : rangeOf(contents));
+    value = build(contents, rootSlot, 0);
   } catch (error) {
     if (error instanceof ParseAbort) return stageFail(diagnostics);
     if (error instanceof RangeError) {
