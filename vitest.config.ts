@@ -29,6 +29,22 @@ export default defineConfig({
       },
       {
         test: {
+          name: 'app',
+          root: './packages/app',
+          include: ['test/**/*.test.ts'],
+          environment: 'node',
+        },
+      },
+      {
+        test: {
+          name: 'cli',
+          root: './packages/cli',
+          include: ['test/**/*.test.ts'],
+          environment: 'node',
+        },
+      },
+      {
+        test: {
           name: 'core',
           root: './packages/core',
           include: ['test/**/*.test.ts'],

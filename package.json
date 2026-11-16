@@ -11,7 +11,7 @@
   "scripts": {
     "build": "tsc -b",
     "clean": "tsc -b --clean",
-    "typecheck": "tsc -b && tsc -p packages/core/test && tsc -p packages/openapi/test && tsc -p packages/engine/test && tsc -p packages/reporters/test",
+    "typecheck": "tsc -b && tsc -p packages/core/test && tsc -p packages/openapi/test && tsc -p packages/engine/test && tsc -p packages/reporters/test && tsc -p packages/app/test && tsc -p packages/cli/test",
     "test": "vitest run",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
@@ -19,6 +19,7 @@
     "lint:fix": "eslint . --fix && prettier --write .",
     "format": "prettier --write .",
     "deps:check": "depcruise packages --config .dependency-cruiser.cjs",
+    "smoke:pack": "node scripts/pack-smoke.mjs",
     "check": "pnpm run build && pnpm run lint && pnpm run coverage",
     "changeset": "changeset"
   },

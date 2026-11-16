@@ -1,0 +1,52 @@
+{
+  "name": "contractguard",
+  "version": "0.0.0",
+  "description": "Detect breaking changes between two versions of an OpenAPI contract, with clear explanations, CI-ready reports and SARIF.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=24"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.tsbuildinfo",
+    "bin",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zainkhan-bit/ContractGuard.git",
+    "directory": "packages/cli"
+  },
+  "keywords": [
+    "openapi",
+    "api",
+    "breaking-changes",
+    "cli",
+    "ci",
+    "sarif",
+    "contract-testing"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "dependencies": {
+    "@contractguard/app": "workspace:*",
+    "@contractguard/core": "workspace:*",
+    "@contractguard/engine": "workspace:*",
+    "@contractguard/reporters": "workspace:*"
+  },
+  "bin": {
+    "contractguard": "./bin/contractguard.js"
+  }
+}

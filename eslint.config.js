@@ -15,7 +15,7 @@ export default tseslint.config(
       globals: { ...globals.node },
       parserOptions: {
         projectService: {
-          allowDefaultProject: ['*.js', '*.ts', '.dependency-cruiser.cjs'],
+          allowDefaultProject: ['*.js', '*.ts', '.dependency-cruiser.cjs', 'scripts/*.mjs'],
         },
         tsconfigRootDir: import.meta.dirname,
       },
@@ -74,7 +74,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['**/*.js', '**/*.cjs'],
+    files: ['**/*.js', '**/*.cjs', '**/*.mjs'],
     ...tseslint.configs.disableTypeChecked,
   },
 );

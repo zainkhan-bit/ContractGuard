@@ -4,7 +4,7 @@
 |---|---|
 | **Status** | Approved 2026-11-15 (D1–D22 with recommended defaults) — implementation in progress |
 | **Scope of this document** | Stage 0 investigation results + complete Stage 1 architecture blueprint |
-| **Implementation status** | M0–M6 complete (core, OpenAPI front end, diff engine, compatibility engine with the 83-rule catalog, reporters). See §19 and §19.1. |
+| **Implementation status** | M0–M7 complete (core, OpenAPI front end, diff engine, compatibility engine with the 83-rule catalog, reporters, CLI). See §19 and §19.1. |
 | **Date** | 2026-11-15 |
 | **Repository state at time of writing** | `github.com/zainkhan-bit/ContractGuard` — empty (no commits); local working copy empty |
 
@@ -3326,6 +3326,13 @@ Decisions and deviations discovered during implementation. Each entry names the 
 - **M6 · §13.2 — truncation order** under the size cap: informational, non-breaking, suppressed, diagnostics, undetermined, potentially breaking, breaking; a hard cut on a character boundary is the last resort.
 - **M6 · §13.4 — SARIF** uses the 2.1.0 property `automationDetails` (type `runAutomationDetails`); rule tags are `contractguard` + area. Removed elements anchor to the candidate root (line 1) with the baseline in `relatedLocations`; precise nearest-ancestor anchors (§13.5) need the candidate pointer index and are resolved in the app layer (M7).
 - **M6 · §13.3 — `report.v1.json`** accepts any `1.x` `reportVersion`, so additive minor versions validate against the v1 schema. Golden files are excluded from Prettier and are LF-only.
+- **M7 · §6 — `@contractguard/app` holds every use case** (`analyze`, `validateSource`, `createBaseline`) plus configuration and sources, so the CLI and the Action (M8) share one implementation and differ only in I/O. The app package builds with `isolatedDeclarations: false`; the zod schema stays private behind typed functions (`parseConfigFile`, `configJsonSchema`).
+- **M7 · §12.6 — `references.root` is a filesystem path** (default: the git root, else the config directory). In CI a root outside the repository is clamped to the repository, and `allowRemote` from a committed file takes effect only with `--allow-remote-references` (T8); otherwise a warning explains why it was ignored.
+- **M7 · §12.2 — git sources** are `git:<ref>:<path>` with the path relative to the working directory. Refs are validated against a strict pattern before git runs, every call uses `execFile` with an argument array and `--end-of-options`, and documents are read with `git show <sha>:<path>` so relative `$ref`s resolve inside the same commit (T10). Without `origin/HEAD`, `init` falls back to `origin/main`, `origin/master`, `main`, `master`.
+- **M7 · §12.2 — snapshots** (`baseline create`) bundle every loaded document with per-document and whole-file SHA-256 checksums; a hand-edited snapshot is rejected. stdin (`-`) is candidate-only and self-contained.
+- **M7 · §13.5 — removed-element anchors** are resolved in `analyze()` with the candidate document's `nearestExisting` pointer, so SARIF and annotations land on the closest surviving ancestor (e.g. `#/paths` for a removed path).
+- **M7 · §12.4 — `validate --allow-invalid-spec`** reports specification errors as warnings when the document still loads, matching what `check --allow-invalid-spec` does. Sizes accept `MiB`-style spellings as well as `MB` (both binary).
+- **M7 · §18.9 — release smoke test.** CI packs every package, installs the tarballs into an empty project and runs `npx contractguard` on Linux, macOS and Windows (`scripts/pack-smoke.mjs`).
 
 # 20. Open-source release strategy
 

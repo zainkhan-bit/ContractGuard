@@ -12,6 +12,12 @@
     },
     {
       "path": "./packages/reporters"
+    },
+    {
+      "path": "./packages/app"
+    },
+    {
+      "path": "./packages/cli"
     }
   ]
 }

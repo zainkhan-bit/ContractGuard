@@ -1,0 +1,52 @@
+{
+  "name": "@contractguard/app",
+  "version": "0.0.0",
+  "description": "ContractGuard application layer: configuration, sources (path, git, snapshot) and the analyze() use case.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=24"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json",
+    "./schemas/config.v1.json": "./schemas/config.v1.json"
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.tsbuildinfo",
+    "README.md",
+    "LICENSE",
+    "schemas"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zainkhan-bit/ContractGuard.git",
+    "directory": "packages/app"
+  },
+  "keywords": [
+    "openapi",
+    "api",
+    "breaking-changes",
+    "compatibility"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "dependencies": {
+    "@contractguard/core": "workspace:*",
+    "@contractguard/engine": "workspace:*",
+    "@contractguard/openapi": "workspace:*",
+    "picomatch": "^4.0.7",
+    "yaml": "^2.9.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/picomatch": "^4.0.3"
+  }
+}

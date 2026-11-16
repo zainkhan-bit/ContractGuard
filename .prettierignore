@@ -8,3 +8,4 @@ fixtures/**
 
 # Golden files are exact renderer output
 packages/*/test/golden/
+packages/app/schemas/config.v1.json

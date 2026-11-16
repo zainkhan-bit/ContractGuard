@@ -4,7 +4,7 @@
 
 ContractGuard compares a baseline and a candidate API specification and tells you, for every change, **what changed**, **whether it is compatible under a named compatibility perspective**, **how certain that conclusion is**, and **exactly where the evidence lives** in your source files.
 
-> **Status: pre-alpha — under active construction.** Nothing is usable as a tool yet. The architecture is complete and approved ([blueprint](docs/architecture/BLUEPRINT.md)); implementation proceeds milestone by milestone (see [roadmap](docs/architecture/BLUEPRINT.md#19-implementation-roadmap)).
+> **Status: pre-alpha — under active construction.** The CLI works end to end (see below) but is not published to npm yet. The architecture is complete and approved ([blueprint](docs/architecture/BLUEPRINT.md)); implementation proceeds milestone by milestone (see [roadmap](docs/architecture/BLUEPRINT.md#19-implementation-roadmap)).
 
 ## What makes it different
 
@@ -25,9 +25,21 @@ ContractGuard compares a baseline and a candidate API specification and tells yo
 | M4        | Diff engine                                    | ✅ Done |
 | M5        | Compatibility engine + 83-rule catalog         | ✅ Done |
 | M6        | Reporters (console, Markdown, JSON, SARIF)     | ✅ Done |
-| M7        | CLI                                            | ⏳ Next |
-| M8        | GitHub Action                                  |         |
+| M7        | CLI                                            | ✅ Done |
+| M8        | GitHub Action                                  | ⏳ Next |
 | M9        | 1.0 production readiness                       |         |
+
+## Try the CLI (from a clone)
+
+```bash
+pnpm install && pnpm build
+node packages/cli/bin/contractguard.js check git:origin/main:openapi.yaml openapi.yaml
+node packages/cli/bin/contractguard.js init        # writes a commented .contractguard.yaml
+node packages/cli/bin/contractguard.js explain --list
+```
+
+Exit codes: `0` passed · `1` policy failed · `2` invalid input · `3` usage/config error · `4` internal error · `130` interrupted.
+See [packages/cli/README.md](packages/cli/README.md) for every command and source type.
 
 ## Development
 

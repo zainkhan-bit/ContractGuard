@@ -1,0 +1,409 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "version": {
+      "type": "number",
+      "const": 1
+    },
+    "specs": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,62}$"
+          },
+          "candidate": {
+            "type": "string",
+            "minLength": 1
+          },
+          "base": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "candidate",
+          "base"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "compatibility": {
+      "type": "object",
+      "properties": {
+        "perspective": {
+          "type": "string",
+          "enum": [
+            "provider-backward"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "policy": {
+      "type": "object",
+      "properties": {
+        "failOn": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "breaking",
+              "potentially-breaking",
+              "undetermined",
+              "non-breaking",
+              "informational"
+            ]
+          }
+        },
+        "minSeverity": {
+          "type": "string",
+          "enum": [
+            "critical",
+            "high",
+            "medium",
+            "low",
+            "info"
+          ]
+        },
+        "undetermined": {
+          "type": "string",
+          "enum": [
+            "fail",
+            "review",
+            "ignore"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "analysis": {
+      "type": "object",
+      "properties": {
+        "strictResponseValidation": {
+          "type": "boolean"
+        },
+        "constraintTightening": {
+          "type": "string",
+          "enum": [
+            "potentially-breaking",
+            "breaking"
+          ]
+        },
+        "responseEnumAdditions": {
+          "type": "string",
+          "enum": [
+            "potentially-breaking",
+            "non-breaking",
+            "breaking"
+          ]
+        },
+        "removedRequestParameters": {
+          "type": "string",
+          "enum": [
+            "non-breaking",
+            "potentially-breaking"
+          ]
+        },
+        "closedResponseAdditions": {
+          "type": "string",
+          "enum": [
+            "potentially-breaking",
+            "breaking"
+          ]
+        },
+        "honorExtensibleEnum": {
+          "type": "boolean"
+        },
+        "includeEquivalentChanges": {
+          "type": "boolean"
+        },
+        "allowInvalidSpec": {
+          "type": "boolean"
+        },
+        "limits": {
+          "type": "object",
+          "properties": {
+            "maxDocumentBytes": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                },
+                {
+                  "type": "string",
+                  "pattern": "^(\\d+(?:\\.\\d+)?)\\s*(B|KB|MB|GB|KiB|MiB|GiB)$"
+                }
+              ]
+            },
+            "maxTotalBytes": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                },
+                {
+                  "type": "string",
+                  "pattern": "^(\\d+(?:\\.\\d+)?)\\s*(B|KB|MB|GB|KiB|MiB|GiB)$"
+                }
+              ]
+            },
+            "maxDocuments": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 100000
+            },
+            "maxDepth": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 10000
+            },
+            "maxRefHops": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 10000
+            },
+            "maxSchemaPairs": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 100000000
+            },
+            "timeoutMs": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 3600000
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "rules": {
+      "type": "object",
+      "properties": {
+        "disable": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^CG-[A-Z]+-\\d{3}$"
+          }
+        },
+        "overrides": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^CG-[A-Z]+-\\d{3}$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "classification": {
+                "type": "string",
+                "enum": [
+                  "breaking",
+                  "potentially-breaking",
+                  "undetermined",
+                  "non-breaking",
+                  "informational"
+                ]
+              },
+              "severity": {
+                "type": "string",
+                "enum": [
+                  "critical",
+                  "high",
+                  "medium",
+                  "low",
+                  "info"
+                ]
+              },
+              "options": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {
+                  "type": [
+                    "boolean",
+                    "string",
+                    "number"
+                  ]
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "ignore": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "rule": {
+                "type": "string",
+                "pattern": "^CG-[A-Z]+-\\d{3}$"
+              },
+              "fingerprint": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{32}$"
+              },
+              "operation": {
+                "type": "string",
+                "pattern": "^[A-Za-z]+ \\/\\S*$"
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 10
+              },
+              "expires": {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              }
+            },
+            "required": [
+              "reason"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "filters": {
+      "type": "object",
+      "properties": {
+        "include": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(\\*|[A-Za-z]+):\\/\\S*$"
+          }
+        },
+        "exclude": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(\\*|[A-Za-z]+):\\/\\S*$"
+          }
+        },
+        "excludeTags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "excludeExtensions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^x-"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "references": {
+      "type": "object",
+      "properties": {
+        "root": {
+          "type": "string",
+          "minLength": 1
+        },
+        "allowRemote": {
+          "type": "boolean"
+        },
+        "allowedHosts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9.-]+(:\\d+)?$"
+          }
+        },
+        "allowedSchemes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "https",
+              "http"
+            ]
+          }
+        },
+        "fetchTimeoutMs": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 600000
+        },
+        "maxRemoteBytes": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "string",
+              "pattern": "^(\\d+(?:\\.\\d+)?)\\s*(B|KB|MB|GB|KiB|MiB|GiB)$"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "report": {
+      "type": "object",
+      "properties": {
+        "formats": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "console",
+              "markdown",
+              "json",
+              "sarif"
+            ]
+          }
+        },
+        "outputDir": {
+          "type": "string",
+          "minLength": 1
+        },
+        "groupBy": {
+          "type": "string",
+          "enum": [
+            "cause",
+            "operation"
+          ]
+        },
+        "deterministic": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "version",
+    "specs"
+  ],
+  "additionalProperties": false,
+  "$id": "https://contractguard.dev/schemas/config.v1.json",
+  "title": "ContractGuard configuration (.contractguard.yaml), version 1"
+}
