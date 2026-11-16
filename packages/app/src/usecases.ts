@@ -96,6 +96,7 @@ export async function createBaseline(
     if (loaded.value === undefined) return { diagnostics: loaded.diagnostics };
     docs.push({ uri, bytes: loaded.value.bytes });
   }
-  const snap = buildSnapshot(opened.value.rootUri, docs, o.toolVersion);
+  // The document set's own root key, so the root matches the document URIs exactly on every platform.
+  const snap = buildSnapshot(r.value.documents.root, docs, o.toolVersion);
   return { ...snap, diagnostics: [...r.diagnostics, ...snap.diagnostics] };
 }

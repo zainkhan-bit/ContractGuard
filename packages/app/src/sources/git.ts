@@ -1,5 +1,5 @@
 import { execFile } from 'node:child_process';
-import { relative, resolve, sep } from 'node:path';
+import { isAbsolute, posix, relative, resolve, sep } from 'node:path';
 import { diagnostic, documentUri, type Diagnostic, type DocumentUri, type StageResult } from '@contractguard/core';
 import { formatHintFromUri, type LoadContext, type LoadedSource, type SourceLoader } from '@contractguard/openapi';
 import { isSafeGitRef } from './specifier.js';
@@ -83,9 +83,13 @@ export async function resolveGitSource(
     };
   }
   const sha = rev.stdout.toString('utf8').trim();
-  // Path relative to the repository root (git paths are relative to the top level, not the cwd).
-  const repoPath = relative(toplevel, resolve(cwd, path)).split(sep).join('/');
-  if (repoPath.startsWith('..') || repoPath === '') {
+  // Path relative to the repository root (git paths are relative to the top level, not the cwd). The cwd's own
+  // prefix comes from git rather than from comparing path strings: on Windows the temp/home directory can be an
+  // 8.3 short name (RUNNER~1) or differ in case/separators from what `--show-toplevel` prints.
+  const prefix = await git(['rev-parse', '--show-prefix'], cwd, 1 << 20, signal);
+  const fromCwd = relative(cwd, resolve(cwd, path)).split(sep).join('/');
+  const repoPath = posix.normalize(`${prefix.stdout.toString('utf8').trim()}${fromCwd}`);
+  if (prefix.code !== 0 || repoPath.startsWith('../') || repoPath === '..' || repoPath === '.' || isAbsolute(fromCwd)) {
     return { diagnostics: [diagnostic('CGD-FS-011', `Path is outside the git repository: ${path}`)] };
   }
   return { value: { sha, toplevel, path: repoPath, uri: gitUri(sha, repoPath) }, diagnostics: [] };

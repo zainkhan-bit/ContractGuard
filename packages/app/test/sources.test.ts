@@ -62,6 +62,7 @@ describe('git sources', () => {
     expect(r.value?.sha).toMatch(/^[0-9a-f]{40}$/);
     expect(r.value?.path).toBe('api/openapi.yaml');
     const v = await validateSource('git:HEAD:api/openapi.yaml', { cwd: d });
+    expect(r.diagnostics).toEqual([]);
     expect(v.diagnostics.filter((x) => x.severity === 'error')).toEqual([]);
     expect(v.contract?.operations.size).toBe(3);
   });
@@ -116,6 +117,7 @@ describe('snapshots', () => {
     const file = join(d, 'base.json');
     writeFileSync(file, JSON.stringify(snap.value));
     const opened = await openSnapshot(file);
+    expect(opened.diagnostics).toEqual([]);
     expect(opened.value).toBeDefined();
     const v = await validateSource('snapshot:base.json', { cwd: d });
     expect(v.contract?.operations.size).toBe(1);
