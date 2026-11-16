@@ -1,0 +1,50 @@
+{
+  "name": "@contractguard/reporters",
+  "version": "0.0.0",
+  "description": "ContractGuard reporters: console, Markdown, JSON (with published schema) and SARIF 2.1.0 renderers for analysis results.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=24"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json",
+    "./schemas/report.v1.json": "./schemas/report.v1.json"
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.tsbuildinfo",
+    "README.md",
+    "LICENSE",
+    "schemas"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zainkhan-bit/ContractGuard.git",
+    "directory": "packages/reporters"
+  },
+  "keywords": [
+    "openapi",
+    "api",
+    "breaking-changes",
+    "sarif",
+    "report"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "dependencies": {
+    "@contractguard/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@contractguard/engine": "workspace:*",
+    "@contractguard/openapi": "workspace:*",
+    "@hyperjump/json-schema": "~1.18.0"
+  }
+}

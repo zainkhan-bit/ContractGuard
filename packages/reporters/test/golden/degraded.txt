@@ -1,0 +1,12 @@
+ContractGuard 0.1.0 · perspective: provider-backward · spec: degraded
+base:      base/openapi.yaml (OpenAPI 3.1.0, 3 operations)
+candidate: api/openapi.yaml (OpenAPI 3.1.0, 4 operations)
+warning: invalid input was tolerated (allowInvalidSpec); results may be incomplete
+
+✓ CG-API-002  Operation GET /dup/{a} was added.
+
+error  CGD-SEM-002  api/openapi.yaml:7  Duplicate operationId "getUser"
+error  CGD-SEM-003  api/openapi.yaml:20  Path template variable "{a}" has no path parameter in GET /dup/{a}
+
+Summary: 0 breaking · 0 potentially breaking · 0 undetermined · 1 non-breaking · 0 informational
+Policy: PASSED

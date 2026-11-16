@@ -1,0 +1,8 @@
+ContractGuard 0.1.0 · perspective: provider-backward · spec: input-error
+base:      base/openapi.yaml (OpenAPI 3.1.0, 3 operations)
+candidate: not loaded
+
+error  CGD-PARSE-001  api/openapi.yaml:3  Flow map in block collection must be sufficiently indented and end with a }
+
+Summary: 0 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational
+Policy: Analysis failed: input error

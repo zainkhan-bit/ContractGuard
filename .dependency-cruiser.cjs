@@ -27,7 +27,7 @@ module.exports = {
       name: 'reporters-only-core',
       severity: 'error',
       comment: 'Reporters render AnalysisResult only (ADR-16).',
-      from: { path: '^packages/reporters/' },
+      from: { path: '^packages/reporters/src/' },
       to: { path: '^packages/(engine|openapi|app|cli)/' },
     },
     {

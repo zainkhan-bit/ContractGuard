@@ -1,0 +1,73 @@
+[
+  {
+    "base": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "82cdade51e2aec4e43be6128ec05c845fa58787c891e9e9cd1bb627526207b05"
+      ],
+      "operationCount": 3,
+      "rootUri": "file:///repo/base/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "causes": [],
+    "diagnostics": [
+      {
+        "category": "parse",
+        "code": "CGD-PARSE-001",
+        "location": {
+          "pointer": "#",
+          "range": {
+            "end": {
+              "column": 2,
+              "line": 3,
+              "offset": 37
+            },
+            "start": {
+              "column": 1,
+              "line": 3,
+              "offset": 36
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "message": "Flow map in block collection must be sufficiently indented and end with a }",
+        "severity": "error",
+        "side": "candidate"
+      }
+    ],
+    "findings": [],
+    "perspective": "provider-backward",
+    "policy": {
+      "passed": false,
+      "reasons": [],
+      "undeterminedHandling": "review"
+    },
+    "reportVersion": "1.0",
+    "specId": "input-error",
+    "status": "input-error",
+    "summary": {
+      "affectedOperations": 0,
+      "byClassification": {
+        "breaking": 0,
+        "informational": 0,
+        "non-breaking": 0,
+        "potentially-breaking": 0,
+        "undetermined": 0
+      },
+      "bySeverity": {
+        "critical": 0,
+        "high": 0,
+        "info": 0,
+        "low": 0,
+        "medium": 0
+      },
+      "suppressed": 0
+    },
+    "tool": {
+      "name": "contractguard",
+      "rulesetVersion": "1.0.0",
+      "version": "0.1.0"
+    }
+  }
+]

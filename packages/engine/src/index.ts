@@ -46,3 +46,11 @@ export {
 export { classifyByTable, CONSUMER_FORWARD, PROVIDER_BACKWARD } from './compat/perspectives.js';
 export { describeSubject, interpolate, schemaPathText } from './compat/text.js';
 export { RULES, RULESET_VERSION } from './rules/index.js';
+export {
+  assembleResult,
+  DEFAULT_REPORT_POLICY,
+  isGating,
+  type AnalyzedSide,
+  type AssembleInput,
+  type ReportPolicy,
+} from './result.js';

@@ -1,0 +1,224 @@
+[
+  {
+    "base": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "38f7aa0b40e5ad0ec46426d587447a085bcc2395d4e6740eb45a68ef5131e20f"
+      ],
+      "operationCount": 1,
+      "rootUri": "file:///repo/base/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "candidate": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "3d2b4ea864b601eda56327edef71bf432b44ea5142659f4762ee10baaaf71d65"
+      ],
+      "operationCount": 1,
+      "rootUri": "file:///repo/api/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "causes": [
+      {
+        "causeKey": "schema.patternChanged|file:///repo/api/openapi.yaml#/paths/~1x/post/requestBody/content/application~1json/schema|pattern",
+        "findingFingerprints": [
+          "c878dbfe1462e288a02176dd7663b7ec"
+        ],
+        "location": {
+          "pointer": "#/paths/~1x/post/requestBody/content/application~1json/schema",
+          "range": {
+            "end": {
+              "column": 96,
+              "line": 6,
+              "offset": 173
+            },
+            "start": {
+              "column": 58,
+              "line": 6,
+              "offset": 135
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-REQ-027 Request pattern changed",
+        "worst": "undetermined"
+      }
+    ],
+    "diagnostics": [],
+    "findings": [
+      {
+        "assessment": {
+          "effect": "unknown",
+          "role": "acceptance",
+          "strength": "value-space"
+        },
+        "basis": "indeterminate",
+        "causeKey": "schema.patternChanged|file:///repo/api/openapi.yaml#/paths/~1x/post/requestBody/content/application~1json/schema|pattern",
+        "classification": "undetermined",
+        "current": "^[a-z0-9]+$",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/paths/~1x/post/requestBody/content/application~1json/schema",
+              "range": {
+                "end": {
+                  "column": 93,
+                  "line": 6,
+                  "offset": 170
+                },
+                "start": {
+                  "column": 58,
+                  "line": 6,
+                  "offset": 135
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/paths/~1x/post/requestBody/content/application~1json/schema",
+              "range": {
+                "end": {
+                  "column": 96,
+                  "line": 6,
+                  "offset": 173
+                },
+                "start": {
+                  "column": 58,
+                  "line": 6,
+                  "offset": 135
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: acceptance/unknown/value-space → undetermined (indeterminate)"
+          }
+        ],
+        "explanation": "ContractGuard does not decide whether one regular expression accepts everything the other accepts.",
+        "fingerprint": "c878dbfe1462e288a02176dd7663b7ec",
+        "location": {
+          "anchor": {
+            "pointer": "#/paths/~1x/post/requestBody/content/application~1json/schema",
+            "range": {
+              "end": {
+                "column": 96,
+                "line": 6,
+                "offset": 173
+              },
+              "start": {
+                "column": 58,
+                "line": 6,
+                "offset": 135
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/paths/~1x/post/requestBody/content/application~1json/schema",
+            "range": {
+              "end": {
+                "column": 93,
+                "line": 6,
+                "offset": 170
+              },
+              "start": {
+                "column": 58,
+                "line": 6,
+                "offset": 135
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/paths/~1x/post/requestBody/content/application~1json/schema",
+            "range": {
+              "end": {
+                "column": 96,
+                "line": 6,
+                "offset": 173
+              },
+              "start": {
+                "column": 58,
+                "line": 6,
+                "offset": 135
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "Pattern of POST /x: the request body (application/json) changed from `^[a-z]+$` to `^[a-z0-9]+$`.",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "previous": "^[a-z]+$",
+        "resolution": "Review whether every value matching `^[a-z]+$` also matches `^[a-z0-9]+$`.",
+        "ruleId": "CG-REQ-027",
+        "ruleName": "Request pattern changed",
+        "severity": "medium",
+        "status": "active",
+        "subject": {
+          "direction": "request",
+          "method": "POST",
+          "operationKey": "POST /x",
+          "path": "/x",
+          "schemaPath": [],
+          "site": {
+            "kind": "requestBody",
+            "mediaType": "application/json"
+          }
+        }
+      }
+    ],
+    "perspective": "provider-backward",
+    "policy": {
+      "passed": false,
+      "reasons": [
+        {
+          "because": "undetermined (medium) matches fail-on [breaking] / undetermined: fail",
+          "fingerprint": "c878dbfe1462e288a02176dd7663b7ec",
+          "rule": "CG-REQ-027"
+        }
+      ],
+      "undeterminedHandling": "fail"
+    },
+    "reportVersion": "1.0",
+    "specId": "undetermined",
+    "status": "completed",
+    "summary": {
+      "affectedOperations": 1,
+      "byClassification": {
+        "breaking": 0,
+        "informational": 0,
+        "non-breaking": 0,
+        "potentially-breaking": 0,
+        "undetermined": 1
+      },
+      "bySeverity": {
+        "critical": 0,
+        "high": 0,
+        "info": 0,
+        "low": 0,
+        "medium": 1
+      },
+      "suppressed": 0
+    },
+    "tool": {
+      "name": "contractguard",
+      "rulesetVersion": "1.0.0",
+      "version": "0.1.0"
+    }
+  }
+]

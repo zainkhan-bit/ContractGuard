@@ -1,0 +1,176 @@
+[
+  {
+    "base": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "d09c3da469e15c897edeb9da6decab30c64b21da32b85bd323987fd179de9a37"
+      ],
+      "operationCount": 0,
+      "rootUri": "file:///repo/base/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "candidate": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "71fce50f52bbd12a8382472d7e971368aae21ede4928fd1eea0cfa1d80ebdf83"
+      ],
+      "operationCount": 0,
+      "rootUri": "file:///repo/api/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "causes": [
+      {
+        "causeKey": "server.basePathChanged||servers|https://eu.api.example.com/v1",
+        "findingFingerprints": [
+          "4475ad0e0a63abc7c57cd0194c506695"
+        ],
+        "location": {
+          "pointer": "#/servers/1",
+          "range": {
+            "end": {
+              "column": 89,
+              "line": 3,
+              "offset": 143
+            },
+            "start": {
+              "column": 51,
+              "line": 3,
+              "offset": 105
+            }
+          },
+          "uri": "file:///repo/base/openapi.yaml"
+        },
+        "title": "CG-SRV-002 Server base path changed",
+        "worst": "potentially-breaking"
+      }
+    ],
+    "diagnostics": [],
+    "findings": [
+      {
+        "assessment": {
+          "effect": "narrows",
+          "role": "acceptance",
+          "strength": "structural"
+        },
+        "basis": "consumer-dependent",
+        "causeKey": "server.basePathChanged||servers|https://eu.api.example.com/v1",
+        "classification": "potentially-breaking",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/servers/1",
+              "range": {
+                "end": {
+                  "column": 89,
+                  "line": 3,
+                  "offset": 143
+                },
+                "start": {
+                  "column": 51,
+                  "line": 3,
+                  "offset": 105
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "policy",
+            "text": "Servers describe deployments; consumers may be configured with any of them (§10.4)."
+          }
+        ],
+        "explanation": "Every operation URL under this base path moves; consumers using the old base path may fail.",
+        "fingerprint": "4475ad0e0a63abc7c57cd0194c506695",
+        "location": {
+          "anchor": {
+            "pointer": "#/servers/1",
+            "range": {
+              "end": {
+                "column": 89,
+                "line": 3,
+                "offset": 143
+              },
+              "start": {
+                "column": 51,
+                "line": 3,
+                "offset": 105
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/servers/1",
+            "range": {
+              "end": {
+                "column": 89,
+                "line": 3,
+                "offset": 143
+              },
+              "start": {
+                "column": 51,
+                "line": 3,
+                "offset": 105
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          }
+        },
+        "message": "Base path of server https://eu.api.example.com/v1 is no longer served by any candidate server.",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "previous": "https://eu.api.example.com/v1",
+        "resolution": "Serve both base paths during a transition, or release as a new major version.",
+        "ruleId": "CG-SRV-002",
+        "ruleName": "Server base path changed",
+        "severity": "high",
+        "status": "active",
+        "subject": {
+          "schemaPath": [],
+          "site": {
+            "kind": "servers"
+          }
+        }
+      }
+    ],
+    "perspective": "provider-backward",
+    "policy": {
+      "passed": true,
+      "reasons": [],
+      "undeterminedHandling": "review"
+    },
+    "reportVersion": "1.0",
+    "specId": "servers",
+    "status": "completed",
+    "summary": {
+      "affectedOperations": 0,
+      "byClassification": {
+        "breaking": 0,
+        "informational": 0,
+        "non-breaking": 0,
+        "potentially-breaking": 1,
+        "undetermined": 0
+      },
+      "bySeverity": {
+        "critical": 0,
+        "high": 1,
+        "info": 0,
+        "low": 0,
+        "medium": 0
+      },
+      "suppressed": 0
+    },
+    "tool": {
+      "name": "contractguard",
+      "rulesetVersion": "1.0.0",
+      "version": "0.1.0"
+    }
+  }
+]

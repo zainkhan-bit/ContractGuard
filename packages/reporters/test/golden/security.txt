@@ -1,0 +1,30 @@
+ContractGuard 0.1.0 · perspective: provider-backward · spec: security
+base:      base/openapi.yaml (OpenAPI 3.1.0, 2 operations)
+candidate: api/openapi.yaml (OpenAPI 3.1.0, 2 operations)
+
+✖ BREAKING  CG-AUTH-001  Authentication requirement tightened                               critical
+  what:     Authentication of GET /a is stricter: 1 previously accepted credential option(s) no
+            longer work.
+  where:    api/openapi.yaml:5
+  affects:  GET /a → security
+  why:      Consumers using the affected credentials (or none) will be rejected.
+  fix:      Keep accepting the previous credentials during a transition.
+
+✖ BREAKING  CG-AUTH-001  Authentication requirement tightened                               critical
+  what:     Authentication of GET /b is stricter: anonymous access is no longer allowed.
+  where:    api/openapi.yaml:6
+  affects:  GET /b → security
+  why:      Consumers using the affected credentials (or none) will be rejected.
+  fix:      Keep accepting the previous credentials during a transition.
+
+▲ POTENTIALLY BREAKING  CG-AUTH-005  OAuth2 flow changed                                      medium
+  what:     Security scheme "oauth" changed (flows.clientCredentials.tokenUrl).
+  where:    api/openapi.yaml:10
+  affects:  security
+  why:      Consumers obtaining tokens through the changed flow may fail.
+  fix:      Keep the previous flow endpoints working during a transition.
+
+· CG-AUTH-006  Security scheme "key" was renamed to "apiKey".
+
+Summary: 2 breaking · 1 potentially breaking · 0 undetermined · 0 non-breaking · 1 informational
+Policy: FAILED (2 gating findings)

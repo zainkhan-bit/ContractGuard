@@ -1,0 +1,16 @@
+ContractGuard 0.1.0 · perspective: provider-backward · spec: servers
+base:      base/openapi.yaml (OpenAPI 3.1.0, 0 operations)
+candidate: api/openapi.yaml (OpenAPI 3.1.0, 0 operations)
+
+▲ POTENTIALLY BREAKING  CG-SRV-002  Server base path changed                                    high
+  what:     Base path of server https://eu.api.example.com/v1 is no longer served by any candidate
+            server.
+  change:   "https://eu.api.example.com/v1" → (none)
+  where:    base/openapi.yaml:3
+  affects:  servers
+  why:      Every operation URL under this base path moves; consumers using the old base path may
+            fail.
+  fix:      Serve both base paths during a transition, or release as a new major version.
+
+Summary: 0 breaking · 1 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational
+Policy: PASSED

@@ -4,7 +4,7 @@
 |---|---|
 | **Status** | Approved 2026-11-15 (D1–D22 with recommended defaults) — implementation in progress |
 | **Scope of this document** | Stage 0 investigation results + complete Stage 1 architecture blueprint |
-| **Implementation status** | M0–M5 complete (core, OpenAPI front end, diff engine, compatibility engine with the 83-rule catalog). See §19 and §19.1. |
+| **Implementation status** | M0–M6 complete (core, OpenAPI front end, diff engine, compatibility engine with the 83-rule catalog, reporters). See §19 and §19.1. |
 | **Date** | 2026-11-15 |
 | **Repository state at time of writing** | `github.com/zainkhan-bit/ContractGuard` — empty (no commits); local working copy empty |
 
@@ -3320,6 +3320,12 @@ Decisions and deviations discovered during implementation. Each entry names the 
 - **M5 · §10.6 — CG-SCHEMA-900 also covers property additions/removals under a parent with `patternProperties`**, not only `unevaluatedProperties`.
 - **M5 · §10.6 — AUTH-004 is reported once per scheme** (not projected per operation); its explanation lists the operations whose baseline security uses the scheme.
 - **M5 · §18.6 — consumer-forward duality gaps (to resolve in M10).** Direction duality holds for value-space-accurate rules and is enforced by tests. Known gaps, pinned by tests: RES-004/005 label response property additions "widens/additive" (reader-centric, so `strictResponseValidation` applies); some reverse changes have no catalog rule (request property became optional, response no longer nullable); RES-006 classifies by provider-backward policy. Consumer-forward must not become user-selectable until these are resolved.
+
+- **M6 · §7.6/§13 — `assembleResult()` lives in the engine.** Summary counts, cause groups and the policy verdict are pure domain logic, so the CLI (M7) only adds I/O. Policy defaults follow §12.6 (`failOn: [breaking]`, `minSeverity: low`, `undetermined: review`).
+- **M6 · §13.2 — Markdown section counts are finding counts** (matching the summary table and the verdict); groups inside a section are causes. Baseline locations are shown as text, never linked, because `linkBase` points at the candidate revision.
+- **M6 · §13.2 — truncation order** under the size cap: informational, non-breaking, suppressed, diagnostics, undetermined, potentially breaking, breaking; a hard cut on a character boundary is the last resort.
+- **M6 · §13.4 — SARIF** uses the 2.1.0 property `automationDetails` (type `runAutomationDetails`); rule tags are `contractguard` + area. Removed elements anchor to the candidate root (line 1) with the baseline in `relatedLocations`; precise nearest-ancestor anchors (§13.5) need the candidate pointer index and are resolved in the app layer (M7).
+- **M6 · §13.3 — `report.v1.json`** accepts any `1.x` `reportVersion`, so additive minor versions validate against the v1 schema. Golden files are excluded from Prettier and are LF-only.
 
 # 20. Open-source release strategy
 

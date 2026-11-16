@@ -1,0 +1,667 @@
+[
+  {
+    "base": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "e2f56b4e27d8972e31a768a45df3f361a4261de87b0e54a5203b4576010f7bb9"
+      ],
+      "operationCount": 1,
+      "rootUri": "file:///repo/base/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "candidate": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "d2237779119a5da35324550cdad3afae5c0e292eb36267101ebba59f2e09cf63"
+      ],
+      "operationCount": 1,
+      "rootUri": "file:///repo/api/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "causes": [
+      {
+        "causeKey": "parameter.added|GET /s|parameter:header:x-tenant|",
+        "findingFingerprints": [
+          "f1a9d80eb62656b5b920e8b3df8c52b2"
+        ],
+        "location": {
+          "pointer": "#/paths/~1s/get/parameters/3",
+          "range": {
+            "end": {
+              "column": 79,
+              "line": 10,
+              "offset": 417
+            },
+            "start": {
+              "column": 11,
+              "line": 10,
+              "offset": 349
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-REQ-004 New required request parameter",
+        "worst": "breaking"
+      },
+      {
+        "causeKey": "parameter.locationChanged|GET /s|parameter:query:api_key|",
+        "findingFingerprints": [
+          "cd05e1e0b588a6cd581ebc4402b2581e"
+        ],
+        "location": {
+          "pointer": "#/paths/~1s/get/parameters/2",
+          "range": {
+            "end": {
+              "column": 78,
+              "line": 9,
+              "offset": 338
+            },
+            "start": {
+              "column": 11,
+              "line": 9,
+              "offset": 271
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-REQ-007 Request parameter location changed",
+        "worst": "breaking"
+      },
+      {
+        "causeKey": "parameter.requiredChanged|GET /s|parameter:query:q|",
+        "findingFingerprints": [
+          "e74c953fa8006fd2ac0ae05d949c7253"
+        ],
+        "location": {
+          "pointer": "#/paths/~1s/get/parameters/0",
+          "range": {
+            "end": {
+              "column": 71,
+              "line": 7,
+              "offset": 165
+            },
+            "start": {
+              "column": 11,
+              "line": 7,
+              "offset": 105
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-REQ-002 Request parameter became required",
+        "worst": "breaking"
+      },
+      {
+        "causeKey": "parameter.serializationChanged|GET /s|parameter:query:ids|",
+        "findingFingerprints": [
+          "7820dc621254cabfd230a476fc15edbe"
+        ],
+        "location": {
+          "pointer": "#/paths/~1s/get/parameters/1",
+          "range": {
+            "end": {
+              "column": 95,
+              "line": 8,
+              "offset": 260
+            },
+            "start": {
+              "column": 11,
+              "line": 8,
+              "offset": 176
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-REQ-009 Request parameter serialization changed",
+        "worst": "breaking"
+      }
+    ],
+    "diagnostics": [],
+    "findings": [
+      {
+        "assessment": {
+          "effect": "narrows",
+          "role": "acceptance",
+          "strength": "structural"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "parameter.requiredChanged|GET /s|parameter:query:q|",
+        "classification": "breaking",
+        "current": true,
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/paths/~1s/get/parameters/0",
+              "range": {
+                "end": {
+                  "column": 55,
+                  "line": 7,
+                  "offset": 149
+                },
+                "start": {
+                  "column": 11,
+                  "line": 7,
+                  "offset": 105
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/paths/~1s/get/parameters/0",
+              "range": {
+                "end": {
+                  "column": 71,
+                  "line": 7,
+                  "offset": 165
+                },
+                "start": {
+                  "column": 11,
+                  "line": 7,
+                  "offset": 105
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: acceptance/narrows/structural → breaking (contract-guaranteed)"
+          }
+        ],
+        "explanation": "Consumers that omit this parameter will be rejected.",
+        "fingerprint": "e74c953fa8006fd2ac0ae05d949c7253",
+        "location": {
+          "anchor": {
+            "pointer": "#/paths/~1s/get/parameters/0",
+            "range": {
+              "end": {
+                "column": 71,
+                "line": 7,
+                "offset": 165
+              },
+              "start": {
+                "column": 11,
+                "line": 7,
+                "offset": 105
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/paths/~1s/get/parameters/0",
+            "range": {
+              "end": {
+                "column": 55,
+                "line": 7,
+                "offset": 149
+              },
+              "start": {
+                "column": 11,
+                "line": 7,
+                "offset": 105
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/paths/~1s/get/parameters/0",
+            "range": {
+              "end": {
+                "column": 71,
+                "line": 7,
+                "offset": 165
+              },
+              "start": {
+                "column": 11,
+                "line": 7,
+                "offset": 105
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "GET /s: query parameter \"q\" became required.",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "previous": false,
+        "resolution": "Keep the parameter optional with a documented default, or release as a new major version.",
+        "ruleId": "CG-REQ-002",
+        "ruleName": "Request parameter became required",
+        "severity": "high",
+        "status": "active",
+        "subject": {
+          "method": "GET",
+          "operationKey": "GET /s",
+          "path": "/s",
+          "schemaPath": [],
+          "site": {
+            "key": "query:q",
+            "kind": "parameter"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "narrows",
+          "role": "acceptance",
+          "strength": "structural"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "parameter.added|GET /s|parameter:header:x-tenant|",
+        "classification": "breaking",
+        "current": "X-Tenant",
+        "evidence": [
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/paths/~1s/get/parameters/3",
+              "range": {
+                "end": {
+                  "column": 79,
+                  "line": 10,
+                  "offset": 417
+                },
+                "start": {
+                  "column": 11,
+                  "line": 10,
+                  "offset": 349
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: acceptance/narrows/structural → breaking (contract-guaranteed)"
+          }
+        ],
+        "explanation": "Existing consumers do not send this parameter, so their requests will be rejected.",
+        "fingerprint": "f1a9d80eb62656b5b920e8b3df8c52b2",
+        "location": {
+          "anchor": {
+            "pointer": "#/paths/~1s/get/parameters/3",
+            "range": {
+              "end": {
+                "column": 79,
+                "line": 10,
+                "offset": 417
+              },
+              "start": {
+                "column": 11,
+                "line": 10,
+                "offset": 349
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/paths/~1s/get/parameters/3",
+            "range": {
+              "end": {
+                "column": 79,
+                "line": 10,
+                "offset": 417
+              },
+              "start": {
+                "column": 11,
+                "line": 10,
+                "offset": 349
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "New required GET /s: header parameter \"x-tenant\".",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "resolution": "Make the parameter optional with a default, or release as a new major version.",
+        "ruleId": "CG-REQ-004",
+        "ruleName": "New required request parameter",
+        "severity": "high",
+        "status": "active",
+        "subject": {
+          "method": "GET",
+          "operationKey": "GET /s",
+          "path": "/s",
+          "schemaPath": [],
+          "site": {
+            "key": "header:x-tenant",
+            "kind": "parameter"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "narrows",
+          "role": "acceptance",
+          "strength": "structural"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "parameter.locationChanged|GET /s|parameter:query:api_key|",
+        "classification": "breaking",
+        "current": "header",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/paths/~1s/get/parameters/2",
+              "range": {
+                "end": {
+                  "column": 61,
+                  "line": 9,
+                  "offset": 289
+                },
+                "start": {
+                  "column": 11,
+                  "line": 9,
+                  "offset": 239
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/paths/~1s/get/parameters/2",
+              "range": {
+                "end": {
+                  "column": 78,
+                  "line": 9,
+                  "offset": 338
+                },
+                "start": {
+                  "column": 11,
+                  "line": 9,
+                  "offset": 271
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: acceptance/narrows/structural → breaking (contract-guaranteed)"
+          }
+        ],
+        "explanation": "Consumers still send it in query; the provider now reads it from header.",
+        "fingerprint": "cd05e1e0b588a6cd581ebc4402b2581e",
+        "location": {
+          "anchor": {
+            "pointer": "#/paths/~1s/get/parameters/2",
+            "range": {
+              "end": {
+                "column": 78,
+                "line": 9,
+                "offset": 338
+              },
+              "start": {
+                "column": 11,
+                "line": 9,
+                "offset": 271
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/paths/~1s/get/parameters/2",
+            "range": {
+              "end": {
+                "column": 61,
+                "line": 9,
+                "offset": 289
+              },
+              "start": {
+                "column": 11,
+                "line": 9,
+                "offset": 239
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/paths/~1s/get/parameters/2",
+            "range": {
+              "end": {
+                "column": 78,
+                "line": 9,
+                "offset": 338
+              },
+              "start": {
+                "column": 11,
+                "line": 9,
+                "offset": 271
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "Parameter moved from query to header (GET /s: query parameter \"api_key\").",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "previous": "query",
+        "resolution": "Accept the parameter in both locations during a transition.",
+        "ruleId": "CG-REQ-007",
+        "ruleName": "Request parameter location changed",
+        "severity": "high",
+        "status": "active",
+        "subject": {
+          "method": "GET",
+          "operationKey": "GET /s",
+          "path": "/s",
+          "schemaPath": [],
+          "site": {
+            "key": "query:api_key",
+            "kind": "parameter"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "incomparable",
+          "role": "acceptance",
+          "strength": "structural"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "parameter.serializationChanged|GET /s|parameter:query:ids|",
+        "classification": "breaking",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/paths/~1s/get/parameters/1",
+              "range": {
+                "end": {
+                  "column": 79,
+                  "line": 8,
+                  "offset": 228
+                },
+                "start": {
+                  "column": 11,
+                  "line": 8,
+                  "offset": 160
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/paths/~1s/get/parameters/1",
+              "range": {
+                "end": {
+                  "column": 95,
+                  "line": 8,
+                  "offset": 260
+                },
+                "start": {
+                  "column": 11,
+                  "line": 8,
+                  "offset": 176
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: acceptance/incomparable/structural → breaking (contract-guaranteed)"
+          }
+        ],
+        "explanation": "Consumers encode the value the old way (for example `a=1&a=2` vs `a=1,2`); the provider may misread it.",
+        "fingerprint": "7820dc621254cabfd230a476fc15edbe",
+        "location": {
+          "anchor": {
+            "pointer": "#/paths/~1s/get/parameters/1",
+            "range": {
+              "end": {
+                "column": 95,
+                "line": 8,
+                "offset": 260
+              },
+              "start": {
+                "column": 11,
+                "line": 8,
+                "offset": 176
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/paths/~1s/get/parameters/1",
+            "range": {
+              "end": {
+                "column": 79,
+                "line": 8,
+                "offset": 228
+              },
+              "start": {
+                "column": 11,
+                "line": 8,
+                "offset": 160
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/paths/~1s/get/parameters/1",
+            "range": {
+              "end": {
+                "column": 95,
+                "line": 8,
+                "offset": 260
+              },
+              "start": {
+                "column": 11,
+                "line": 8,
+                "offset": 176
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "Serialization of GET /s: query parameter \"ids\" changed (explode).",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "resolution": "Keep the previous serialization, or accept both encodings.",
+        "ruleId": "CG-REQ-009",
+        "ruleName": "Request parameter serialization changed",
+        "severity": "high",
+        "status": "active",
+        "subject": {
+          "method": "GET",
+          "operationKey": "GET /s",
+          "path": "/s",
+          "schemaPath": [],
+          "site": {
+            "key": "query:ids",
+            "kind": "parameter"
+          }
+        }
+      }
+    ],
+    "perspective": "provider-backward",
+    "policy": {
+      "passed": false,
+      "reasons": [
+        {
+          "because": "breaking (high) matches fail-on [breaking]",
+          "fingerprint": "e74c953fa8006fd2ac0ae05d949c7253",
+          "rule": "CG-REQ-002"
+        },
+        {
+          "because": "breaking (high) matches fail-on [breaking]",
+          "fingerprint": "f1a9d80eb62656b5b920e8b3df8c52b2",
+          "rule": "CG-REQ-004"
+        },
+        {
+          "because": "breaking (high) matches fail-on [breaking]",
+          "fingerprint": "cd05e1e0b588a6cd581ebc4402b2581e",
+          "rule": "CG-REQ-007"
+        },
+        {
+          "because": "breaking (high) matches fail-on [breaking]",
+          "fingerprint": "7820dc621254cabfd230a476fc15edbe",
+          "rule": "CG-REQ-009"
+        }
+      ],
+      "undeterminedHandling": "review"
+    },
+    "reportVersion": "1.0",
+    "specId": "parameters",
+    "status": "completed",
+    "summary": {
+      "affectedOperations": 1,
+      "byClassification": {
+        "breaking": 4,
+        "informational": 0,
+        "non-breaking": 0,
+        "potentially-breaking": 0,
+        "undetermined": 0
+      },
+      "bySeverity": {
+        "critical": 0,
+        "high": 4,
+        "info": 0,
+        "low": 0,
+        "medium": 0
+      },
+      "suppressed": 0
+    },
+    "tool": {
+      "name": "contractguard",
+      "rulesetVersion": "1.0.0",
+      "version": "0.1.0"
+    }
+  }
+]

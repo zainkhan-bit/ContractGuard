@@ -1,0 +1,13 @@
+ContractGuard 0.1.0 · perspective: provider-backward · spec: multi-file
+base:      base/openapi.yaml (OpenAPI 3.1.0, 1 operations)
+candidate: api/openapi.yaml (OpenAPI 3.1.0, 1 operations)
+
+✖ BREAKING  CG-RES-008  Response type widened                                                   high
+  what:     GET /orders: response 200 (application/json) at `total` may now be number (was integer).
+  where:    api/schemas/order.yaml:5
+  affects:  GET /orders → response 200 application/json → `total`
+  why:      Consumers parsing the previous type may fail on values of the new types.
+  fix:      Keep the previous type, or release as a new major version.
+
+Summary: 1 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational
+Policy: FAILED (1 gating finding)

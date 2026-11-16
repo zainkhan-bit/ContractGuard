@@ -1,0 +1,226 @@
+[
+  {
+    "base": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "82cdade51e2aec4e43be6128ec05c845fa58787c891e9e9cd1bb627526207b05"
+      ],
+      "operationCount": 3,
+      "rootUri": "file:///repo/base/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "candidate": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "3f21d76315a86e516bd8d6d58edf09cbf010594aa7441b3261e1def51b679203"
+      ],
+      "operationCount": 3,
+      "rootUri": "file:///repo/api/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "causes": [
+      {
+        "causeKey": "operation.probableRename|GET /users/{}|operation|",
+        "findingFingerprints": [
+          "dba4785d5b27766fd565831e65fd66b1"
+        ],
+        "location": {
+          "pointer": "#/paths/~1members~1{id}/get",
+          "range": {
+            "end": {
+              "column": 1,
+              "line": 11,
+              "offset": 358
+            },
+            "start": {
+              "column": 7,
+              "line": 7,
+              "offset": 173
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-API-003 Operation path changed (probable rename)",
+        "worst": "breaking"
+      }
+    ],
+    "diagnostics": [],
+    "findings": [
+      {
+        "assessment": {
+          "effect": "narrows",
+          "role": "acceptance",
+          "strength": "structural"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "operation.probableRename|GET /users/{}|operation|",
+        "classification": "breaking",
+        "current": "/members/{id}",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "text": "Same unique operationId and method on both sides."
+          },
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/paths/~1users~1{id}/get",
+              "range": {
+                "end": {
+                  "column": 1,
+                  "line": 11,
+                  "offset": 356
+                },
+                "start": {
+                  "column": 7,
+                  "line": 7,
+                  "offset": 171
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/paths/~1members~1{id}/get",
+              "range": {
+                "end": {
+                  "column": 1,
+                  "line": 11,
+                  "offset": 358
+                },
+                "start": {
+                  "column": 7,
+                  "line": 7,
+                  "offset": 173
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: acceptance/narrows/structural → breaking (contract-guaranteed)"
+          }
+        ],
+        "explanation": "Consumers still calling GET /users/{} will fail; the match was found by operationId.",
+        "fingerprint": "dba4785d5b27766fd565831e65fd66b1",
+        "location": {
+          "anchor": {
+            "pointer": "#/paths/~1members~1{id}/get",
+            "range": {
+              "end": {
+                "column": 1,
+                "line": 11,
+                "offset": 358
+              },
+              "start": {
+                "column": 7,
+                "line": 7,
+                "offset": 173
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/paths/~1users~1{id}/get",
+            "range": {
+              "end": {
+                "column": 1,
+                "line": 11,
+                "offset": 356
+              },
+              "start": {
+                "column": 7,
+                "line": 7,
+                "offset": 171
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/paths/~1members~1{id}/get",
+            "range": {
+              "end": {
+                "column": 1,
+                "line": 11,
+                "offset": 358
+              },
+              "start": {
+                "column": 7,
+                "line": 7,
+                "offset": 173
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "Operation GET /users/{} appears to have moved to GET /members/{}.",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "previous": "/users/{id}",
+        "resolution": "Keep GET /users/{} as a deprecated alias of GET /members/{}, or release the move as a new major version.",
+        "ruleId": "CG-API-003",
+        "ruleName": "Operation path changed (probable rename)",
+        "severity": "critical",
+        "status": "active",
+        "subject": {
+          "method": "GET",
+          "operationKey": "GET /users/{}",
+          "path": "/users/{id}",
+          "schemaPath": [],
+          "site": {
+            "kind": "operation"
+          }
+        }
+      }
+    ],
+    "perspective": "provider-backward",
+    "policy": {
+      "passed": false,
+      "reasons": [
+        {
+          "because": "breaking (critical) matches fail-on [breaking]",
+          "fingerprint": "dba4785d5b27766fd565831e65fd66b1",
+          "rule": "CG-API-003"
+        }
+      ],
+      "undeterminedHandling": "review"
+    },
+    "reportVersion": "1.0",
+    "specId": "probable-rename",
+    "status": "completed",
+    "summary": {
+      "affectedOperations": 1,
+      "byClassification": {
+        "breaking": 1,
+        "informational": 0,
+        "non-breaking": 0,
+        "potentially-breaking": 0,
+        "undetermined": 0
+      },
+      "bySeverity": {
+        "critical": 1,
+        "high": 0,
+        "info": 0,
+        "low": 0,
+        "medium": 0
+      },
+      "suppressed": 0
+    },
+    "tool": {
+      "name": "contractguard",
+      "rulesetVersion": "1.0.0",
+      "version": "0.1.0"
+    }
+  }
+]

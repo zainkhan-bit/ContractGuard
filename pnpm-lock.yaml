@@ -69,6 +69,22 @@ importers:
         specifier: ^2.9.1
         version: 2.9.1
 
+  packages/reporters:
+    dependencies:
+      '@contractguard/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@contractguard/engine':
+        specifier: workspace:*
+        version: link:../engine
+      '@contractguard/openapi':
+        specifier: workspace:*
+        version: link:../openapi
+      '@hyperjump/json-schema':
+        specifier: ~1.18.0
+        version: 1.18.0(@hyperjump/browser@1.6.0)
+
 packages:
 
   '@babel/helper-string-parser@7.29.14':

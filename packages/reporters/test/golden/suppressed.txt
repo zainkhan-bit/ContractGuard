@@ -1,0 +1,43 @@
+ContractGuard 0.1.0 · perspective: provider-backward · spec: suppressed
+base:      base/openapi.yaml (OpenAPI 3.1.0, 3 operations)
+candidate: api/openapi.yaml (OpenAPI 3.1.0, 3 operations)
+
+▲ POTENTIALLY BREAKING  CG-RES-006  Response enum value added                                 medium
+  what:     GET /users: response 200 (application/json) at `[].status` may now return deleted.
+  where:    api/openapi.yaml:26
+  affects:  GET /users → response 200 application/json → `[].status`
+            GET /users/{id} → response 200 application/json → `status`
+  why:      Consumers that handle the enum exhaustively may not handle the new values.
+  fix:      Document the enum as extensible (x-extensible-enum) or make sure consumers have a
+            fallback.
+
+▲ POTENTIALLY BREAKING  CG-REQ-024  Request value constraint tightened                        medium
+  what:     `maxLength` became stricter in POST /users: the request body (application/json) at
+            `email`.
+  where:    api/openapi.yaml:32
+  affects:  POST /users → request body application/json → `email`
+  why:      Values that satisfied the old `maxLength` may now be rejected.
+  fix:      Keep the previous limit, or confirm that no consumer sends values in the excluded range.
+
+▲ POTENTIALLY BREAKING  CG-REQ-026  Request pattern added                                     medium
+  what:     Pattern `^[a-z]+$` now restricts POST /users: the request body (application/json) at
+            `nickname`.
+  change:   (none) → "^[a-z]+$"
+  where:    api/openapi.yaml:33
+  affects:  POST /users → request body application/json → `nickname`
+  why:      Strings that do not match the pattern will be rejected.
+  fix:      Confirm that consumers only send matching values.
+
+▲ POTENTIALLY BREAKING  CG-RES-011  Response value constraint relaxed                            low
+  what:     `maximum` was relaxed in GET /users: response 200 (application/json) at `[].score`.
+  where:    api/openapi.yaml:27
+  affects:  GET /users → response 200 application/json → `[].score`
+            GET /users/{id} → response 200 application/json → `score`
+  why:      Values outside the previous limit may now be returned; consumer buffers or UI limits may
+            not handle them.
+  fix:      Confirm that consumers handle the wider range.
+
+✓ CG-RES-017  Response 404 of GET /users/{id} is no longer documented.
+
+Summary: 0 breaking · 6 potentially breaking · 0 undetermined · 1 non-breaking · 0 informational (3 suppressed)
+Policy: PASSED

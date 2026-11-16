@@ -1,0 +1,15 @@
+ContractGuard 0.1.0 · perspective: provider-backward · spec: probable-rename
+base:      base/openapi.yaml (OpenAPI 3.1.0, 3 operations)
+candidate: api/openapi.yaml (OpenAPI 3.1.0, 3 operations)
+
+✖ BREAKING  CG-API-003  Operation path changed (probable rename)                            critical
+  what:     Operation GET /users/{} appears to have moved to GET /members/{}.
+  change:   "/users/{id}" → "/members/{id}"
+  where:    api/openapi.yaml:7
+  affects:  GET /users/{id}
+  why:      Consumers still calling GET /users/{} will fail; the match was found by operationId.
+  fix:      Keep GET /users/{} as a deprecated alias of GET /members/{}, or release the move as a
+            new major version.
+
+Summary: 1 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational
+Policy: FAILED (1 gating finding)

@@ -21,6 +21,14 @@ export default defineConfig({
       },
       {
         test: {
+          name: 'reporters',
+          root: './packages/reporters',
+          include: ['test/**/*.test.ts'],
+          environment: 'node',
+        },
+      },
+      {
+        test: {
           name: 'core',
           root: './packages/core',
           include: ['test/**/*.test.ts'],

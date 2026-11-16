@@ -1,0 +1,11 @@
+ContractGuard 0.1.0 · perspective: provider-backward · spec: equivalent-included
+base:      base/openapi.yaml (OpenAPI 3.0.3, 3 operations)
+candidate: api/openapi.yaml (OpenAPI 3.1.0, 3 operations)
+
+· CG-SCHEMA-002  Representation of GET /users: response 200 (application/json) at
+              `[].email` changed (nullability (oas30-nullable → type-includes-null))
+              without changing its meaning.
+· CG-API-006  operationId of GET /users/{id} changed from "getUser" to "fetchUser".
+
+Summary: 0 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 3 informational
+Policy: PASSED

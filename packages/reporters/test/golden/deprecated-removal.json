@@ -1,0 +1,185 @@
+[
+  {
+    "base": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "c3daba6d0b1ce81c67a570ce8670c16ba31141895e3e597499db110a8a2ecf93"
+      ],
+      "operationCount": 3,
+      "rootUri": "file:///repo/base/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "candidate": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "ae71d5c00464a15fe06c77ae39204fa40e989a527d79eef5befe718539daaf7b"
+      ],
+      "operationCount": 2,
+      "rootUri": "file:///repo/api/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "causes": [
+      {
+        "causeKey": "operation.removed|POST /users|operation|",
+        "findingFingerprints": [
+          "07daf660dfd3b5c31338a6081278fdc9"
+        ],
+        "location": {
+          "pointer": "#/paths/~1users/post",
+          "range": {
+            "end": {
+              "column": 1,
+              "line": 20,
+              "offset": 817
+            },
+            "start": {
+              "column": 7,
+              "line": 17,
+              "offset": 636
+            }
+          },
+          "uri": "file:///repo/base/openapi.yaml"
+        },
+        "title": "CG-API-001 Operation removed",
+        "worst": "breaking"
+      }
+    ],
+    "diagnostics": [],
+    "findings": [
+      {
+        "assessment": {
+          "effect": "narrows",
+          "role": "acceptance",
+          "strength": "structural"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "operation.removed|POST /users|operation|",
+        "classification": "breaking",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/paths/~1users/post",
+              "range": {
+                "end": {
+                  "column": 1,
+                  "line": 20,
+                  "offset": 817
+                },
+                "start": {
+                  "column": 7,
+                  "line": 17,
+                  "offset": 636
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: acceptance/narrows/structural → breaking (contract-guaranteed)"
+          }
+        ],
+        "explanation": "Consumers that call POST /users will receive an error (typically 404 or 405) from a provider that implements the candidate.",
+        "fingerprint": "07daf660dfd3b5c31338a6081278fdc9",
+        "location": {
+          "anchor": {
+            "pointer": "#/paths/~1users/post",
+            "range": {
+              "end": {
+                "column": 1,
+                "line": 20,
+                "offset": 817
+              },
+              "start": {
+                "column": 7,
+                "line": 17,
+                "offset": 636
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/paths/~1users/post",
+            "range": {
+              "end": {
+                "column": 1,
+                "line": 20,
+                "offset": 817
+              },
+              "start": {
+                "column": 7,
+                "line": 17,
+                "offset": 636
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          }
+        },
+        "message": "Operation POST /users was removed.",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "previous": "/users",
+        "resolution": "Keep the operation (mark it deprecated first), or release the removal as a new major version.",
+        "ruleId": "CG-API-001",
+        "ruleName": "Operation removed",
+        "severity": "high",
+        "status": "active",
+        "subject": {
+          "method": "POST",
+          "operationKey": "POST /users",
+          "path": "/users",
+          "schemaPath": [],
+          "site": {
+            "kind": "operation"
+          }
+        }
+      }
+    ],
+    "perspective": "provider-backward",
+    "policy": {
+      "passed": false,
+      "reasons": [
+        {
+          "because": "breaking (high) matches fail-on [breaking]",
+          "fingerprint": "07daf660dfd3b5c31338a6081278fdc9",
+          "rule": "CG-API-001"
+        }
+      ],
+      "undeterminedHandling": "review"
+    },
+    "reportVersion": "1.0",
+    "specId": "deprecated-removal",
+    "status": "completed",
+    "summary": {
+      "affectedOperations": 1,
+      "byClassification": {
+        "breaking": 1,
+        "informational": 0,
+        "non-breaking": 0,
+        "potentially-breaking": 0,
+        "undetermined": 0
+      },
+      "bySeverity": {
+        "critical": 0,
+        "high": 1,
+        "info": 0,
+        "low": 0,
+        "medium": 0
+      },
+      "suppressed": 0
+    },
+    "tool": {
+      "name": "contractguard",
+      "rulesetVersion": "1.0.0",
+      "version": "0.1.0"
+    }
+  }
+]

@@ -1,0 +1,1582 @@
+[
+  {
+    "base": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "82cdade51e2aec4e43be6128ec05c845fa58787c891e9e9cd1bb627526207b05"
+      ],
+      "operationCount": 3,
+      "rootUri": "file:///repo/base/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "candidate": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "4d5224a639685511e09b14b1af9edfd8dfa5b35e98c56285d2c4983dbce3eea8"
+      ],
+      "operationCount": 3,
+      "rootUri": "file:///repo/api/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "causes": [
+      {
+        "causeKey": "schema.propertyAdded|file:///repo/api/openapi.yaml#/components/schemas/NewUser/properties/role|prop:role",
+        "findingFingerprints": [
+          "4db4542940402ca20ab6a41f3886234e"
+        ],
+        "location": {
+          "pointer": "#/components/schemas/NewUser/properties/role",
+          "range": {
+            "end": {
+              "column": 29,
+              "line": 34,
+              "offset": 1240
+            },
+            "start": {
+              "column": 15,
+              "line": 34,
+              "offset": 1226
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-REQ-001 New required request body property",
+        "worst": "breaking"
+      },
+      {
+        "causeKey": "schema.requiredChanged|file:///repo/api/openapi.yaml#/components/schemas/User/properties/email|prop:email",
+        "findingFingerprints": [
+          "9a6266fb325fa86eb61fdd0bfb0c8e70",
+          "05b20f3d8a53deda915d9d87684e95bb"
+        ],
+        "location": {
+          "pointer": "#/components/schemas/User/properties/email",
+          "range": {
+            "end": {
+              "column": 45,
+              "line": 25,
+              "offset": 918
+            },
+            "start": {
+              "column": 16,
+              "line": 25,
+              "offset": 889
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-RES-002 Response property became optional",
+        "worst": "breaking"
+      },
+      {
+        "causeKey": "schema.constraintChanged|file:///repo/api/openapi.yaml#/components/schemas/NewUser/properties/email|maxLength",
+        "findingFingerprints": [
+          "7aaa2471c52fc9d5c78bf855a894f568"
+        ],
+        "location": {
+          "pointer": "#/components/schemas/NewUser/properties/email",
+          "range": {
+            "end": {
+              "column": 46,
+              "line": 32,
+              "offset": 1157
+            },
+            "start": {
+              "column": 16,
+              "line": 32,
+              "offset": 1127
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-REQ-024 Request value constraint tightened",
+        "worst": "potentially-breaking"
+      },
+      {
+        "causeKey": "schema.constraintChanged|file:///repo/api/openapi.yaml#/components/schemas/User/properties/score|maximum",
+        "findingFingerprints": [
+          "7e023eb5df611649cf8b23e515bec154",
+          "ced07776bb0d8c1a3c9775be86d0a929"
+        ],
+        "location": {
+          "pointer": "#/components/schemas/User/properties/score",
+          "range": {
+            "end": {
+              "column": 46,
+              "line": 27,
+              "offset": 1031
+            },
+            "start": {
+              "column": 16,
+              "line": 27,
+              "offset": 1001
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-RES-011 Response value constraint relaxed",
+        "worst": "potentially-breaking"
+      },
+      {
+        "causeKey": "schema.enumChanged|file:///repo/api/openapi.yaml#/components/schemas/User/properties/status|enum",
+        "findingFingerprints": [
+          "618c88bdc8d69a34ca97e0074699563f",
+          "a1bce7457ce6806362bf14ef1cc1a757"
+        ],
+        "location": {
+          "pointer": "#/components/schemas/User/properties/status",
+          "range": {
+            "end": {
+              "column": 67,
+              "line": 26,
+              "offset": 985
+            },
+            "start": {
+              "column": 17,
+              "line": 26,
+              "offset": 935
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-RES-006 Response enum value added",
+        "worst": "potentially-breaking"
+      },
+      {
+        "causeKey": "schema.patternChanged|file:///repo/api/openapi.yaml#/components/schemas/NewUser/properties/nickname|pattern",
+        "findingFingerprints": [
+          "592eeb9aead2a8cdef17467ec32b86b7"
+        ],
+        "location": {
+          "pointer": "#/components/schemas/NewUser/properties/nickname",
+          "range": {
+            "end": {
+              "column": 54,
+              "line": 33,
+              "offset": 1211
+            },
+            "start": {
+              "column": 19,
+              "line": 33,
+              "offset": 1176
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-REQ-026 Request pattern added",
+        "worst": "potentially-breaking"
+      },
+      {
+        "causeKey": "response.removed|GET /users/{}|response:404|",
+        "findingFingerprints": [
+          "cd3afcccd007c80752646f1b558adbd2"
+        ],
+        "location": {
+          "pointer": "#/paths/~1users~1{id}/get/responses/404",
+          "range": {
+            "end": {
+              "column": 38,
+              "line": 10,
+              "offset": 355
+            },
+            "start": {
+              "column": 16,
+              "line": 10,
+              "offset": 333
+            }
+          },
+          "uri": "file:///repo/base/openapi.yaml"
+        },
+        "title": "CG-RES-017 Non-success response removed",
+        "worst": "non-breaking"
+      }
+    ],
+    "diagnostics": [],
+    "findings": [
+      {
+        "assessment": {
+          "effect": "widens",
+          "role": "guarantee",
+          "strength": "structural"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "schema.requiredChanged|file:///repo/api/openapi.yaml#/components/schemas/User/properties/email|prop:email",
+        "classification": "breaking",
+        "current": false,
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/components/schemas/User/properties/email",
+              "range": {
+                "end": {
+                  "column": 45,
+                  "line": 26,
+                  "offset": 963
+                },
+                "start": {
+                  "column": 16,
+                  "line": 26,
+                  "offset": 934
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/components/schemas/User/properties/email",
+              "range": {
+                "end": {
+                  "column": 45,
+                  "line": 25,
+                  "offset": 918
+                },
+                "start": {
+                  "column": 16,
+                  "line": 25,
+                  "offset": 889
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: guarantee/widens/structural → breaking (contract-guaranteed)"
+          }
+        ],
+        "explanation": "Consumers that read \"email\" without checking for absence may fail.",
+        "fingerprint": "9a6266fb325fa86eb61fdd0bfb0c8e70",
+        "location": {
+          "anchor": {
+            "pointer": "#/components/schemas/User/properties/email",
+            "range": {
+              "end": {
+                "column": 45,
+                "line": 25,
+                "offset": 918
+              },
+              "start": {
+                "column": 16,
+                "line": 25,
+                "offset": 889
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/components/schemas/User/properties/email",
+            "range": {
+              "end": {
+                "column": 45,
+                "line": 26,
+                "offset": 963
+              },
+              "start": {
+                "column": 16,
+                "line": 26,
+                "offset": 934
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/components/schemas/User/properties/email",
+            "range": {
+              "end": {
+                "column": 45,
+                "line": 25,
+                "offset": 918
+              },
+              "start": {
+                "column": 16,
+                "line": 25,
+                "offset": 889
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "Property \"email\" is no longer guaranteed in GET /users: response 200 (application/json) at `[]`.",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "previous": true,
+        "resolution": "Keep \"email\" required, or release as a new major version.",
+        "ruleId": "CG-RES-002",
+        "ruleName": "Response property became optional",
+        "severity": "high",
+        "status": "active",
+        "subject": {
+          "direction": "response",
+          "method": "GET",
+          "operationKey": "GET /users",
+          "path": "/users",
+          "schemaPath": [
+            {
+              "kind": "items"
+            }
+          ],
+          "site": {
+            "kind": "response",
+            "mediaType": "application/json",
+            "status": "200"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "widens",
+          "role": "guarantee",
+          "strength": "structural"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "schema.requiredChanged|file:///repo/api/openapi.yaml#/components/schemas/User/properties/email|prop:email",
+        "classification": "breaking",
+        "current": false,
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/components/schemas/User/properties/email",
+              "range": {
+                "end": {
+                  "column": 45,
+                  "line": 26,
+                  "offset": 963
+                },
+                "start": {
+                  "column": 16,
+                  "line": 26,
+                  "offset": 934
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/components/schemas/User/properties/email",
+              "range": {
+                "end": {
+                  "column": 45,
+                  "line": 25,
+                  "offset": 918
+                },
+                "start": {
+                  "column": 16,
+                  "line": 25,
+                  "offset": 889
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: guarantee/widens/structural → breaking (contract-guaranteed)"
+          }
+        ],
+        "explanation": "Consumers that read \"email\" without checking for absence may fail.",
+        "fingerprint": "05b20f3d8a53deda915d9d87684e95bb",
+        "location": {
+          "anchor": {
+            "pointer": "#/components/schemas/User/properties/email",
+            "range": {
+              "end": {
+                "column": 45,
+                "line": 25,
+                "offset": 918
+              },
+              "start": {
+                "column": 16,
+                "line": 25,
+                "offset": 889
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/components/schemas/User/properties/email",
+            "range": {
+              "end": {
+                "column": 45,
+                "line": 26,
+                "offset": 963
+              },
+              "start": {
+                "column": 16,
+                "line": 26,
+                "offset": 934
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/components/schemas/User/properties/email",
+            "range": {
+              "end": {
+                "column": 45,
+                "line": 25,
+                "offset": 918
+              },
+              "start": {
+                "column": 16,
+                "line": 25,
+                "offset": 889
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "Property \"email\" is no longer guaranteed in GET /users/{id}: response 200 (application/json).",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "previous": true,
+        "resolution": "Keep \"email\" required, or release as a new major version.",
+        "ruleId": "CG-RES-002",
+        "ruleName": "Response property became optional",
+        "severity": "high",
+        "status": "active",
+        "subject": {
+          "direction": "response",
+          "method": "GET",
+          "operationKey": "GET /users/{}",
+          "path": "/users/{id}",
+          "schemaPath": [],
+          "site": {
+            "kind": "response",
+            "mediaType": "application/json",
+            "status": "200"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "narrows",
+          "role": "acceptance",
+          "strength": "structural"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "schema.propertyAdded|file:///repo/api/openapi.yaml#/components/schemas/NewUser/properties/role|prop:role",
+        "classification": "breaking",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/components/schemas/NewUser",
+              "range": {
+                "end": {
+                  "column": 1,
+                  "line": 35,
+                  "offset": 1220
+                },
+                "start": {
+                  "column": 7,
+                  "line": 30,
+                  "offset": 1086
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/components/schemas/NewUser/properties/role",
+              "range": {
+                "end": {
+                  "column": 29,
+                  "line": 34,
+                  "offset": 1240
+                },
+                "start": {
+                  "column": 15,
+                  "line": 34,
+                  "offset": 1226
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: acceptance/narrows/structural → breaking (contract-guaranteed)"
+          }
+        ],
+        "explanation": "Existing consumers do not send \"role\", so a provider that enforces the candidate will reject their requests.",
+        "fingerprint": "4db4542940402ca20ab6a41f3886234e",
+        "location": {
+          "anchor": {
+            "pointer": "#/components/schemas/NewUser/properties/role",
+            "range": {
+              "end": {
+                "column": 29,
+                "line": 34,
+                "offset": 1240
+              },
+              "start": {
+                "column": 15,
+                "line": 34,
+                "offset": 1226
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/components/schemas/NewUser",
+            "range": {
+              "end": {
+                "column": 1,
+                "line": 35,
+                "offset": 1220
+              },
+              "start": {
+                "column": 7,
+                "line": 30,
+                "offset": 1086
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/components/schemas/NewUser/properties/role",
+            "range": {
+              "end": {
+                "column": 29,
+                "line": 34,
+                "offset": 1240
+              },
+              "start": {
+                "column": 15,
+                "line": 34,
+                "offset": 1226
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "New required property \"role\" in POST /users: the request body (application/json).",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "resolution": "Make \"role\" optional (with a server-side default), or release as a new major version.",
+        "ruleId": "CG-REQ-001",
+        "ruleName": "New required request body property",
+        "severity": "high",
+        "status": "active",
+        "subject": {
+          "direction": "request",
+          "method": "POST",
+          "operationKey": "POST /users",
+          "path": "/users",
+          "schemaPath": [],
+          "site": {
+            "kind": "requestBody",
+            "mediaType": "application/json"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "widens",
+          "role": "guarantee",
+          "strength": "enumerated"
+        },
+        "basis": "policy-dependent",
+        "causeKey": "schema.enumChanged|file:///repo/api/openapi.yaml#/components/schemas/User/properties/status|enum",
+        "classification": "potentially-breaking",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/components/schemas/User/properties/status",
+              "range": {
+                "end": {
+                  "column": 58,
+                  "line": 27,
+                  "offset": 1021
+                },
+                "start": {
+                  "column": 17,
+                  "line": 27,
+                  "offset": 980
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/components/schemas/User/properties/status",
+              "range": {
+                "end": {
+                  "column": 67,
+                  "line": 26,
+                  "offset": 985
+                },
+                "start": {
+                  "column": 17,
+                  "line": 26,
+                  "offset": 935
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "policy",
+            "text": "responseEnumAdditions: potentially-breaking"
+          }
+        ],
+        "explanation": "Consumers that handle the enum exhaustively may not handle the new values.",
+        "fingerprint": "618c88bdc8d69a34ca97e0074699563f",
+        "location": {
+          "anchor": {
+            "pointer": "#/components/schemas/User/properties/status",
+            "range": {
+              "end": {
+                "column": 67,
+                "line": 26,
+                "offset": 985
+              },
+              "start": {
+                "column": 17,
+                "line": 26,
+                "offset": 935
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/components/schemas/User/properties/status",
+            "range": {
+              "end": {
+                "column": 58,
+                "line": 27,
+                "offset": 1021
+              },
+              "start": {
+                "column": 17,
+                "line": 27,
+                "offset": 980
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/components/schemas/User/properties/status",
+            "range": {
+              "end": {
+                "column": 67,
+                "line": 26,
+                "offset": 985
+              },
+              "start": {
+                "column": 17,
+                "line": 26,
+                "offset": 935
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "GET /users: response 200 (application/json) at `[].status` may now return deleted.",
+        "overridable": {
+          "classification": true,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "resolution": "Document the enum as extensible (x-extensible-enum) or make sure consumers have a fallback.",
+        "ruleId": "CG-RES-006",
+        "ruleName": "Response enum value added",
+        "severity": "medium",
+        "status": "active",
+        "subject": {
+          "direction": "response",
+          "method": "GET",
+          "operationKey": "GET /users",
+          "path": "/users",
+          "schemaPath": [
+            {
+              "kind": "items"
+            },
+            {
+              "kind": "property",
+              "name": "status"
+            }
+          ],
+          "site": {
+            "kind": "response",
+            "mediaType": "application/json",
+            "status": "200"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "widens",
+          "role": "guarantee",
+          "strength": "enumerated"
+        },
+        "basis": "policy-dependent",
+        "causeKey": "schema.enumChanged|file:///repo/api/openapi.yaml#/components/schemas/User/properties/status|enum",
+        "classification": "potentially-breaking",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/components/schemas/User/properties/status",
+              "range": {
+                "end": {
+                  "column": 58,
+                  "line": 27,
+                  "offset": 1021
+                },
+                "start": {
+                  "column": 17,
+                  "line": 27,
+                  "offset": 980
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/components/schemas/User/properties/status",
+              "range": {
+                "end": {
+                  "column": 67,
+                  "line": 26,
+                  "offset": 985
+                },
+                "start": {
+                  "column": 17,
+                  "line": 26,
+                  "offset": 935
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "policy",
+            "text": "responseEnumAdditions: potentially-breaking"
+          }
+        ],
+        "explanation": "Consumers that handle the enum exhaustively may not handle the new values.",
+        "fingerprint": "a1bce7457ce6806362bf14ef1cc1a757",
+        "location": {
+          "anchor": {
+            "pointer": "#/components/schemas/User/properties/status",
+            "range": {
+              "end": {
+                "column": 67,
+                "line": 26,
+                "offset": 985
+              },
+              "start": {
+                "column": 17,
+                "line": 26,
+                "offset": 935
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/components/schemas/User/properties/status",
+            "range": {
+              "end": {
+                "column": 58,
+                "line": 27,
+                "offset": 1021
+              },
+              "start": {
+                "column": 17,
+                "line": 27,
+                "offset": 980
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/components/schemas/User/properties/status",
+            "range": {
+              "end": {
+                "column": 67,
+                "line": 26,
+                "offset": 985
+              },
+              "start": {
+                "column": 17,
+                "line": 26,
+                "offset": 935
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "GET /users/{id}: response 200 (application/json) at `status` may now return deleted.",
+        "overridable": {
+          "classification": true,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "resolution": "Document the enum as extensible (x-extensible-enum) or make sure consumers have a fallback.",
+        "ruleId": "CG-RES-006",
+        "ruleName": "Response enum value added",
+        "severity": "medium",
+        "status": "active",
+        "subject": {
+          "direction": "response",
+          "method": "GET",
+          "operationKey": "GET /users/{}",
+          "path": "/users/{id}",
+          "schemaPath": [
+            {
+              "kind": "property",
+              "name": "status"
+            }
+          ],
+          "site": {
+            "kind": "response",
+            "mediaType": "application/json",
+            "status": "200"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "narrows",
+          "role": "acceptance",
+          "strength": "value-space"
+        },
+        "basis": "policy-dependent",
+        "causeKey": "schema.constraintChanged|file:///repo/api/openapi.yaml#/components/schemas/NewUser/properties/email|maxLength",
+        "classification": "potentially-breaking",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/components/schemas/NewUser/properties/email",
+              "range": {
+                "end": {
+                  "column": 46,
+                  "line": 33,
+                  "offset": 1186
+                },
+                "start": {
+                  "column": 16,
+                  "line": 33,
+                  "offset": 1156
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/components/schemas/NewUser/properties/email",
+              "range": {
+                "end": {
+                  "column": 46,
+                  "line": 32,
+                  "offset": 1157
+                },
+                "start": {
+                  "column": 16,
+                  "line": 32,
+                  "offset": 1127
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: acceptance/narrows/value-space → potentially-breaking (policy-dependent)"
+          }
+        ],
+        "explanation": "Values that satisfied the old `maxLength` may now be rejected.",
+        "fingerprint": "7aaa2471c52fc9d5c78bf855a894f568",
+        "location": {
+          "anchor": {
+            "pointer": "#/components/schemas/NewUser/properties/email",
+            "range": {
+              "end": {
+                "column": 46,
+                "line": 32,
+                "offset": 1157
+              },
+              "start": {
+                "column": 16,
+                "line": 32,
+                "offset": 1127
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/components/schemas/NewUser/properties/email",
+            "range": {
+              "end": {
+                "column": 46,
+                "line": 33,
+                "offset": 1186
+              },
+              "start": {
+                "column": 16,
+                "line": 33,
+                "offset": 1156
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/components/schemas/NewUser/properties/email",
+            "range": {
+              "end": {
+                "column": 46,
+                "line": 32,
+                "offset": 1157
+              },
+              "start": {
+                "column": 16,
+                "line": 32,
+                "offset": 1127
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "`maxLength` became stricter in POST /users: the request body (application/json) at `email`.",
+        "overridable": {
+          "classification": true,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "resolution": "Keep the previous limit, or confirm that no consumer sends values in the excluded range.",
+        "ruleId": "CG-REQ-024",
+        "ruleName": "Request value constraint tightened",
+        "severity": "medium",
+        "status": "active",
+        "subject": {
+          "direction": "request",
+          "method": "POST",
+          "operationKey": "POST /users",
+          "path": "/users",
+          "schemaPath": [
+            {
+              "kind": "property",
+              "name": "email"
+            }
+          ],
+          "site": {
+            "kind": "requestBody",
+            "mediaType": "application/json"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "narrows",
+          "role": "acceptance",
+          "strength": "value-space"
+        },
+        "basis": "policy-dependent",
+        "causeKey": "schema.patternChanged|file:///repo/api/openapi.yaml#/components/schemas/NewUser/properties/nickname|pattern",
+        "classification": "potentially-breaking",
+        "current": "^[a-z]+$",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "text": "Patterns are compared as text only."
+          },
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/components/schemas/NewUser/properties/nickname",
+              "range": {
+                "end": {
+                  "column": 33,
+                  "line": 34,
+                  "offset": 1219
+                },
+                "start": {
+                  "column": 19,
+                  "line": 34,
+                  "offset": 1205
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/components/schemas/NewUser/properties/nickname",
+              "range": {
+                "end": {
+                  "column": 54,
+                  "line": 33,
+                  "offset": 1211
+                },
+                "start": {
+                  "column": 19,
+                  "line": 33,
+                  "offset": 1176
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: acceptance/narrows/value-space → potentially-breaking (policy-dependent)"
+          }
+        ],
+        "explanation": "Strings that do not match the pattern will be rejected.",
+        "fingerprint": "592eeb9aead2a8cdef17467ec32b86b7",
+        "location": {
+          "anchor": {
+            "pointer": "#/components/schemas/NewUser/properties/nickname",
+            "range": {
+              "end": {
+                "column": 54,
+                "line": 33,
+                "offset": 1211
+              },
+              "start": {
+                "column": 19,
+                "line": 33,
+                "offset": 1176
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/components/schemas/NewUser/properties/nickname",
+            "range": {
+              "end": {
+                "column": 33,
+                "line": 34,
+                "offset": 1219
+              },
+              "start": {
+                "column": 19,
+                "line": 34,
+                "offset": 1205
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/components/schemas/NewUser/properties/nickname",
+            "range": {
+              "end": {
+                "column": 54,
+                "line": 33,
+                "offset": 1211
+              },
+              "start": {
+                "column": 19,
+                "line": 33,
+                "offset": 1176
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "Pattern `^[a-z]+$` now restricts POST /users: the request body (application/json) at `nickname`.",
+        "overridable": {
+          "classification": true,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "resolution": "Confirm that consumers only send matching values.",
+        "ruleId": "CG-REQ-026",
+        "ruleName": "Request pattern added",
+        "severity": "medium",
+        "status": "active",
+        "subject": {
+          "direction": "request",
+          "method": "POST",
+          "operationKey": "POST /users",
+          "path": "/users",
+          "schemaPath": [
+            {
+              "kind": "property",
+              "name": "nickname"
+            }
+          ],
+          "site": {
+            "kind": "requestBody",
+            "mediaType": "application/json"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "widens",
+          "role": "guarantee",
+          "strength": "value-space"
+        },
+        "basis": "consumer-dependent",
+        "causeKey": "schema.constraintChanged|file:///repo/api/openapi.yaml#/components/schemas/User/properties/score|maximum",
+        "classification": "potentially-breaking",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/components/schemas/User/properties/score",
+              "range": {
+                "end": {
+                  "column": 45,
+                  "line": 28,
+                  "offset": 1066
+                },
+                "start": {
+                  "column": 16,
+                  "line": 28,
+                  "offset": 1037
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/components/schemas/User/properties/score",
+              "range": {
+                "end": {
+                  "column": 46,
+                  "line": 27,
+                  "offset": 1031
+                },
+                "start": {
+                  "column": 16,
+                  "line": 27,
+                  "offset": 1001
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: guarantee/widens/value-space → potentially-breaking (consumer-dependent)"
+          }
+        ],
+        "explanation": "Values outside the previous limit may now be returned; consumer buffers or UI limits may not handle them.",
+        "fingerprint": "7e023eb5df611649cf8b23e515bec154",
+        "location": {
+          "anchor": {
+            "pointer": "#/components/schemas/User/properties/score",
+            "range": {
+              "end": {
+                "column": 46,
+                "line": 27,
+                "offset": 1031
+              },
+              "start": {
+                "column": 16,
+                "line": 27,
+                "offset": 1001
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/components/schemas/User/properties/score",
+            "range": {
+              "end": {
+                "column": 45,
+                "line": 28,
+                "offset": 1066
+              },
+              "start": {
+                "column": 16,
+                "line": 28,
+                "offset": 1037
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/components/schemas/User/properties/score",
+            "range": {
+              "end": {
+                "column": 46,
+                "line": 27,
+                "offset": 1031
+              },
+              "start": {
+                "column": 16,
+                "line": 27,
+                "offset": 1001
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "`maximum` was relaxed in GET /users: response 200 (application/json) at `[].score`.",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "resolution": "Confirm that consumers handle the wider range.",
+        "ruleId": "CG-RES-011",
+        "ruleName": "Response value constraint relaxed",
+        "severity": "low",
+        "status": "active",
+        "subject": {
+          "direction": "response",
+          "method": "GET",
+          "operationKey": "GET /users",
+          "path": "/users",
+          "schemaPath": [
+            {
+              "kind": "items"
+            },
+            {
+              "kind": "property",
+              "name": "score"
+            }
+          ],
+          "site": {
+            "kind": "response",
+            "mediaType": "application/json",
+            "status": "200"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "widens",
+          "role": "guarantee",
+          "strength": "value-space"
+        },
+        "basis": "consumer-dependent",
+        "causeKey": "schema.constraintChanged|file:///repo/api/openapi.yaml#/components/schemas/User/properties/score|maximum",
+        "classification": "potentially-breaking",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/components/schemas/User/properties/score",
+              "range": {
+                "end": {
+                  "column": 45,
+                  "line": 28,
+                  "offset": 1066
+                },
+                "start": {
+                  "column": 16,
+                  "line": 28,
+                  "offset": 1037
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/components/schemas/User/properties/score",
+              "range": {
+                "end": {
+                  "column": 46,
+                  "line": 27,
+                  "offset": 1031
+                },
+                "start": {
+                  "column": 16,
+                  "line": 27,
+                  "offset": 1001
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: guarantee/widens/value-space → potentially-breaking (consumer-dependent)"
+          }
+        ],
+        "explanation": "Values outside the previous limit may now be returned; consumer buffers or UI limits may not handle them.",
+        "fingerprint": "ced07776bb0d8c1a3c9775be86d0a929",
+        "location": {
+          "anchor": {
+            "pointer": "#/components/schemas/User/properties/score",
+            "range": {
+              "end": {
+                "column": 46,
+                "line": 27,
+                "offset": 1031
+              },
+              "start": {
+                "column": 16,
+                "line": 27,
+                "offset": 1001
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/components/schemas/User/properties/score",
+            "range": {
+              "end": {
+                "column": 45,
+                "line": 28,
+                "offset": 1066
+              },
+              "start": {
+                "column": 16,
+                "line": 28,
+                "offset": 1037
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/components/schemas/User/properties/score",
+            "range": {
+              "end": {
+                "column": 46,
+                "line": 27,
+                "offset": 1031
+              },
+              "start": {
+                "column": 16,
+                "line": 27,
+                "offset": 1001
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "`maximum` was relaxed in GET /users/{id}: response 200 (application/json) at `score`.",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "resolution": "Confirm that consumers handle the wider range.",
+        "ruleId": "CG-RES-011",
+        "ruleName": "Response value constraint relaxed",
+        "severity": "low",
+        "status": "active",
+        "subject": {
+          "direction": "response",
+          "method": "GET",
+          "operationKey": "GET /users/{}",
+          "path": "/users/{id}",
+          "schemaPath": [
+            {
+              "kind": "property",
+              "name": "score"
+            }
+          ],
+          "site": {
+            "kind": "response",
+            "mediaType": "application/json",
+            "status": "200"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "narrows",
+          "role": "guarantee",
+          "strength": "structural"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "response.removed|GET /users/{}|response:404|",
+        "classification": "non-breaking",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "text": "The provider may still return it undocumented."
+          },
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/paths/~1users~1{id}/get/responses/404",
+              "range": {
+                "end": {
+                  "column": 38,
+                  "line": 10,
+                  "offset": 355
+                },
+                "start": {
+                  "column": 16,
+                  "line": 10,
+                  "offset": 333
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: guarantee/narrows/structural → non-breaking (contract-guaranteed)"
+          }
+        ],
+        "explanation": "The provider may still return it undocumented.",
+        "fingerprint": "cd3afcccd007c80752646f1b558adbd2",
+        "location": {
+          "anchor": {
+            "pointer": "#/paths/~1users~1{id}/get/responses/404",
+            "range": {
+              "end": {
+                "column": 38,
+                "line": 10,
+                "offset": 355
+              },
+              "start": {
+                "column": 16,
+                "line": 10,
+                "offset": 333
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/paths/~1users~1{id}/get/responses/404",
+            "range": {
+              "end": {
+                "column": 38,
+                "line": 10,
+                "offset": 355
+              },
+              "start": {
+                "column": 16,
+                "line": 10,
+                "offset": 333
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          }
+        },
+        "message": "Response 404 of GET /users/{id} is no longer documented.",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "previous": "404",
+        "resolution": "No action needed.",
+        "ruleId": "CG-RES-017",
+        "ruleName": "Non-success response removed",
+        "severity": "info",
+        "status": "active",
+        "subject": {
+          "direction": "response",
+          "method": "GET",
+          "operationKey": "GET /users/{}",
+          "path": "/users/{id}",
+          "schemaPath": [],
+          "site": {
+            "kind": "response",
+            "status": "404"
+          }
+        }
+      }
+    ],
+    "perspective": "provider-backward",
+    "policy": {
+      "passed": false,
+      "reasons": [
+        {
+          "because": "breaking (high) matches fail-on [breaking]",
+          "fingerprint": "9a6266fb325fa86eb61fdd0bfb0c8e70",
+          "rule": "CG-RES-002"
+        },
+        {
+          "because": "breaking (high) matches fail-on [breaking]",
+          "fingerprint": "05b20f3d8a53deda915d9d87684e95bb",
+          "rule": "CG-RES-002"
+        },
+        {
+          "because": "breaking (high) matches fail-on [breaking]",
+          "fingerprint": "4db4542940402ca20ab6a41f3886234e",
+          "rule": "CG-REQ-001"
+        }
+      ],
+      "undeterminedHandling": "review"
+    },
+    "reportVersion": "1.0",
+    "specId": "group-by-operation",
+    "status": "completed",
+    "summary": {
+      "affectedOperations": 3,
+      "byClassification": {
+        "breaking": 3,
+        "informational": 0,
+        "non-breaking": 1,
+        "potentially-breaking": 6,
+        "undetermined": 0
+      },
+      "bySeverity": {
+        "critical": 0,
+        "high": 3,
+        "info": 1,
+        "low": 2,
+        "medium": 4
+      },
+      "suppressed": 0
+    },
+    "tool": {
+      "name": "contractguard",
+      "rulesetVersion": "1.0.0",
+      "version": "0.1.0"
+    }
+  }
+]

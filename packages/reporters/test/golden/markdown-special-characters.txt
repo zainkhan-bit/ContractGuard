@@ -1,0 +1,14 @@
+ContractGuard 0.1.0 · perspective: provider-backward · spec: markdown-special-characters
+base:      base/openapi.yaml (OpenAPI 3.1.0, 1 operations)
+candidate: api/openapi.yaml (OpenAPI 3.1.0, 1 operations)
+
+✖ BREAKING  CG-RES-001  Required response property removed                                      high
+  what:     Required property "pipe|name" was removed from GET /a|b: response 200
+            (application/json).
+  where:    api/openapi.yaml:6
+  affects:  GET /a|b → response 200 application/json
+  why:      Consumers rely on "pipe|name" always being present; it may now be missing.
+  fix:      Keep returning "pipe|name" (deprecate it first), or release as a new major version.
+
+Summary: 1 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational
+Policy: FAILED (1 gating finding)

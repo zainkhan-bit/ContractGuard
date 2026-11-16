@@ -1,0 +1,226 @@
+[
+  {
+    "base": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "82cdade51e2aec4e43be6128ec05c845fa58787c891e9e9cd1bb627526207b05"
+      ],
+      "operationCount": 3,
+      "rootUri": "file:///repo/base/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "candidate": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "eed209686976fbdea55746477dcd76f9676b85f4cd8154700fcd670eebd96a1d"
+      ],
+      "operationCount": 4,
+      "rootUri": "file:///repo/api/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "causes": [
+      {
+        "causeKey": "operation.added|GET /dup/{}|operation|",
+        "findingFingerprints": [
+          "11934d6a15ed9b0bf19727ad36db227f"
+        ],
+        "location": {
+          "pointer": "#/paths/~1dup~1{a}/get",
+          "range": {
+            "end": {
+              "column": 71,
+              "line": 20,
+              "offset": 876
+            },
+            "start": {
+              "column": 10,
+              "line": 20,
+              "offset": 815
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-API-002 Operation added",
+        "worst": "non-breaking"
+      }
+    ],
+    "diagnostics": [
+      {
+        "category": "semantic",
+        "code": "CGD-SEM-002",
+        "location": {
+          "pointer": "#/paths/~1users~1{id}/get/operationId",
+          "range": {
+            "end": {
+              "column": 27,
+              "line": 7,
+              "offset": 191
+            },
+            "start": {
+              "column": 20,
+              "line": 7,
+              "offset": 184
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "message": "Duplicate operationId \"getUser\"",
+        "severity": "error",
+        "side": "candidate"
+      },
+      {
+        "category": "semantic",
+        "code": "CGD-SEM-003",
+        "location": {
+          "pointer": "#/paths/~1dup~1{a}/get",
+          "range": {
+            "end": {
+              "column": 71,
+              "line": 20,
+              "offset": 876
+            },
+            "start": {
+              "column": 10,
+              "line": 20,
+              "offset": 815
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "message": "Path template variable \"{a}\" has no path parameter in GET /dup/{a}",
+        "severity": "error",
+        "side": "candidate"
+      }
+    ],
+    "findings": [
+      {
+        "assessment": {
+          "effect": "widens",
+          "role": "acceptance",
+          "strength": "structural"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "operation.added|GET /dup/{}|operation|",
+        "classification": "non-breaking",
+        "current": "/dup/{a}",
+        "evidence": [
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/paths/~1dup~1{a}/get",
+              "range": {
+                "end": {
+                  "column": 71,
+                  "line": 20,
+                  "offset": 876
+                },
+                "start": {
+                  "column": 10,
+                  "line": 20,
+                  "offset": 815
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: acceptance/widens/structural → non-breaking (contract-guaranteed)"
+          }
+        ],
+        "explanation": "New operations do not affect existing consumers.",
+        "fingerprint": "11934d6a15ed9b0bf19727ad36db227f",
+        "location": {
+          "anchor": {
+            "pointer": "#/paths/~1dup~1{a}/get",
+            "range": {
+              "end": {
+                "column": 71,
+                "line": 20,
+                "offset": 876
+              },
+              "start": {
+                "column": 10,
+                "line": 20,
+                "offset": 815
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/paths/~1dup~1{a}/get",
+            "range": {
+              "end": {
+                "column": 71,
+                "line": 20,
+                "offset": 876
+              },
+              "start": {
+                "column": 10,
+                "line": 20,
+                "offset": 815
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "Operation GET /dup/{a} was added.",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "resolution": "No action needed.",
+        "ruleId": "CG-API-002",
+        "ruleName": "Operation added",
+        "severity": "info",
+        "status": "active",
+        "subject": {
+          "method": "GET",
+          "operationKey": "GET /dup/{}",
+          "path": "/dup/{a}",
+          "schemaPath": [],
+          "site": {
+            "kind": "operation"
+          }
+        }
+      }
+    ],
+    "perspective": "provider-backward",
+    "policy": {
+      "passed": true,
+      "reasons": [],
+      "undeterminedHandling": "review"
+    },
+    "reportVersion": "1.0",
+    "specId": "degraded",
+    "status": "completed-degraded",
+    "summary": {
+      "affectedOperations": 0,
+      "byClassification": {
+        "breaking": 0,
+        "informational": 0,
+        "non-breaking": 1,
+        "potentially-breaking": 0,
+        "undetermined": 0
+      },
+      "bySeverity": {
+        "critical": 0,
+        "high": 0,
+        "info": 1,
+        "low": 0,
+        "medium": 0
+      },
+      "suppressed": 0
+    },
+    "tool": {
+      "name": "contractguard",
+      "rulesetVersion": "1.0.0",
+      "version": "0.1.0"
+    }
+  }
+]

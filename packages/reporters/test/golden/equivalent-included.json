@@ -1,0 +1,518 @@
+[
+  {
+    "base": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "535e4faf2c87dd359a04f2761899a6b08eb5341fb0568309effcbb87e0d2bccb"
+      ],
+      "operationCount": 3,
+      "rootUri": "file:///repo/base/openapi.yaml",
+      "specVersion": "3.0.3",
+      "title": "Payments"
+    },
+    "candidate": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "a8dfa6c9477a36da20461f8ffb3c4f9cd9d77c3fd4c55ef513d7c766f8b8d0fb"
+      ],
+      "operationCount": 3,
+      "rootUri": "file:///repo/api/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "causes": [
+      {
+        "causeKey": "operation.operationIdChanged|GET /users/{}|operation|",
+        "findingFingerprints": [
+          "8ce4a1d8a98faea91d06886b3e681324"
+        ],
+        "location": {
+          "pointer": "#/paths/~1users~1{id}/get",
+          "range": {
+            "end": {
+              "column": 1,
+              "line": 11,
+              "offset": 358
+            },
+            "start": {
+              "column": 7,
+              "line": 7,
+              "offset": 171
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-API-006 operationId changed",
+        "worst": "informational"
+      },
+      {
+        "causeKey": "schema.representationChanged|file:///repo/api/openapi.yaml#/components/schemas/User/properties/email|nullable-representation",
+        "findingFingerprints": [
+          "3d9ccd89c16a92a42a5d833dd5ada68f",
+          "d16ef3168f124d6b8409fa96992dcb8b"
+        ],
+        "location": {
+          "pointer": "#/components/schemas/User/properties/email",
+          "range": {
+            "end": {
+              "column": 55,
+              "line": 26,
+              "offset": 975
+            },
+            "start": {
+              "column": 16,
+              "line": 26,
+              "offset": 936
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-SCHEMA-002 Schema representation changed (equivalent)",
+        "worst": "informational"
+      }
+    ],
+    "diagnostics": [],
+    "findings": [
+      {
+        "assessment": {
+          "effect": "equivalent",
+          "role": "guarantee",
+          "strength": "structural"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "schema.representationChanged|file:///repo/api/openapi.yaml#/components/schemas/User/properties/email|nullable-representation",
+        "classification": "informational",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/components/schemas/User/properties/email",
+              "range": {
+                "end": {
+                  "column": 61,
+                  "line": 26,
+                  "offset": 979
+                },
+                "start": {
+                  "column": 16,
+                  "line": 26,
+                  "offset": 934
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/components/schemas/User/properties/email",
+              "range": {
+                "end": {
+                  "column": 55,
+                  "line": 26,
+                  "offset": 975
+                },
+                "start": {
+                  "column": 16,
+                  "line": 26,
+                  "offset": 936
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: guarantee/equivalent/structural → informational (contract-guaranteed)"
+          }
+        ],
+        "explanation": "Validation behaviour is unchanged.",
+        "fingerprint": "3d9ccd89c16a92a42a5d833dd5ada68f",
+        "location": {
+          "anchor": {
+            "pointer": "#/components/schemas/User/properties/email",
+            "range": {
+              "end": {
+                "column": 55,
+                "line": 26,
+                "offset": 975
+              },
+              "start": {
+                "column": 16,
+                "line": 26,
+                "offset": 936
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/components/schemas/User/properties/email",
+            "range": {
+              "end": {
+                "column": 61,
+                "line": 26,
+                "offset": 979
+              },
+              "start": {
+                "column": 16,
+                "line": 26,
+                "offset": 934
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/components/schemas/User/properties/email",
+            "range": {
+              "end": {
+                "column": 55,
+                "line": 26,
+                "offset": 975
+              },
+              "start": {
+                "column": 16,
+                "line": 26,
+                "offset": 936
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "Representation of GET /users: response 200 (application/json) at `[].email` changed (nullability (oas30-nullable → type-includes-null)) without changing its meaning.",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "resolution": "No action needed.",
+        "ruleId": "CG-SCHEMA-002",
+        "ruleName": "Schema representation changed (equivalent)",
+        "severity": "info",
+        "status": "active",
+        "subject": {
+          "direction": "response",
+          "method": "GET",
+          "operationKey": "GET /users",
+          "path": "/users",
+          "schemaPath": [
+            {
+              "kind": "items"
+            },
+            {
+              "kind": "property",
+              "name": "email"
+            }
+          ],
+          "site": {
+            "kind": "response",
+            "mediaType": "application/json",
+            "status": "200"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "equivalent",
+          "role": "acceptance",
+          "strength": "behavioral"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "operation.operationIdChanged|GET /users/{}|operation|",
+        "classification": "informational",
+        "current": "fetchUser",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/paths/~1users~1{id}/get",
+              "range": {
+                "end": {
+                  "column": 1,
+                  "line": 11,
+                  "offset": 356
+                },
+                "start": {
+                  "column": 7,
+                  "line": 7,
+                  "offset": 171
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/paths/~1users~1{id}/get",
+              "range": {
+                "end": {
+                  "column": 1,
+                  "line": 11,
+                  "offset": 358
+                },
+                "start": {
+                  "column": 7,
+                  "line": 7,
+                  "offset": 171
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: acceptance/equivalent/behavioral → informational (contract-guaranteed)"
+          }
+        ],
+        "explanation": "The wire contract is unchanged, but generated SDK method names derived from operationId change.",
+        "fingerprint": "8ce4a1d8a98faea91d06886b3e681324",
+        "location": {
+          "anchor": {
+            "pointer": "#/paths/~1users~1{id}/get",
+            "range": {
+              "end": {
+                "column": 1,
+                "line": 11,
+                "offset": 358
+              },
+              "start": {
+                "column": 7,
+                "line": 7,
+                "offset": 171
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/paths/~1users~1{id}/get",
+            "range": {
+              "end": {
+                "column": 1,
+                "line": 11,
+                "offset": 356
+              },
+              "start": {
+                "column": 7,
+                "line": 7,
+                "offset": 171
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/paths/~1users~1{id}/get",
+            "range": {
+              "end": {
+                "column": 1,
+                "line": 11,
+                "offset": 358
+              },
+              "start": {
+                "column": 7,
+                "line": 7,
+                "offset": 171
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "operationId of GET /users/{id} changed from \"getUser\" to \"fetchUser\".",
+        "overridable": {
+          "classification": true,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "previous": "getUser",
+        "resolution": "Keep operationIds stable, or treat SDK regeneration as a breaking release for SDK users.",
+        "ruleId": "CG-API-006",
+        "ruleName": "operationId changed",
+        "severity": "info",
+        "status": "active",
+        "subject": {
+          "method": "GET",
+          "operationKey": "GET /users/{}",
+          "path": "/users/{id}",
+          "schemaPath": [],
+          "site": {
+            "kind": "operation"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "equivalent",
+          "role": "guarantee",
+          "strength": "structural"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "schema.representationChanged|file:///repo/api/openapi.yaml#/components/schemas/User/properties/email|nullable-representation",
+        "classification": "informational",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/components/schemas/User/properties/email",
+              "range": {
+                "end": {
+                  "column": 61,
+                  "line": 26,
+                  "offset": 979
+                },
+                "start": {
+                  "column": 16,
+                  "line": 26,
+                  "offset": 934
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/components/schemas/User/properties/email",
+              "range": {
+                "end": {
+                  "column": 55,
+                  "line": 26,
+                  "offset": 975
+                },
+                "start": {
+                  "column": 16,
+                  "line": 26,
+                  "offset": 936
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: guarantee/equivalent/structural → informational (contract-guaranteed)"
+          }
+        ],
+        "explanation": "Validation behaviour is unchanged.",
+        "fingerprint": "d16ef3168f124d6b8409fa96992dcb8b",
+        "location": {
+          "anchor": {
+            "pointer": "#/components/schemas/User/properties/email",
+            "range": {
+              "end": {
+                "column": 55,
+                "line": 26,
+                "offset": 975
+              },
+              "start": {
+                "column": 16,
+                "line": 26,
+                "offset": 936
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/components/schemas/User/properties/email",
+            "range": {
+              "end": {
+                "column": 61,
+                "line": 26,
+                "offset": 979
+              },
+              "start": {
+                "column": 16,
+                "line": 26,
+                "offset": 934
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/components/schemas/User/properties/email",
+            "range": {
+              "end": {
+                "column": 55,
+                "line": 26,
+                "offset": 975
+              },
+              "start": {
+                "column": 16,
+                "line": 26,
+                "offset": 936
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "Representation of GET /users/{id}: response 200 (application/json) at `email` changed (nullability (oas30-nullable → type-includes-null)) without changing its meaning.",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "resolution": "No action needed.",
+        "ruleId": "CG-SCHEMA-002",
+        "ruleName": "Schema representation changed (equivalent)",
+        "severity": "info",
+        "status": "active",
+        "subject": {
+          "direction": "response",
+          "method": "GET",
+          "operationKey": "GET /users/{}",
+          "path": "/users/{id}",
+          "schemaPath": [
+            {
+              "kind": "property",
+              "name": "email"
+            }
+          ],
+          "site": {
+            "kind": "response",
+            "mediaType": "application/json",
+            "status": "200"
+          }
+        }
+      }
+    ],
+    "perspective": "provider-backward",
+    "policy": {
+      "passed": true,
+      "reasons": [],
+      "undeterminedHandling": "review"
+    },
+    "reportVersion": "1.0",
+    "specId": "equivalent-included",
+    "status": "completed",
+    "summary": {
+      "affectedOperations": 0,
+      "byClassification": {
+        "breaking": 0,
+        "informational": 3,
+        "non-breaking": 0,
+        "potentially-breaking": 0,
+        "undetermined": 0
+      },
+      "bySeverity": {
+        "critical": 0,
+        "high": 0,
+        "info": 3,
+        "low": 0,
+        "medium": 0
+      },
+      "suppressed": 0
+    },
+    "tool": {
+      "name": "contractguard",
+      "rulesetVersion": "1.0.0",
+      "version": "0.1.0"
+    }
+  }
+]

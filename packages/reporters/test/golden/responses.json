@@ -1,0 +1,551 @@
+[
+  {
+    "base": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "3961452236644502095c2ef8ed4cd338943dbf6a69130603f4daf2a7ed3bd696"
+      ],
+      "operationCount": 1,
+      "rootUri": "file:///repo/base/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "candidate": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "2c085bc61b979cef6c47a3835bdae88bd9464319ebc79ee5c076922792713208"
+      ],
+      "operationCount": 1,
+      "rootUri": "file:///repo/api/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "causes": [
+      {
+        "causeKey": "response.removed|GET /r|response:200|",
+        "findingFingerprints": [
+          "17c578d19ca5bd73a317882ef328edce"
+        ],
+        "location": {
+          "pointer": "#/paths/~1r/get/responses/200",
+          "range": {
+            "end": {
+              "column": 193,
+              "line": 7,
+              "offset": 286
+            },
+            "start": {
+              "column": 16,
+              "line": 7,
+              "offset": 109
+            }
+          },
+          "uri": "file:///repo/base/openapi.yaml"
+        },
+        "title": "CG-RES-016 Success response removed",
+        "worst": "breaking"
+      },
+      {
+        "causeKey": "response.added|GET /r|response:201|",
+        "findingFingerprints": [
+          "39fb029efc6c50747acab8a68dac0496"
+        ],
+        "location": {
+          "pointer": "#/paths/~1r/get/responses/201",
+          "range": {
+            "end": {
+              "column": 93,
+              "line": 7,
+              "offset": 186
+            },
+            "start": {
+              "column": 16,
+              "line": 7,
+              "offset": 109
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-RES-018 Success response added",
+        "worst": "potentially-breaking"
+      },
+      {
+        "causeKey": "response.added|GET /r|response:429|",
+        "findingFingerprints": [
+          "a2daffd67c376dc00707fc11dc898dc8"
+        ],
+        "location": {
+          "pointer": "#/paths/~1r/get/responses/429",
+          "range": {
+            "end": {
+              "column": 35,
+              "line": 8,
+              "offset": 221
+            },
+            "start": {
+              "column": 16,
+              "line": 8,
+              "offset": 202
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-RES-019 Non-success response added",
+        "worst": "non-breaking"
+      },
+      {
+        "causeKey": "response.removed|GET /r|response:404|",
+        "findingFingerprints": [
+          "649f7d87bb3b97696aeca9ce556b4058"
+        ],
+        "location": {
+          "pointer": "#/paths/~1r/get/responses/404",
+          "range": {
+            "end": {
+              "column": 33,
+              "line": 8,
+              "offset": 319
+            },
+            "start": {
+              "column": 16,
+              "line": 8,
+              "offset": 302
+            }
+          },
+          "uri": "file:///repo/base/openapi.yaml"
+        },
+        "title": "CG-RES-017 Non-success response removed",
+        "worst": "non-breaking"
+      }
+    ],
+    "diagnostics": [],
+    "findings": [
+      {
+        "assessment": {
+          "effect": "incomparable",
+          "role": "guarantee",
+          "strength": "structural"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "response.removed|GET /r|response:200|",
+        "classification": "breaking",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/paths/~1r/get/responses/200",
+              "range": {
+                "end": {
+                  "column": 193,
+                  "line": 7,
+                  "offset": 286
+                },
+                "start": {
+                  "column": 16,
+                  "line": 7,
+                  "offset": 109
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: guarantee/incomparable/structural → breaking (contract-guaranteed)"
+          }
+        ],
+        "explanation": "Consumers expecting 200 will receive a different status or shape.",
+        "fingerprint": "17c578d19ca5bd73a317882ef328edce",
+        "location": {
+          "anchor": {
+            "pointer": "#/paths/~1r/get/responses/200",
+            "range": {
+              "end": {
+                "column": 193,
+                "line": 7,
+                "offset": 286
+              },
+              "start": {
+                "column": 16,
+                "line": 7,
+                "offset": 109
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/paths/~1r/get/responses/200",
+            "range": {
+              "end": {
+                "column": 193,
+                "line": 7,
+                "offset": 286
+              },
+              "start": {
+                "column": 16,
+                "line": 7,
+                "offset": 109
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          }
+        },
+        "message": "Success response 200 of GET /r was removed.",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "previous": "200",
+        "resolution": "Keep returning 200, or release as a new major version.",
+        "ruleId": "CG-RES-016",
+        "ruleName": "Success response removed",
+        "severity": "critical",
+        "status": "active",
+        "subject": {
+          "direction": "response",
+          "method": "GET",
+          "operationKey": "GET /r",
+          "path": "/r",
+          "schemaPath": [],
+          "site": {
+            "kind": "response",
+            "status": "200"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "widens",
+          "role": "guarantee",
+          "strength": "enumerated"
+        },
+        "basis": "consumer-dependent",
+        "causeKey": "response.added|GET /r|response:201|",
+        "classification": "potentially-breaking",
+        "current": "201",
+        "evidence": [
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/paths/~1r/get/responses/201",
+              "range": {
+                "end": {
+                  "column": 93,
+                  "line": 7,
+                  "offset": 186
+                },
+                "start": {
+                  "column": 16,
+                  "line": 7,
+                  "offset": 109
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: guarantee/widens/enumerated → potentially-breaking (consumer-dependent)"
+          }
+        ],
+        "explanation": "Consumers that only handle the previous success statuses may not handle 201.",
+        "fingerprint": "39fb029efc6c50747acab8a68dac0496",
+        "location": {
+          "anchor": {
+            "pointer": "#/paths/~1r/get/responses/201",
+            "range": {
+              "end": {
+                "column": 93,
+                "line": 7,
+                "offset": 186
+              },
+              "start": {
+                "column": 16,
+                "line": 7,
+                "offset": 109
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/paths/~1r/get/responses/201",
+            "range": {
+              "end": {
+                "column": 93,
+                "line": 7,
+                "offset": 186
+              },
+              "start": {
+                "column": 16,
+                "line": 7,
+                "offset": 109
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "New success response 201 for GET /r.",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "resolution": "Make sure consumers treat any 2xx as success.",
+        "ruleId": "CG-RES-018",
+        "ruleName": "Success response added",
+        "severity": "medium",
+        "status": "active",
+        "subject": {
+          "direction": "response",
+          "method": "GET",
+          "operationKey": "GET /r",
+          "path": "/r",
+          "schemaPath": [],
+          "site": {
+            "kind": "response",
+            "status": "201"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "narrows",
+          "role": "guarantee",
+          "strength": "structural"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "response.removed|GET /r|response:404|",
+        "classification": "non-breaking",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "text": "The provider may still return it undocumented."
+          },
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/paths/~1r/get/responses/404",
+              "range": {
+                "end": {
+                  "column": 33,
+                  "line": 8,
+                  "offset": 319
+                },
+                "start": {
+                  "column": 16,
+                  "line": 8,
+                  "offset": 302
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: guarantee/narrows/structural → non-breaking (contract-guaranteed)"
+          }
+        ],
+        "explanation": "The provider may still return it undocumented.",
+        "fingerprint": "649f7d87bb3b97696aeca9ce556b4058",
+        "location": {
+          "anchor": {
+            "pointer": "#/paths/~1r/get/responses/404",
+            "range": {
+              "end": {
+                "column": 33,
+                "line": 8,
+                "offset": 319
+              },
+              "start": {
+                "column": 16,
+                "line": 8,
+                "offset": 302
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/paths/~1r/get/responses/404",
+            "range": {
+              "end": {
+                "column": 33,
+                "line": 8,
+                "offset": 319
+              },
+              "start": {
+                "column": 16,
+                "line": 8,
+                "offset": 302
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          }
+        },
+        "message": "Response 404 of GET /r is no longer documented.",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "previous": "404",
+        "resolution": "No action needed.",
+        "ruleId": "CG-RES-017",
+        "ruleName": "Non-success response removed",
+        "severity": "info",
+        "status": "active",
+        "subject": {
+          "direction": "response",
+          "method": "GET",
+          "operationKey": "GET /r",
+          "path": "/r",
+          "schemaPath": [],
+          "site": {
+            "kind": "response",
+            "status": "404"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "widens",
+          "role": "guarantee",
+          "strength": "additive"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "response.added|GET /r|response:429|",
+        "classification": "non-breaking",
+        "current": "429",
+        "evidence": [
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/paths/~1r/get/responses/429",
+              "range": {
+                "end": {
+                  "column": 35,
+                  "line": 8,
+                  "offset": 221
+                },
+                "start": {
+                  "column": 16,
+                  "line": 8,
+                  "offset": 202
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: guarantee/widens/additive → non-breaking (contract-guaranteed)"
+          }
+        ],
+        "explanation": "Its schema is compared against what the previous fallback response documented.",
+        "fingerprint": "a2daffd67c376dc00707fc11dc898dc8",
+        "location": {
+          "anchor": {
+            "pointer": "#/paths/~1r/get/responses/429",
+            "range": {
+              "end": {
+                "column": 35,
+                "line": 8,
+                "offset": 221
+              },
+              "start": {
+                "column": 16,
+                "line": 8,
+                "offset": 202
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/paths/~1r/get/responses/429",
+            "range": {
+              "end": {
+                "column": 35,
+                "line": 8,
+                "offset": 221
+              },
+              "start": {
+                "column": 16,
+                "line": 8,
+                "offset": 202
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "Response 429 is now documented for GET /r.",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "resolution": "No action needed.",
+        "ruleId": "CG-RES-019",
+        "ruleName": "Non-success response added",
+        "severity": "info",
+        "status": "active",
+        "subject": {
+          "direction": "response",
+          "method": "GET",
+          "operationKey": "GET /r",
+          "path": "/r",
+          "schemaPath": [],
+          "site": {
+            "kind": "response",
+            "status": "429"
+          }
+        }
+      }
+    ],
+    "perspective": "provider-backward",
+    "policy": {
+      "passed": false,
+      "reasons": [
+        {
+          "because": "breaking (critical) matches fail-on [breaking]",
+          "fingerprint": "17c578d19ca5bd73a317882ef328edce",
+          "rule": "CG-RES-016"
+        }
+      ],
+      "undeterminedHandling": "review"
+    },
+    "reportVersion": "1.0",
+    "specId": "responses",
+    "status": "completed",
+    "summary": {
+      "affectedOperations": 1,
+      "byClassification": {
+        "breaking": 1,
+        "informational": 0,
+        "non-breaking": 2,
+        "potentially-breaking": 1,
+        "undetermined": 0
+      },
+      "bySeverity": {
+        "critical": 1,
+        "high": 0,
+        "info": 2,
+        "low": 0,
+        "medium": 1
+      },
+      "suppressed": 0
+    },
+    "tool": {
+      "name": "contractguard",
+      "rulesetVersion": "1.0.0",
+      "version": "0.1.0"
+    }
+  }
+]

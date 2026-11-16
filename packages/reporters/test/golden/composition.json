@@ -1,0 +1,540 @@
+[
+  {
+    "base": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "6d9bb16bc1211917a82747e81cc76580d3f90a46174a84f8ad31027fbe49ee73"
+      ],
+      "operationCount": 1,
+      "rootUri": "file:///repo/base/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "candidate": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "81e58c3121ee5e5e2f072f204bc5bf14a83ec3a5849a52f1b760637e48834733"
+      ],
+      "operationCount": 1,
+      "rootUri": "file:///repo/api/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "causes": [
+      {
+        "causeKey": "schema.discriminatorMappingChanged|file:///repo/api/openapi.yaml#/paths/~1p/post/requestBody/content/application~1json/schema|discriminator",
+        "findingFingerprints": [
+          "5b309b4c2b53074d5c7ae6d86f936a0a"
+        ],
+        "location": {
+          "pointer": "#/paths/~1p/post/requestBody/content/application~1json/schema",
+          "range": {
+            "end": {
+              "column": 141,
+              "line": 6,
+              "offset": 218
+            },
+            "start": {
+              "column": 58,
+              "line": 6,
+              "offset": 135
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-REQ-035 Request discriminator value removed",
+        "worst": "breaking"
+      },
+      {
+        "causeKey": "schema.variantRemoved|file:///repo/api/openapi.yaml#/paths/~1p/post/requestBody/content/application~1json/schema|oneOf:Wallet",
+        "findingFingerprints": [
+          "823faea4ac81075ccd4158af081ccd2d"
+        ],
+        "location": {
+          "pointer": "#/paths/~1p/post/requestBody/content/application~1json/schema",
+          "range": {
+            "end": {
+              "column": 141,
+              "line": 6,
+              "offset": 218
+            },
+            "start": {
+              "column": 58,
+              "line": 6,
+              "offset": 135
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-REQ-032 Request variant removed",
+        "worst": "breaking"
+      },
+      {
+        "causeKey": "schema.variantAdded|file:///repo/api/openapi.yaml#/paths/~1p/post/responses/200/content/application~1json/schema/anyOf/2|anyOf:#2",
+        "findingFingerprints": [
+          "545075be91607e63206f2e1105eaf087"
+        ],
+        "location": {
+          "pointer": "#/paths/~1p/post/responses/200/content/application~1json/schema/anyOf/2",
+          "range": {
+            "end": {
+              "column": 138,
+              "line": 7,
+              "offset": 359
+            },
+            "start": {
+              "column": 123,
+              "line": 7,
+              "offset": 344
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-RES-014 Response variant added",
+        "worst": "potentially-breaking"
+      }
+    ],
+    "diagnostics": [],
+    "findings": [
+      {
+        "assessment": {
+          "effect": "narrows",
+          "role": "acceptance",
+          "strength": "structural"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "schema.variantRemoved|file:///repo/api/openapi.yaml#/paths/~1p/post/requestBody/content/application~1json/schema|oneOf:Wallet",
+        "classification": "breaking",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/components/schemas/Wallet",
+              "range": {
+                "end": {
+                  "column": 89,
+                  "line": 11,
+                  "offset": 584
+                },
+                "start": {
+                  "column": 13,
+                  "line": 11,
+                  "offset": 508
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/paths/~1p/post/requestBody/content/application~1json/schema",
+              "range": {
+                "end": {
+                  "column": 141,
+                  "line": 6,
+                  "offset": 218
+                },
+                "start": {
+                  "column": 58,
+                  "line": 6,
+                  "offset": 135
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: acceptance/narrows/structural → breaking (contract-guaranteed)"
+          }
+        ],
+        "explanation": "Consumers sending payloads of the removed variant will be rejected.",
+        "fingerprint": "823faea4ac81075ccd4158af081ccd2d",
+        "location": {
+          "anchor": {
+            "pointer": "#/paths/~1p/post/requestBody/content/application~1json/schema",
+            "range": {
+              "end": {
+                "column": 141,
+                "line": 6,
+                "offset": 218
+              },
+              "start": {
+                "column": 58,
+                "line": 6,
+                "offset": 135
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/components/schemas/Wallet",
+            "range": {
+              "end": {
+                "column": 89,
+                "line": 11,
+                "offset": 584
+              },
+              "start": {
+                "column": 13,
+                "line": 11,
+                "offset": 508
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/paths/~1p/post/requestBody/content/application~1json/schema",
+            "range": {
+              "end": {
+                "column": 141,
+                "line": 6,
+                "offset": 218
+              },
+              "start": {
+                "column": 58,
+                "line": 6,
+                "offset": 135
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "A oneOf variant was removed from POST /p: the request body (application/json).",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "resolution": "Keep the variant, or release as a new major version.",
+        "ruleId": "CG-REQ-032",
+        "ruleName": "Request variant removed",
+        "severity": "high",
+        "status": "active",
+        "subject": {
+          "direction": "request",
+          "method": "POST",
+          "operationKey": "POST /p",
+          "path": "/p",
+          "schemaPath": [],
+          "site": {
+            "kind": "requestBody",
+            "mediaType": "application/json"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "narrows",
+          "role": "acceptance",
+          "strength": "enumerated"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "schema.discriminatorMappingChanged|file:///repo/api/openapi.yaml#/paths/~1p/post/requestBody/content/application~1json/schema|discriminator",
+        "classification": "breaking",
+        "current": "kind",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/paths/~1p/post/requestBody/content/application~1json/schema",
+              "range": {
+                "end": {
+                  "column": 180,
+                  "line": 6,
+                  "offset": 257
+                },
+                "start": {
+                  "column": 58,
+                  "line": 6,
+                  "offset": 135
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/paths/~1p/post/requestBody/content/application~1json/schema",
+              "range": {
+                "end": {
+                  "column": 141,
+                  "line": 6,
+                  "offset": 218
+                },
+                "start": {
+                  "column": 58,
+                  "line": 6,
+                  "offset": 135
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: acceptance/narrows/enumerated → breaking (contract-guaranteed)"
+          }
+        ],
+        "explanation": "Consumers sending a removed discriminator value will be rejected.",
+        "fingerprint": "5b309b4c2b53074d5c7ae6d86f936a0a",
+        "location": {
+          "anchor": {
+            "pointer": "#/paths/~1p/post/requestBody/content/application~1json/schema",
+            "range": {
+              "end": {
+                "column": 141,
+                "line": 6,
+                "offset": 218
+              },
+              "start": {
+                "column": 58,
+                "line": 6,
+                "offset": 135
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/paths/~1p/post/requestBody/content/application~1json/schema",
+            "range": {
+              "end": {
+                "column": 180,
+                "line": 6,
+                "offset": 257
+              },
+              "start": {
+                "column": 58,
+                "line": 6,
+                "offset": 135
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/paths/~1p/post/requestBody/content/application~1json/schema",
+            "range": {
+              "end": {
+                "column": 141,
+                "line": 6,
+                "offset": 218
+              },
+              "start": {
+                "column": 58,
+                "line": 6,
+                "offset": 135
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "Discriminator values Wallet are no longer accepted in POST /p: the request body (application/json).",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "previous": "kind",
+        "resolution": "Keep the mapping entries, or release as a new major version.",
+        "ruleId": "CG-REQ-035",
+        "ruleName": "Request discriminator value removed",
+        "severity": "high",
+        "status": "active",
+        "subject": {
+          "direction": "request",
+          "method": "POST",
+          "operationKey": "POST /p",
+          "path": "/p",
+          "schemaPath": [],
+          "site": {
+            "kind": "requestBody",
+            "mediaType": "application/json"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "widens",
+          "role": "guarantee",
+          "strength": "enumerated"
+        },
+        "basis": "consumer-dependent",
+        "causeKey": "schema.variantAdded|file:///repo/api/openapi.yaml#/paths/~1p/post/responses/200/content/application~1json/schema/anyOf/2|anyOf:#2",
+        "classification": "potentially-breaking",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/paths/~1p/post/responses/200/content/application~1json/schema",
+              "range": {
+                "end": {
+                  "column": 123,
+                  "line": 7,
+                  "offset": 383
+                },
+                "start": {
+                  "column": 81,
+                  "line": 7,
+                  "offset": 341
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/paths/~1p/post/responses/200/content/application~1json/schema/anyOf/2",
+              "range": {
+                "end": {
+                  "column": 138,
+                  "line": 7,
+                  "offset": 359
+                },
+                "start": {
+                  "column": 123,
+                  "line": 7,
+                  "offset": 344
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: guarantee/widens/enumerated → potentially-breaking (consumer-dependent)"
+          }
+        ],
+        "explanation": "Consumers that handle each variant explicitly may not handle the new one.",
+        "fingerprint": "545075be91607e63206f2e1105eaf087",
+        "location": {
+          "anchor": {
+            "pointer": "#/paths/~1p/post/responses/200/content/application~1json/schema/anyOf/2",
+            "range": {
+              "end": {
+                "column": 138,
+                "line": 7,
+                "offset": 359
+              },
+              "start": {
+                "column": 123,
+                "line": 7,
+                "offset": 344
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/paths/~1p/post/responses/200/content/application~1json/schema",
+            "range": {
+              "end": {
+                "column": 123,
+                "line": 7,
+                "offset": 383
+              },
+              "start": {
+                "column": 81,
+                "line": 7,
+                "offset": 341
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/paths/~1p/post/responses/200/content/application~1json/schema/anyOf/2",
+            "range": {
+              "end": {
+                "column": 138,
+                "line": 7,
+                "offset": 359
+              },
+              "start": {
+                "column": 123,
+                "line": 7,
+                "offset": 344
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "POST /p: response 200 (application/json) may now return payloads of a new anyOf shape.",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "resolution": "Make sure consumers have a fallback for unknown variants.",
+        "ruleId": "CG-RES-014",
+        "ruleName": "Response variant added",
+        "severity": "medium",
+        "status": "active",
+        "subject": {
+          "direction": "response",
+          "method": "POST",
+          "operationKey": "POST /p",
+          "path": "/p",
+          "schemaPath": [],
+          "site": {
+            "kind": "response",
+            "mediaType": "application/json",
+            "status": "200"
+          }
+        }
+      }
+    ],
+    "perspective": "provider-backward",
+    "policy": {
+      "passed": false,
+      "reasons": [
+        {
+          "because": "breaking (high) matches fail-on [breaking]",
+          "fingerprint": "823faea4ac81075ccd4158af081ccd2d",
+          "rule": "CG-REQ-032"
+        },
+        {
+          "because": "breaking (high) matches fail-on [breaking]",
+          "fingerprint": "5b309b4c2b53074d5c7ae6d86f936a0a",
+          "rule": "CG-REQ-035"
+        }
+      ],
+      "undeterminedHandling": "review"
+    },
+    "reportVersion": "1.0",
+    "specId": "composition",
+    "status": "completed",
+    "summary": {
+      "affectedOperations": 1,
+      "byClassification": {
+        "breaking": 2,
+        "informational": 0,
+        "non-breaking": 0,
+        "potentially-breaking": 1,
+        "undetermined": 0
+      },
+      "bySeverity": {
+        "critical": 0,
+        "high": 2,
+        "info": 0,
+        "low": 0,
+        "medium": 1
+      },
+      "suppressed": 0
+    },
+    "tool": {
+      "name": "contractguard",
+      "rulesetVersion": "1.0.0",
+      "version": "0.1.0"
+    }
+  }
+]

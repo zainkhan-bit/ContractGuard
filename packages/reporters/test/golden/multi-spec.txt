@@ -1,0 +1,86 @@
+[1mContractGuard 0.1.0 · perspective: provider-backward · spec: mixed-changes[0m
+base:      git:origin/main@3f2a9c1 base/openapi.yaml (OpenAPI 3.1.0, 3 operations)
+candidate: working tree api/openapi.yaml (OpenAPI 3.1.0, 3 operations)
+
+[31m✖ BREAKING[0m  CG-RES-002  Response property became optional                   high
+  [2mwhat:[0m     Property "email" is no longer guaranteed in GET /users: response 200
+            (application/json) at `[]`.
+  [2mchange:[0m   true → false
+  [2mwhere:[0m    api/openapi.yaml:25
+  [2maffects:[0m  GET /users → response 200 application/json → `[]`
+            GET /users/{id} → response 200 application/json
+  [2mwhy:[0m      Consumers that read "email" without checking for absence may fail.
+  [2mfix:[0m      Keep "email" required, or release as a new major version.
+
+[31m✖ BREAKING[0m  CG-REQ-001  New required request body property                  high
+  [2mwhat:[0m     New required property "role" in POST /users: the request body
+            (application/json).
+  [2mwhere:[0m    api/openapi.yaml:34
+  [2maffects:[0m  POST /users → request body application/json
+  [2mwhy:[0m      Existing consumers do not send "role", so a provider that enforces
+            the candidate will reject their requests.
+  [2mfix:[0m      Make "role" optional (with a server-side default), or release as a
+            new major version.
+
+[33m▲ POTENTIALLY BREAKING[0m  CG-RES-006  Response enum value added             medium
+  [2mwhat:[0m     GET /users: response 200 (application/json) at `[].status` may now
+            return deleted.
+  [2mwhere:[0m    api/openapi.yaml:26
+  [2maffects:[0m  GET /users → response 200 application/json → `[].status`
+            GET /users/{id} → response 200 application/json → `status`
+  [2mwhy:[0m      Consumers that handle the enum exhaustively may not handle the new
+            values.
+  [2mfix:[0m      Document the enum as extensible (x-extensible-enum) or make sure
+            consumers have a fallback.
+
+[33m▲ POTENTIALLY BREAKING[0m  CG-REQ-024  Request value constraint tightened    medium
+  [2mwhat:[0m     `maxLength` became stricter in POST /users: the request body
+            (application/json) at `email`.
+  [2mwhere:[0m    api/openapi.yaml:32
+  [2maffects:[0m  POST /users → request body application/json → `email`
+  [2mwhy:[0m      Values that satisfied the old `maxLength` may now be rejected.
+  [2mfix:[0m      Keep the previous limit, or confirm that no consumer sends values in
+            the excluded range.
+
+[33m▲ POTENTIALLY BREAKING[0m  CG-REQ-026  Request pattern added                 medium
+  [2mwhat:[0m     Pattern `^[a-z]+$` now restricts POST /users: the request body
+            (application/json) at `nickname`.
+  [2mchange:[0m   (none) → "^[a-z]+$"
+  [2mwhere:[0m    api/openapi.yaml:33
+  [2maffects:[0m  POST /users → request body application/json → `nickname`
+  [2mwhy:[0m      Strings that do not match the pattern will be rejected.
+  [2mfix:[0m      Confirm that consumers only send matching values.
+
+[33m▲ POTENTIALLY BREAKING[0m  CG-RES-011  Response value constraint relaxed        low
+  [2mwhat:[0m     `maximum` was relaxed in GET /users: response 200 (application/json)
+            at `[].score`.
+  [2mwhere:[0m    api/openapi.yaml:27
+  [2maffects:[0m  GET /users → response 200 application/json → `[].score`
+            GET /users/{id} → response 200 application/json → `score`
+  [2mwhy:[0m      Values outside the previous limit may now be returned; consumer
+            buffers or UI limits may not handle them.
+  [2mfix:[0m      Confirm that consumers handle the wider range.
+
+[32m✓[0m CG-RES-017  Response 404 of GET /users/{id} is no longer
+              documented.
+
+Summary: 3 breaking · 6 potentially breaking · 0 undetermined · 1 non-breaking · 0 informational
+Policy: [31mFAILED (3 gating findings)[0m
+
+[1mContractGuard 0.1.0 · perspective: provider-backward · spec: servers[0m
+base:      base/openapi.yaml (OpenAPI 3.1.0, 0 operations)
+candidate: api/openapi.yaml (OpenAPI 3.1.0, 0 operations)
+
+[33m▲ POTENTIALLY BREAKING[0m  CG-SRV-002  Server base path changed                high
+  [2mwhat:[0m     Base path of server https://eu.api.example.com/v1 is no longer
+            served by any candidate server.
+  [2mchange:[0m   "https://eu.api.example.com/v1" → (none)
+  [2mwhere:[0m    base/openapi.yaml:3
+  [2maffects:[0m  servers
+  [2mwhy:[0m      Every operation URL under this base path moves; consumers using the
+            old base path may fail.
+  [2mfix:[0m      Serve both base paths during a transition, or release as a new major
+            version.
+
+Summary: 0 breaking · 1 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational
+Policy: [32mPASSED[0m

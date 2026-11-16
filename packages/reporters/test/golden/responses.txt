@@ -1,0 +1,25 @@
+ContractGuard 0.1.0 · perspective: provider-backward · spec: responses
+base:      base/openapi.yaml (OpenAPI 3.1.0, 1 operations)
+candidate: api/openapi.yaml (OpenAPI 3.1.0, 1 operations)
+
+✖ BREAKING  CG-RES-016  Success response removed                                            critical
+  what:     Success response 200 of GET /r was removed.
+  change:   "200" → (none)
+  where:    base/openapi.yaml:7
+  affects:  GET /r → response 200
+  why:      Consumers expecting 200 will receive a different status or shape.
+  fix:      Keep returning 200, or release as a new major version.
+
+▲ POTENTIALLY BREAKING  CG-RES-018  Success response added                                    medium
+  what:     New success response 201 for GET /r.
+  change:   (none) → "201"
+  where:    api/openapi.yaml:7
+  affects:  GET /r → response 201
+  why:      Consumers that only handle the previous success statuses may not handle 201.
+  fix:      Make sure consumers treat any 2xx as success.
+
+✓ CG-RES-017  Response 404 of GET /r is no longer documented.
+✓ CG-RES-019  Response 429 is now documented for GET /r.
+
+Summary: 1 breaking · 1 potentially breaking · 0 undetermined · 2 non-breaking · 0 informational
+Policy: FAILED (1 gating finding)

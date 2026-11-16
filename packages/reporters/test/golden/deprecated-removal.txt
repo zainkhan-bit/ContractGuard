@@ -1,0 +1,16 @@
+ContractGuard 0.1.0 · perspective: provider-backward · spec: deprecated-removal
+base:      base/openapi.yaml (OpenAPI 3.1.0, 3 operations)
+candidate: api/openapi.yaml (OpenAPI 3.1.0, 2 operations)
+
+✖ BREAKING  CG-API-001  Operation removed                                                       high
+  what:     Operation POST /users was removed.
+  change:   "/users" → (none)
+  where:    base/openapi.yaml:17
+  affects:  POST /users
+  why:      Consumers that call POST /users will receive an error (typically 404 or 405) from a
+            provider that implements the candidate.
+  fix:      Keep the operation (mark it deprecated first), or release the removal as a new major
+            version.
+
+Summary: 1 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational
+Policy: FAILED (1 gating finding)

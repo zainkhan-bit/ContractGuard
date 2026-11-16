@@ -1,0 +1,61 @@
+[
+  {
+    "base": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "82cdade51e2aec4e43be6128ec05c845fa58787c891e9e9cd1bb627526207b05"
+      ],
+      "operationCount": 3,
+      "revision": "git:origin/main@3f2a9c1",
+      "rootUri": "file:///repo/base/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "candidate": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "82cdade51e2aec4e43be6128ec05c845fa58787c891e9e9cd1bb627526207b05"
+      ],
+      "operationCount": 3,
+      "revision": "working tree",
+      "rootUri": "file:///repo/api/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "causes": [],
+    "diagnostics": [],
+    "findings": [],
+    "perspective": "provider-backward",
+    "policy": {
+      "passed": true,
+      "reasons": [],
+      "undeterminedHandling": "review"
+    },
+    "reportVersion": "1.0",
+    "specId": "identical",
+    "status": "completed",
+    "summary": {
+      "affectedOperations": 0,
+      "byClassification": {
+        "breaking": 0,
+        "informational": 0,
+        "non-breaking": 0,
+        "potentially-breaking": 0,
+        "undetermined": 0
+      },
+      "bySeverity": {
+        "critical": 0,
+        "high": 0,
+        "info": 0,
+        "low": 0,
+        "medium": 0
+      },
+      "suppressed": 0
+    },
+    "tool": {
+      "name": "contractguard",
+      "rulesetVersion": "1.0.0",
+      "version": "0.1.0"
+    }
+  }
+]

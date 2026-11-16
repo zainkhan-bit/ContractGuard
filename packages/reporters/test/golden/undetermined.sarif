@@ -1,0 +1,1493 @@
+{
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "automationDetails": {
+        "id": "contractguard/undetermined/"
+      },
+      "properties": {
+        "perspective": "provider-backward",
+        "policyPassed": false,
+        "status": "completed"
+      },
+      "results": [
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "api/openapi.yaml"
+                },
+                "region": {
+                  "endColumn": 96,
+                  "endLine": 6,
+                  "startColumn": 58,
+                  "startLine": 6
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Pattern of POST /x: the request body (application/json) changed from `^[a-z]+$` to `^[a-z0-9]+$`. ContractGuard does not decide whether one regular expression accepts everything the other accepts. Fix: Review whether every value matching `^[a-z]+$` also matches `^[a-z0-9]+$`."
+          },
+          "partialFingerprints": {
+            "contractguard/v1": "c878dbfe1462e288a02176dd7663b7ec"
+          },
+          "properties": {
+            "basis": "indeterminate",
+            "classification": "undetermined",
+            "operation": "POST /x",
+            "perspective": "provider-backward",
+            "severity": "medium"
+          },
+          "relatedLocations": [
+            {
+              "id": 0,
+              "message": {
+                "text": "Baseline definition"
+              },
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "base/openapi.yaml"
+                },
+                "region": {
+                  "endColumn": 93,
+                  "endLine": 6,
+                  "startColumn": 58,
+                  "startLine": 6
+                }
+              }
+            }
+          ],
+          "ruleId": "CG-REQ-027",
+          "ruleIndex": 35
+        }
+      ],
+      "tool": {
+        "driver": {
+          "informationUri": "https://github.com/zainkhan-bit/ContractGuard",
+          "name": "ContractGuard",
+          "properties": {
+            "rulesetVersion": "1.0.0"
+          },
+          "rules": [
+            {
+              "fullDescription": {
+                "text": "An operation in the baseline has no counterpart in the candidate. Removing an operation is the most direct way to break existing consumers."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-API-001.md",
+              "id": "CG-API-001",
+              "name": "OperationRemoved",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "api"
+                ]
+              },
+              "shortDescription": {
+                "text": "Operation removed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "The candidate adds a new operation. Additions widen what the provider accepts."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-API-002.md",
+              "id": "CG-API-002",
+              "name": "OperationAdded",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "api"
+                ]
+              },
+              "shortDescription": {
+                "text": "Operation added"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A removed operation matches an added one by operationId or a case/trailing-slash difference. A moved operation is a removal for existing consumers even when the functionality survives."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-API-003.md",
+              "id": "CG-API-003",
+              "name": "OperationPathChangedProbableRename",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "api"
+                ]
+              },
+              "shortDescription": {
+                "text": "Operation path changed (probable rename)"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "The deprecated flag of an operation was toggled. Deprecation is metadata; it is reported for visibility."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-API-004.md",
+              "id": "CG-API-004",
+              "name": "OperationDeprecationChanged",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "api"
+                ]
+              },
+              "shortDescription": {
+                "text": "Operation deprecation changed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A path template variable changed name at the same position. Template names are not sent on the wire."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-API-005.md",
+              "id": "CG-API-005",
+              "name": "PathParameterRenamed",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "api"
+                ]
+              },
+              "shortDescription": {
+                "text": "Path parameter renamed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "The same operation has a different operationId. operationId is a code-generation identity, not a wire identity."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-API-006.md",
+              "id": "CG-API-006",
+              "name": "operationIdChanged",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "api"
+                ]
+              },
+              "shortDescription": {
+                "text": "operationId changed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "Callbacks on an operation differ; callbacks are not analyzed in v1. Unknown impact is reported as undetermined rather than guessed."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-API-007.md",
+              "id": "CG-API-007",
+              "name": "CallbackDefinitionsChanged",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "api"
+                ]
+              },
+              "shortDescription": {
+                "text": "Callback definitions changed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "Some baseline credential no longer works, or anonymous access was removed. Requests authenticated the old way become unauthorized."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-AUTH-001.md",
+              "id": "CG-AUTH-001",
+              "name": "AuthenticationRequirementTightened",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "auth"
+                ]
+              },
+              "shortDescription": {
+                "text": "Authentication requirement tightened"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "The same schemes are required, with more scopes. Whether tokens already carry the scope depends on the consumer."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-AUTH-002.md",
+              "id": "CG-AUTH-002",
+              "name": "AdditionalScopesRequired",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "auth"
+                ]
+              },
+              "shortDescription": {
+                "text": "Additional scopes required"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "Every baseline credential still works and more are accepted. More accepted credentials widen accepted requests."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-AUTH-003.md",
+              "id": "CG-AUTH-003",
+              "name": "AuthenticationRelaxed",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "auth"
+                ]
+              },
+              "shortDescription": {
+                "text": "Authentication relaxed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A scheme's type, apiKey name/location, HTTP scheme or OpenID Connect URL changed. Credentials are sent according to the scheme definition."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-AUTH-004.md",
+              "id": "CG-AUTH-004",
+              "name": "SecuritySchemeChangedIncompatibly",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "auth"
+                ]
+              },
+              "shortDescription": {
+                "text": "Security scheme changed incompatibly"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "An OAuth2 flow was removed, its URLs changed or declared scopes removed (or only descriptive fields changed). Token acquisition depends on flow definitions."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-AUTH-005.md",
+              "id": "CG-AUTH-005",
+              "name": "OAuth2FlowChanged",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "auth"
+                ]
+              },
+              "shortDescription": {
+                "text": "OAuth2 flow changed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A security scheme was renamed with an identical definition. Identical definitions authenticate identically."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-AUTH-006.md",
+              "id": "CG-AUTH-006",
+              "name": "SecuritySchemeRenamed",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "auth"
+                ]
+              },
+              "shortDescription": {
+                "text": "Security scheme renamed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A property was added to a request schema and is required. Requests valid under the baseline lack the new required property."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-001.md",
+              "id": "CG-REQ-001",
+              "name": "NewRequiredRequestBodyProperty",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "New required request body property"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "An existing optional parameter is now required. Requests that omitted an optional parameter become invalid."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-002.md",
+              "id": "CG-REQ-002",
+              "name": "RequestParameterBecameRequired",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request parameter became required"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "An existing optional request property is now required. Requests that omitted an optional property become invalid."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-003.md",
+              "id": "CG-REQ-003",
+              "name": "RequestBodyPropertyBecameRequired",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request body property became required"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A new required query, header or cookie parameter. Requests valid under the baseline lack the new required parameter."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-004.md",
+              "id": "CG-REQ-004",
+              "name": "NewRequiredRequestParameter",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "New required request parameter"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "An optional parameter or optional request property was added. Optional additions widen what the provider accepts."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-005.md",
+              "id": "CG-REQ-005",
+              "name": "NewOptionalRequestInput",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "New optional request input"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A documented parameter no longer exists. Removal is usually tolerated on the wire (A6), but the consequence is a policy decision."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-006.md",
+              "id": "CG-REQ-006",
+              "name": "RequestParameterRemoved",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request parameter removed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A parameter with the same name moved to a different location (query, header, path, cookie). The value is no longer received where consumers send it."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-007.md",
+              "id": "CG-REQ-007",
+              "name": "RequestParameterLocationChanged",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request parameter location changed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A required parameter is now optional. Relaxing a requirement widens accepted requests."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-008.md",
+              "id": "CG-REQ-008",
+              "name": "RequestParameterBecameOptional",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request parameter became optional"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "The effective style, explode, allowReserved or content media type of a parameter changed. Serialization defines the bytes on the wire."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-009.md",
+              "id": "CG-REQ-009",
+              "name": "RequestParameterSerializationChanged",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request parameter serialization changed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "The request body is now required. Requests without a body become invalid."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-010.md",
+              "id": "CG-REQ-010",
+              "name": "RequestBodyBecameRequired",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request body became required"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "The request body is no longer required. Relaxing a requirement widens accepted requests."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-011.md",
+              "id": "CG-REQ-011",
+              "name": "RequestBodyBecameOptional",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request body became optional"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "The operation previously had no request body. A required body invalidates requests without one; an optional one does not."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-012.md",
+              "id": "CG-REQ-012",
+              "name": "RequestBodyAdded",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request body added"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "The operation no longer documents a request body. Consumer impact depends on how the provider handles unexpected bodies."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-013.md",
+              "id": "CG-REQ-013",
+              "name": "RequestBodyRemoved",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request body removed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "The request body no longer accepts a media type. Consumers cannot send a payload in a media type the provider no longer accepts."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-014.md",
+              "id": "CG-REQ-014",
+              "name": "RequestMediaTypeRemoved",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request media type removed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "The request body accepts a new media type. Additions widen accepted requests."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-015.md",
+              "id": "CG-REQ-015",
+              "name": "RequestMediaTypeAdded",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request media type added"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A request value is restricted to fewer enumerated values. Requests using a removed value become invalid."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-020.md",
+              "id": "CG-REQ-020",
+              "name": "RequestEnumValueRemoved",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request enum value removed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A request value accepts more enumerated values (or the enum was removed). Additional values widen accepted requests."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-021.md",
+              "id": "CG-REQ-021",
+              "name": "RequestEnumValueAdded",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request enum value added"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "The JSON types accepted in a request shrank. Values of removed types become invalid."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-022.md",
+              "id": "CG-REQ-022",
+              "name": "RequestTypeNarrowed",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request type narrowed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "The JSON types accepted in a request grew. Additional types widen accepted requests."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-023.md",
+              "id": "CG-REQ-023",
+              "name": "RequestTypeWidened",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request type widened"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A numeric, length, size or uniqueness constraint on request values became stricter. Whether real values fall in the excluded range is unknown, so this is policy-dependent."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-024.md",
+              "id": "CG-REQ-024",
+              "name": "RequestValueConstraintTightened",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request value constraint tightened"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A request constraint became looser or a pattern was removed. Looser constraints widen accepted requests."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-025.md",
+              "id": "CG-REQ-025",
+              "name": "RequestValueConstraintRelaxed",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request value constraint relaxed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A regular-expression pattern now restricts a request string. Patterns are compared as text and never executed, so the impact is policy-dependent."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-026.md",
+              "id": "CG-REQ-026",
+              "name": "RequestPatternAdded",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request pattern added"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A request string pattern was replaced by a different one. Regex inclusion is undecidable in general for ECMA-262 patterns."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-027.md",
+              "id": "CG-REQ-027",
+              "name": "RequestPatternChanged",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request pattern changed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "The `format` of a request value changed. Format validation is optional in JSON Schema (A7)."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-028.md",
+              "id": "CG-REQ-028",
+              "name": "RequestFormatChanged",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request format changed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A property old requests could send is now rejected. A closed schema rejects undefined properties."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-029.md",
+              "id": "CG-REQ-029",
+              "name": "RequestPropertyDisallowed",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request property disallowed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A property was removed from a request schema that still allows additional properties. In an open schema the removed property becomes unconstrained."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-030.md",
+              "id": "CG-REQ-030",
+              "name": "RequestPropertyRemovedFromOpenSchema",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request property removed from open schema"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A request value that allowed null no longer does. Requests sending null become invalid."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-031.md",
+              "id": "CG-REQ-031",
+              "name": "RequestNoLongerAcceptsNull",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request no longer accepts null"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A oneOf/anyOf branch of a request schema has no counterpart in the candidate. Payloads matching only the removed branch become invalid."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-032.md",
+              "id": "CG-REQ-032",
+              "name": "RequestVariantRemoved",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request variant removed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A oneOf branch was added to a request schema that has no discriminator. oneOf requires exactly one matching branch."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-033.md",
+              "id": "CG-REQ-033",
+              "name": "RequestOneOfVariantAddedWithoutDiscriminator",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request oneOf variant added without discriminator"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "An anyOf branch, a discriminated oneOf branch was added, or a non-mergeable allOf branch removed. More alternatives (or fewer conjuncts) widen accepted requests."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-034.md",
+              "id": "CG-REQ-034",
+              "name": "RequestCompositionWidened",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request composition widened"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A discriminator mapping value of a request schema was removed. A removed mapping value can no longer select a variant."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-035.md",
+              "id": "CG-REQ-035",
+              "name": "RequestDiscriminatorValueRemoved",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request discriminator value removed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "The default of a request parameter or property changed. Defaults define behaviour for omitted values."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-036.md",
+              "id": "CG-REQ-036",
+              "name": "RequestDefaultValueChanged",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request default value changed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A request property gained readOnly. Provider handling of read-only properties in requests differs."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-037.md",
+              "id": "CG-REQ-037",
+              "name": "RequestPropertyBecameReadOnly",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request property became read-only"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A non-mergeable allOf branch was added to a request schema. A new conjunct can only narrow; its exact effect is not computed."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-REQ-038.md",
+              "id": "CG-REQ-038",
+              "name": "RequestAllOfConstraintAdded",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "req"
+                ]
+              },
+              "shortDescription": {
+                "text": "Request allOf constraint added"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A required property was removed from a response schema. A guaranteed field is no longer guaranteed."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-001.md",
+              "id": "CG-RES-001",
+              "name": "RequiredResponsePropertyRemoved",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Required response property removed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A required response property is now optional. A guaranteed field may now be absent."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-002.md",
+              "id": "CG-RES-002",
+              "name": "ResponsePropertyBecameOptional",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Response property became optional"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "An optional property was removed from a response schema. In an open schema the field may now carry any value; in a closed one it can no longer appear."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-003.md",
+              "id": "CG-RES-003",
+              "name": "OptionalResponsePropertyRemoved",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Optional response property removed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A property was added to a response schema that promised no additional properties. This is a policy decision, not a contract fact (§10.4)."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-004.md",
+              "id": "CG-RES-004",
+              "name": "PropertyAddedToClosedResponseSchema",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Property added to closed response schema"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A property was added to an open response schema. Additions to open schemas were already allowed."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-005.md",
+              "id": "CG-RES-005",
+              "name": "ResponsePropertyAdded",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Response property added"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A response value may take new enumerated values (or the enum was removed). Exhaustive-switch consumers break, tolerant ones do not (§10.4)."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-006.md",
+              "id": "CG-RES-006",
+              "name": "ResponseEnumValueAdded",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Response enum value added"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A response value is restricted to fewer enumerated values. Fewer possible values narrow the response."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-007.md",
+              "id": "CG-RES-007",
+              "name": "ResponseEnumValueRemoved",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Response enum value removed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A response value may have more JSON types. Values of new types were not guaranteed before."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-008.md",
+              "id": "CG-RES-008",
+              "name": "ResponseTypeWidened",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Response type widened"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A response value that was never null may now be null. null was not a possible value before."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-009.md",
+              "id": "CG-RES-009",
+              "name": "ResponseValueMayNowBeNull",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Response value may now be null"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A response value has fewer possible JSON types. Narrower responses are always handled."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-010.md",
+              "id": "CG-RES-010",
+              "name": "ResponseTypeNarrowed",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Response type narrowed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A constraint on response values became looser. Consumer limits are unknown."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-011.md",
+              "id": "CG-RES-011",
+              "name": "ResponseValueConstraintRelaxed",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Response value constraint relaxed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A response constraint, pattern or format became stricter. Narrower responses are always handled."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-012.md",
+              "id": "CG-RES-012",
+              "name": "ResponseValueConstraintTightened",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Response value constraint tightened"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A response pattern or format was removed, widened or replaced. Consumers may parse values according to the documented format."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-013.md",
+              "id": "CG-RES-013",
+              "name": "ResponsePatternOrFormatRelaxedOrChanged",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Response pattern or format relaxed or changed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A oneOf/anyOf branch was added to a response schema (or an allOf constraint removed). New variants were not guaranteed before."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-014.md",
+              "id": "CG-RES-014",
+              "name": "ResponseVariantAdded",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Response variant added"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A oneOf/anyOf branch was removed from a response schema (or an allOf constraint added). Narrower responses are always handled."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-015.md",
+              "id": "CG-RES-015",
+              "name": "ResponseVariantRemoved",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Response variant removed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A success (2XX) response key is absent from the candidate. Consumers branch on success status codes."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-016.md",
+              "id": "CG-RES-016",
+              "name": "SuccessResponseRemoved",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Success response removed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A non-success response key is absent from the candidate. Fewer documented error responses narrow the response space."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-017.md",
+              "id": "CG-RES-017",
+              "name": "NonSuccessResponseRemoved",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Non-success response removed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A new success (2XX) response was added. Many consumers treat any 2xx as success, but some branch on exact codes."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-018.md",
+              "id": "CG-RES-018",
+              "name": "SuccessResponseAdded",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Success response added"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A new non-success response was documented. Documenting an error response does not change what consumers already handle."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-019.md",
+              "id": "CG-RES-019",
+              "name": "NonSuccessResponseAdded",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Non-success response added"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A response no longer offers a media type. Consumers request media types; removal narrows accepted negotiation (area: request)."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-020.md",
+              "id": "CG-RES-020",
+              "name": "ResponseMediaTypeRemoved",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Response media type removed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A response offers a new media type. More negotiable media types widen what consumers may request."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-021.md",
+              "id": "CG-RES-021",
+              "name": "ResponseMediaTypeAdded",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Response media type added"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A required response header was removed. A guaranteed header is no longer guaranteed."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-022.md",
+              "id": "CG-RES-022",
+              "name": "RequiredResponseHeaderRemoved",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Required response header removed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A required response header is now optional. A guaranteed header may now be absent."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-023.md",
+              "id": "CG-RES-023",
+              "name": "ResponseHeaderBecameOptional",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Response header became optional"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A response header was added, or an optional one removed. Optional headers were never guaranteed; added headers are ignored by existing consumers."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-024.md",
+              "id": "CG-RES-024",
+              "name": "ResponseHeaderAddedOrOptionalHeaderRemoved",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Response header added or optional header removed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A response no longer has a body. Consumers parse documented bodies."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-025.md",
+              "id": "CG-RES-025",
+              "name": "ResponseBodyRemoved",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Response body removed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A response property gained writeOnly. A returned field stops being returned."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-026.md",
+              "id": "CG-RES-026",
+              "name": "ResponsePropertyBecameWriteOnly",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Response property became write-only"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A response that had no body now has one. Additional content does not invalidate existing handling."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-RES-027.md",
+              "id": "CG-RES-027",
+              "name": "ResponseBodyAdded",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "res"
+                ]
+              },
+              "shortDescription": {
+                "text": "Response body added"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "The base and candidate type sets are disjoint. Disjoint types break both senders and readers."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-SCHEMA-001.md",
+              "id": "CG-SCHEMA-001",
+              "name": "IncompatibleTypeChange",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "schema"
+                ]
+              },
+              "shortDescription": {
+                "text": "Incompatible type change"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "The schema is spelled differently but means the same. Reported only on request, for review."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-SCHEMA-002.md",
+              "id": "CG-SCHEMA-002",
+              "name": "SchemaRepresentationChangedEquivalent",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "schema"
+                ]
+              },
+              "shortDescription": {
+                "text": "Schema representation changed (equivalent)"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A schema keyword ContractGuard does not analyze changed. Unknown impact is reported as undetermined rather than guessed."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-SCHEMA-900.md",
+              "id": "CG-SCHEMA-900",
+              "name": "UnsupportedSchemaConstructChanged",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "schema"
+                ]
+              },
+              "shortDescription": {
+                "text": "Unsupported schema construct changed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "Composition branches could not be matched reliably. Ambiguous matches would produce unreliable findings."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-SCHEMA-901.md",
+              "id": "CG-SCHEMA-901",
+              "name": "CompositionNotAnalyzable",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "schema"
+                ]
+              },
+              "shortDescription": {
+                "text": "Composition not analyzable"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "Schema comparison stopped at the configured limit. Incomplete analysis must be visible."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-SCHEMA-902.md",
+              "id": "CG-SCHEMA-902",
+              "name": "AnalysisBudgetExceeded",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "schema"
+                ]
+              },
+              "shortDescription": {
+                "text": "Analysis budget exceeded"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A compared schema contains a reference that could not be resolved. Only reachable with allowInvalidSpec."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-SCHEMA-903.md",
+              "id": "CG-SCHEMA-903",
+              "name": "UnresolvedReferenceInComparedSchema",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "schema"
+                ]
+              },
+              "shortDescription": {
+                "text": "Unresolved reference in compared schema"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A server URL present in the baseline is absent from the candidate. The server list tells consumers where the API lives."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-SRV-001.md",
+              "id": "CG-SRV-001",
+              "name": "ServerRemoved",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "srv"
+                ]
+              },
+              "shortDescription": {
+                "text": "Server removed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A server's base path no longer exists in the candidate, so operation URLs move. Base paths are part of every operation URL."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-SRV-002.md",
+              "id": "CG-SRV-002",
+              "name": "ServerBasePathChanged",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "srv"
+                ]
+              },
+              "shortDescription": {
+                "text": "Server base path changed"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "A server variable's enum lost values. Server variables select deployments."
+              },
+              "helpUri": "https://github.com/zainkhan-bit/ContractGuard/blob/main/docs/rules/CG-SRV-003.md",
+              "id": "CG-SRV-003",
+              "name": "ServerVariableValuesNarrowed",
+              "properties": {
+                "tags": [
+                  "contractguard",
+                  "srv"
+                ]
+              },
+              "shortDescription": {
+                "text": "Server variable values narrowed"
+              }
+            }
+          ],
+          "semanticVersion": "0.1.0"
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}

@@ -1,0 +1,16 @@
+ContractGuard 0.1.0 · perspective: provider-backward · spec: undetermined
+base:      base/openapi.yaml (OpenAPI 3.1.0, 1 operations)
+candidate: api/openapi.yaml (OpenAPI 3.1.0, 1 operations)
+
+? UNDETERMINED  CG-REQ-027  Request pattern changed                                           medium
+  what:     Pattern of POST /x: the request body (application/json) changed from `^[a-z]+$` to
+            `^[a-z0-9]+$`.
+  change:   "^[a-z]+$" → "^[a-z0-9]+$"
+  where:    api/openapi.yaml:6
+  affects:  POST /x → request body application/json
+  why:      ContractGuard does not decide whether one regular expression accepts everything the
+            other accepts.
+  fix:      Review whether every value matching `^[a-z]+$` also matches `^[a-z0-9]+$`.
+
+Summary: 0 breaking · 0 potentially breaking · 1 undetermined · 0 non-breaking · 0 informational
+Policy: FAILED (1 gating finding)

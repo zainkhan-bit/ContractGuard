@@ -1,0 +1,39 @@
+ContractGuard 0.1.0 · perspective: provider-backward · spec: parameters
+base:      base/openapi.yaml (OpenAPI 3.1.0, 1 operations)
+candidate: api/openapi.yaml (OpenAPI 3.1.0, 1 operations)
+
+✖ BREAKING  CG-REQ-002  Request parameter became required                                       high
+  what:     GET /s: query parameter "q" became required.
+  change:   false → true
+  where:    api/openapi.yaml:7
+  affects:  GET /s → query parameter q
+  why:      Consumers that omit this parameter will be rejected.
+  fix:      Keep the parameter optional with a documented default, or release as a new major
+            version.
+
+✖ BREAKING  CG-REQ-004  New required request parameter                                          high
+  what:     New required GET /s: header parameter "x-tenant".
+  change:   (none) → "X-Tenant"
+  where:    api/openapi.yaml:10
+  affects:  GET /s → header parameter x-tenant
+  why:      Existing consumers do not send this parameter, so their requests will be rejected.
+  fix:      Make the parameter optional with a default, or release as a new major version.
+
+✖ BREAKING  CG-REQ-007  Request parameter location changed                                      high
+  what:     Parameter moved from query to header (GET /s: query parameter "api_key").
+  change:   "query" → "header"
+  where:    api/openapi.yaml:9
+  affects:  GET /s → query parameter api_key
+  why:      Consumers still send it in query; the provider now reads it from header.
+  fix:      Accept the parameter in both locations during a transition.
+
+✖ BREAKING  CG-REQ-009  Request parameter serialization changed                                 high
+  what:     Serialization of GET /s: query parameter "ids" changed (explode).
+  where:    api/openapi.yaml:8
+  affects:  GET /s → query parameter ids
+  why:      Consumers encode the value the old way (for example `a=1&a=2` vs `a=1,2`); the provider
+            may misread it.
+  fix:      Keep the previous serialization, or accept both encodings.
+
+Summary: 4 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational
+Policy: FAILED (4 gating findings)

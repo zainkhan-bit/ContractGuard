@@ -248,7 +248,12 @@ export function evaluate(
         ...change.subject,
         ...(op === undefined ? {} : { method: op.method, path: op.path }),
       };
-      const params = { ...a.params, where: describeSubject(subject) };
+      // Rules refer to operations by key (`GET /users/{}`); messages show the declared path.
+      const params = {
+        ...a.params,
+        ...(op !== undefined && 'operation' in a.params ? { operation: `${op.method} ${op.path}` } : {}),
+        where: describeSubject(subject),
+      };
       const evidence: EvidenceItem[] = [...a.evidence];
       if (change.base.location !== undefined) {
         evidence.push({ kind: 'base-source', text: 'Baseline definition', location: change.base.location });

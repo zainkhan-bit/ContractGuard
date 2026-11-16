@@ -1,0 +1,29 @@
+ContractGuard 0.1.0 · perspective: provider-backward · spec: composition
+base:      base/openapi.yaml (OpenAPI 3.1.0, 1 operations)
+candidate: api/openapi.yaml (OpenAPI 3.1.0, 1 operations)
+
+✖ BREAKING  CG-REQ-032  Request variant removed                                                 high
+  what:     A oneOf variant was removed from POST /p: the request body (application/json).
+  where:    api/openapi.yaml:6
+  affects:  POST /p → request body application/json
+  why:      Consumers sending payloads of the removed variant will be rejected.
+  fix:      Keep the variant, or release as a new major version.
+
+✖ BREAKING  CG-REQ-035  Request discriminator value removed                                     high
+  what:     Discriminator values Wallet are no longer accepted in POST /p: the request body
+            (application/json).
+  change:   "kind" → "kind"
+  where:    api/openapi.yaml:6
+  affects:  POST /p → request body application/json
+  why:      Consumers sending a removed discriminator value will be rejected.
+  fix:      Keep the mapping entries, or release as a new major version.
+
+▲ POTENTIALLY BREAKING  CG-RES-014  Response variant added                                    medium
+  what:     POST /p: response 200 (application/json) may now return payloads of a new anyOf shape.
+  where:    api/openapi.yaml:7
+  affects:  POST /p → response 200 application/json
+  why:      Consumers that handle each variant explicitly may not handle the new one.
+  fix:      Make sure consumers have a fallback for unknown variants.
+
+Summary: 2 breaking · 1 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational
+Policy: FAILED (2 gating findings)

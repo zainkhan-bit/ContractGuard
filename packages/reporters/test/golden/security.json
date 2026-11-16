@@ -1,0 +1,680 @@
+[
+  {
+    "base": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "09eb604e5fbcb36fca6a1e1b3e6934a792b27723d10241e4a1d5168ad7cd4bfb"
+      ],
+      "operationCount": 2,
+      "rootUri": "file:///repo/base/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "candidate": {
+      "apiVersion": "1.0",
+      "documentsSha256": [
+        "f3aa22c1d40cd87a3272f89767f6f27634fd4436d791fbf54877acd8a029ba10"
+      ],
+      "operationCount": 2,
+      "rootUri": "file:///repo/api/openapi.yaml",
+      "specVersion": "3.1.0",
+      "title": "Payments"
+    },
+    "causes": [
+      {
+        "causeKey": "security.alternativesChanged|GET /a|security|",
+        "findingFingerprints": [
+          "2ea2235ce6e276e0267a82a101f7233c"
+        ],
+        "location": {
+          "pointer": "#/paths/~1a/get/security",
+          "range": {
+            "end": {
+              "column": 41,
+              "line": 5,
+              "offset": 127
+            },
+            "start": {
+              "column": 24,
+              "line": 5,
+              "offset": 110
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-AUTH-001 Authentication requirement tightened",
+        "worst": "breaking"
+      },
+      {
+        "causeKey": "security.alternativesChanged|GET /b|security|",
+        "findingFingerprints": [
+          "19fa96677a5a6a0880aeb16d2048c829"
+        ],
+        "location": {
+          "pointer": "#/paths/~1b/get/security",
+          "range": {
+            "end": {
+              "column": 38,
+              "line": 6,
+              "offset": 206
+            },
+            "start": {
+              "column": 24,
+              "line": 6,
+              "offset": 192
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-AUTH-001 Authentication requirement tightened",
+        "worst": "breaking"
+      },
+      {
+        "causeKey": "securityScheme.changed||security|oauth",
+        "findingFingerprints": [
+          "3fe91bbe254171df1e5d3addd48ff945"
+        ],
+        "location": {
+          "pointer": "#/components/securitySchemes/oauth",
+          "range": {
+            "end": {
+              "column": 108,
+              "line": 10,
+              "offset": 438
+            },
+            "start": {
+              "column": 12,
+              "line": 10,
+              "offset": 342
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-AUTH-005 OAuth2 flow changed",
+        "worst": "potentially-breaking"
+      },
+      {
+        "causeKey": "securityScheme.renamed||security|key",
+        "findingFingerprints": [
+          "8eacc4316c96396dde62df483d7ed8ea"
+        ],
+        "location": {
+          "pointer": "#/components/securitySchemes/apiKey",
+          "range": {
+            "end": {
+              "column": 52,
+              "line": 9,
+              "offset": 330
+            },
+            "start": {
+              "column": 13,
+              "line": 9,
+              "offset": 291
+            }
+          },
+          "uri": "file:///repo/api/openapi.yaml"
+        },
+        "title": "CG-AUTH-006 Security scheme renamed",
+        "worst": "informational"
+      }
+    ],
+    "diagnostics": [],
+    "findings": [
+      {
+        "assessment": {
+          "effect": "narrows",
+          "role": "acceptance",
+          "strength": "structural"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "security.alternativesChanged|GET /a|security|",
+        "classification": "breaking",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/security",
+              "range": {
+                "end": {
+                  "column": 22,
+                  "line": 3,
+                  "offset": 76
+                },
+                "start": {
+                  "column": 11,
+                  "line": 3,
+                  "offset": 65
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/paths/~1a/get/security",
+              "range": {
+                "end": {
+                  "column": 41,
+                  "line": 5,
+                  "offset": 127
+                },
+                "start": {
+                  "column": 24,
+                  "line": 5,
+                  "offset": 110
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: acceptance/narrows/structural → breaking (contract-guaranteed)"
+          }
+        ],
+        "explanation": "Consumers using the affected credentials (or none) will be rejected.",
+        "fingerprint": "2ea2235ce6e276e0267a82a101f7233c",
+        "location": {
+          "anchor": {
+            "pointer": "#/paths/~1a/get/security",
+            "range": {
+              "end": {
+                "column": 41,
+                "line": 5,
+                "offset": 127
+              },
+              "start": {
+                "column": 24,
+                "line": 5,
+                "offset": 110
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/security",
+            "range": {
+              "end": {
+                "column": 22,
+                "line": 3,
+                "offset": 76
+              },
+              "start": {
+                "column": 11,
+                "line": 3,
+                "offset": 65
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/paths/~1a/get/security",
+            "range": {
+              "end": {
+                "column": 41,
+                "line": 5,
+                "offset": 127
+              },
+              "start": {
+                "column": 24,
+                "line": 5,
+                "offset": 110
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "Authentication of GET /a is stricter: 1 previously accepted credential option(s) no longer work.",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "resolution": "Keep accepting the previous credentials during a transition.",
+        "ruleId": "CG-AUTH-001",
+        "ruleName": "Authentication requirement tightened",
+        "severity": "critical",
+        "status": "active",
+        "subject": {
+          "method": "GET",
+          "operationKey": "GET /a",
+          "path": "/a",
+          "schemaPath": [],
+          "site": {
+            "kind": "security"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "narrows",
+          "role": "acceptance",
+          "strength": "structural"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "security.alternativesChanged|GET /b|security|",
+        "classification": "breaking",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/paths/~1b/get/security",
+              "range": {
+                "end": {
+                  "column": 26,
+                  "line": 6,
+                  "offset": 162
+                },
+                "start": {
+                  "column": 24,
+                  "line": 6,
+                  "offset": 160
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/paths/~1b/get/security",
+              "range": {
+                "end": {
+                  "column": 38,
+                  "line": 6,
+                  "offset": 206
+                },
+                "start": {
+                  "column": 24,
+                  "line": 6,
+                  "offset": 192
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: acceptance/narrows/structural → breaking (contract-guaranteed)"
+          }
+        ],
+        "explanation": "Consumers using the affected credentials (or none) will be rejected.",
+        "fingerprint": "19fa96677a5a6a0880aeb16d2048c829",
+        "location": {
+          "anchor": {
+            "pointer": "#/paths/~1b/get/security",
+            "range": {
+              "end": {
+                "column": 38,
+                "line": 6,
+                "offset": 206
+              },
+              "start": {
+                "column": 24,
+                "line": 6,
+                "offset": 192
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/paths/~1b/get/security",
+            "range": {
+              "end": {
+                "column": 26,
+                "line": 6,
+                "offset": 162
+              },
+              "start": {
+                "column": 24,
+                "line": 6,
+                "offset": 160
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/paths/~1b/get/security",
+            "range": {
+              "end": {
+                "column": 38,
+                "line": 6,
+                "offset": 206
+              },
+              "start": {
+                "column": 24,
+                "line": 6,
+                "offset": 192
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "Authentication of GET /b is stricter: anonymous access is no longer allowed.",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "resolution": "Keep accepting the previous credentials during a transition.",
+        "ruleId": "CG-AUTH-001",
+        "ruleName": "Authentication requirement tightened",
+        "severity": "critical",
+        "status": "active",
+        "subject": {
+          "method": "GET",
+          "operationKey": "GET /b",
+          "path": "/b",
+          "schemaPath": [],
+          "site": {
+            "kind": "security"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "incomparable",
+          "role": "acceptance",
+          "strength": "behavioral"
+        },
+        "basis": "consumer-dependent",
+        "causeKey": "securityScheme.changed||security|oauth",
+        "classification": "potentially-breaking",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/components/securitySchemes/oauth",
+              "range": {
+                "end": {
+                  "column": 107,
+                  "line": 10,
+                  "offset": 390
+                },
+                "start": {
+                  "column": 12,
+                  "line": 10,
+                  "offset": 295
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/components/securitySchemes/oauth",
+              "range": {
+                "end": {
+                  "column": 108,
+                  "line": 10,
+                  "offset": 438
+                },
+                "start": {
+                  "column": 12,
+                  "line": 10,
+                  "offset": 342
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: acceptance/incomparable/behavioral → potentially-breaking (consumer-dependent)"
+          }
+        ],
+        "explanation": "Consumers obtaining tokens through the changed flow may fail.",
+        "fingerprint": "3fe91bbe254171df1e5d3addd48ff945",
+        "location": {
+          "anchor": {
+            "pointer": "#/components/securitySchemes/oauth",
+            "range": {
+              "end": {
+                "column": 108,
+                "line": 10,
+                "offset": 438
+              },
+              "start": {
+                "column": 12,
+                "line": 10,
+                "offset": 342
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/components/securitySchemes/oauth",
+            "range": {
+              "end": {
+                "column": 107,
+                "line": 10,
+                "offset": 390
+              },
+              "start": {
+                "column": 12,
+                "line": 10,
+                "offset": 295
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/components/securitySchemes/oauth",
+            "range": {
+              "end": {
+                "column": 108,
+                "line": 10,
+                "offset": 438
+              },
+              "start": {
+                "column": 12,
+                "line": 10,
+                "offset": 342
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "Security scheme \"oauth\" changed (flows.clientCredentials.tokenUrl).",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "resolution": "Keep the previous flow endpoints working during a transition.",
+        "ruleId": "CG-AUTH-005",
+        "ruleName": "OAuth2 flow changed",
+        "severity": "medium",
+        "status": "active",
+        "subject": {
+          "schemaPath": [],
+          "site": {
+            "kind": "security"
+          }
+        }
+      },
+      {
+        "assessment": {
+          "effect": "equivalent",
+          "role": "acceptance",
+          "strength": "structural"
+        },
+        "basis": "contract-guaranteed",
+        "causeKey": "securityScheme.renamed||security|key",
+        "classification": "informational",
+        "current": "apiKey",
+        "evidence": [
+          {
+            "kind": "base-source",
+            "location": {
+              "pointer": "#/components/securitySchemes/key",
+              "range": {
+                "end": {
+                  "column": 49,
+                  "line": 9,
+                  "offset": 283
+                },
+                "start": {
+                  "column": 10,
+                  "line": 9,
+                  "offset": 244
+                }
+              },
+              "uri": "file:///repo/base/openapi.yaml"
+            },
+            "text": "Baseline definition"
+          },
+          {
+            "kind": "candidate-source",
+            "location": {
+              "pointer": "#/components/securitySchemes/apiKey",
+              "range": {
+                "end": {
+                  "column": 52,
+                  "line": 9,
+                  "offset": 330
+                },
+                "start": {
+                  "column": 13,
+                  "line": 9,
+                  "offset": 291
+                }
+              },
+              "uri": "file:///repo/api/openapi.yaml"
+            },
+            "text": "Candidate definition"
+          },
+          {
+            "kind": "reasoning",
+            "text": "provider-backward: acceptance/equivalent/structural → informational (contract-guaranteed)"
+          }
+        ],
+        "explanation": "Scheme names are not sent on the wire.",
+        "fingerprint": "8eacc4316c96396dde62df483d7ed8ea",
+        "location": {
+          "anchor": {
+            "pointer": "#/components/securitySchemes/apiKey",
+            "range": {
+              "end": {
+                "column": 52,
+                "line": 9,
+                "offset": 330
+              },
+              "start": {
+                "column": 13,
+                "line": 9,
+                "offset": 291
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          },
+          "base": {
+            "pointer": "#/components/securitySchemes/key",
+            "range": {
+              "end": {
+                "column": 49,
+                "line": 9,
+                "offset": 283
+              },
+              "start": {
+                "column": 10,
+                "line": 9,
+                "offset": 244
+              }
+            },
+            "uri": "file:///repo/base/openapi.yaml"
+          },
+          "candidate": {
+            "pointer": "#/components/securitySchemes/apiKey",
+            "range": {
+              "end": {
+                "column": 52,
+                "line": 9,
+                "offset": 330
+              },
+              "start": {
+                "column": 13,
+                "line": 9,
+                "offset": 291
+              }
+            },
+            "uri": "file:///repo/api/openapi.yaml"
+          }
+        },
+        "message": "Security scheme \"key\" was renamed to \"apiKey\".",
+        "overridable": {
+          "classification": false,
+          "severity": true,
+          "suppressible": true
+        },
+        "perspective": "provider-backward",
+        "previous": "key",
+        "resolution": "No action needed.",
+        "ruleId": "CG-AUTH-006",
+        "ruleName": "Security scheme renamed",
+        "severity": "info",
+        "status": "active",
+        "subject": {
+          "schemaPath": [],
+          "site": {
+            "kind": "security"
+          }
+        }
+      }
+    ],
+    "perspective": "provider-backward",
+    "policy": {
+      "passed": false,
+      "reasons": [
+        {
+          "because": "breaking (critical) matches fail-on [breaking]",
+          "fingerprint": "2ea2235ce6e276e0267a82a101f7233c",
+          "rule": "CG-AUTH-001"
+        },
+        {
+          "because": "breaking (critical) matches fail-on [breaking]",
+          "fingerprint": "19fa96677a5a6a0880aeb16d2048c829",
+          "rule": "CG-AUTH-001"
+        }
+      ],
+      "undeterminedHandling": "review"
+    },
+    "reportVersion": "1.0",
+    "specId": "security",
+    "status": "completed",
+    "summary": {
+      "affectedOperations": 2,
+      "byClassification": {
+        "breaking": 2,
+        "informational": 1,
+        "non-breaking": 0,
+        "potentially-breaking": 1,
+        "undetermined": 0
+      },
+      "bySeverity": {
+        "critical": 2,
+        "high": 0,
+        "info": 1,
+        "low": 0,
+        "medium": 1
+      },
+      "suppressed": 0
+    },
+    "tool": {
+      "name": "contractguard",
+      "rulesetVersion": "1.0.0",
+      "version": "0.1.0"
+    }
+  }
+]

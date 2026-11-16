@@ -1,0 +1,698 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contractguard.dev/schemas/report.v1.json",
+  "title": "ContractGuard analysis report, version 1",
+  "description": "An array with one analysis result per compared specification (\u00a713.3). Additive changes bump the minor reportVersion.",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/result"
+  },
+  "$defs": {
+    "cause": {
+      "type": "object",
+      "properties": {
+        "causeKey": {
+          "type": "string"
+        },
+        "location": {
+          "$ref": "#/$defs/sourceRef"
+        },
+        "title": {
+          "type": "string"
+        },
+        "findingFingerprints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "worst": {
+          "$ref": "#/$defs/classification"
+        }
+      },
+      "required": ["causeKey", "title", "findingFingerprints", "worst"],
+      "additionalProperties": false
+    },
+    "classification": {
+      "enum": ["breaking", "potentially-breaking", "undetermined", "non-breaking", "informational"]
+    },
+    "contractSummary": {
+      "type": "object",
+      "properties": {
+        "specVersion": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "apiVersion": {
+          "type": "string"
+        },
+        "rootUri": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "string"
+        },
+        "documentsSha256": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "operationCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": ["specVersion", "title", "apiVersion", "rootUri", "documentsSha256", "operationCount"],
+      "additionalProperties": false
+    },
+    "diagnostic": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^CGD-[A-Z]+-[0-9]{3}$"
+        },
+        "category": {
+          "enum": [
+            "filesystem",
+            "parse",
+            "specification",
+            "reference",
+            "semantic",
+            "unsupported",
+            "comparison",
+            "configuration",
+            "integration",
+            "limit",
+            "internal"
+          ]
+        },
+        "severity": {
+          "enum": ["error", "warning", "info"]
+        },
+        "side": {
+          "enum": ["base", "candidate"]
+        },
+        "message": {
+          "type": "string"
+        },
+        "location": {
+          "$ref": "#/$defs/sourceRef"
+        },
+        "hint": {
+          "type": "string"
+        }
+      },
+      "required": ["code", "category", "severity", "message"],
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": ["base-source", "candidate-source", "reference-chain", "reasoning", "assumption", "policy"]
+        },
+        "text": {
+          "type": "string"
+        },
+        "location": {
+          "$ref": "#/$defs/sourceRef"
+        }
+      },
+      "required": ["kind", "text"],
+      "additionalProperties": false
+    },
+    "finding": {
+      "type": "object",
+      "properties": {
+        "fingerprint": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$"
+        },
+        "ruleId": {
+          "type": "string",
+          "pattern": "^CG-(API|SRV|REQ|RES|SCHEMA|AUTH)-[0-9]{3}$"
+        },
+        "ruleName": {
+          "type": "string"
+        },
+        "classification": {
+          "$ref": "#/$defs/classification"
+        },
+        "severity": {
+          "$ref": "#/$defs/severity"
+        },
+        "basis": {
+          "enum": ["contract-guaranteed", "consumer-dependent", "policy-dependent", "indeterminate"]
+        },
+        "perspective": {
+          "type": "string"
+        },
+        "assessment": {
+          "type": "object",
+          "properties": {
+            "role": {
+              "enum": ["acceptance", "guarantee"]
+            },
+            "effect": {
+              "enum": ["widens", "narrows", "incomparable", "equivalent", "unknown"]
+            },
+            "strength": {
+              "enum": ["structural", "enumerated", "value-space", "additive", "behavioral"]
+            }
+          },
+          "required": ["effect", "strength"],
+          "additionalProperties": false
+        },
+        "subject": {
+          "type": "object",
+          "properties": {
+            "operationKey": {
+              "type": "string"
+            },
+            "site": {
+              "$ref": "#/$defs/site"
+            },
+            "direction": {
+              "enum": ["request", "response"]
+            },
+            "schemaPath": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/pathSegment"
+              }
+            },
+            "method": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            }
+          },
+          "required": ["site", "schemaPath"],
+          "additionalProperties": false
+        },
+        "location": {
+          "type": "object",
+          "properties": {
+            "base": {
+              "$ref": "#/$defs/sourceRef"
+            },
+            "candidate": {
+              "$ref": "#/$defs/sourceRef"
+            },
+            "anchor": {
+              "$ref": "#/$defs/sourceRef"
+            }
+          },
+          "required": ["anchor"],
+          "additionalProperties": false
+        },
+        "previous": {},
+        "current": {},
+        "message": {
+          "type": "string"
+        },
+        "explanation": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          },
+          "minItems": 1
+        },
+        "resolution": {
+          "type": "string"
+        },
+        "overridable": {
+          "type": "object",
+          "properties": {
+            "classification": {
+              "type": "boolean"
+            },
+            "severity": {
+              "type": "boolean"
+            },
+            "suppressible": {
+              "const": true
+            }
+          },
+          "required": ["classification", "severity", "suppressible"],
+          "additionalProperties": false
+        },
+        "causeKey": {
+          "type": "string"
+        },
+        "status": {
+          "enum": ["active", "suppressed"]
+        },
+        "overrides": {
+          "type": "object",
+          "properties": {
+            "originalClassification": {
+              "$ref": "#/$defs/classification"
+            },
+            "originalSeverity": {
+              "$ref": "#/$defs/severity"
+            },
+            "by": {
+              "type": "string"
+            }
+          },
+          "required": ["by"],
+          "additionalProperties": false
+        },
+        "suppression": {
+          "type": "object",
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "expires": {
+              "type": "string",
+              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+            },
+            "configPointer": {
+              "type": "string"
+            }
+          },
+          "required": ["reason", "configPointer"],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "fingerprint",
+        "ruleId",
+        "ruleName",
+        "classification",
+        "severity",
+        "basis",
+        "perspective",
+        "assessment",
+        "subject",
+        "location",
+        "message",
+        "explanation",
+        "evidence",
+        "resolution",
+        "overridable",
+        "causeKey",
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "pathSegment": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "property"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": ["kind", "name"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "items"
+            }
+          },
+          "required": ["kind"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "additionalProperties"
+            }
+          },
+          "required": ["kind"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "variant"
+            },
+            "composition": {
+              "enum": ["oneOf", "anyOf", "allOf"]
+            },
+            "matchKey": {
+              "type": "string"
+            }
+          },
+          "required": ["kind", "composition", "matchKey"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "discriminatorMapping"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": ["kind", "value"],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "position": {
+      "type": "object",
+      "properties": {
+        "line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "column": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": ["line", "column", "offset"],
+      "additionalProperties": false
+    },
+    "range": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "$ref": "#/$defs/position"
+        },
+        "end": {
+          "$ref": "#/$defs/position"
+        }
+      },
+      "required": ["start", "end"],
+      "additionalProperties": false
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "reportVersion": {
+          "type": "string",
+          "pattern": "^1\\.[0-9]+$"
+        },
+        "tool": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "const": "contractguard"
+            },
+            "version": {
+              "type": "string"
+            },
+            "rulesetVersion": {
+              "type": "string"
+            }
+          },
+          "required": ["name", "version", "rulesetVersion"],
+          "additionalProperties": false
+        },
+        "status": {
+          "enum": ["completed", "completed-degraded", "input-error"]
+        },
+        "perspective": {
+          "type": "string"
+        },
+        "specId": {
+          "type": "string"
+        },
+        "base": {
+          "$ref": "#/$defs/contractSummary"
+        },
+        "candidate": {
+          "$ref": "#/$defs/contractSummary"
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/finding"
+          }
+        },
+        "causes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/cause"
+          }
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/diagnostic"
+          }
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "byClassification": {
+              "type": "object",
+              "properties": {
+                "breaking": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "potentially-breaking": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "undetermined": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "non-breaking": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "informational": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": ["breaking", "potentially-breaking", "undetermined", "non-breaking", "informational"],
+              "additionalProperties": false
+            },
+            "bySeverity": {
+              "type": "object",
+              "properties": {
+                "critical": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "high": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "medium": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "low": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "info": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": ["critical", "high", "medium", "low", "info"],
+              "additionalProperties": false
+            },
+            "suppressed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "affectedOperations": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": ["byClassification", "bySeverity", "suppressed", "affectedOperations"],
+          "additionalProperties": false
+        },
+        "policy": {
+          "type": "object",
+          "properties": {
+            "passed": {
+              "type": "boolean"
+            },
+            "reasons": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "fingerprint": {
+                    "type": "string"
+                  },
+                  "rule": {
+                    "type": "string"
+                  },
+                  "because": {
+                    "type": "string"
+                  }
+                },
+                "required": ["fingerprint", "rule", "because"],
+                "additionalProperties": false
+              }
+            },
+            "undeterminedHandling": {
+              "enum": ["fail", "review", "ignore"]
+            }
+          },
+          "required": ["passed", "reasons", "undeterminedHandling"],
+          "additionalProperties": false
+        },
+        "generatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "reportVersion",
+        "tool",
+        "status",
+        "perspective",
+        "specId",
+        "findings",
+        "causes",
+        "diagnostics",
+        "summary",
+        "policy"
+      ],
+      "additionalProperties": false
+    },
+    "severity": {
+      "enum": ["critical", "high", "medium", "low", "info"]
+    },
+    "site": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "operation"
+            }
+          },
+          "required": ["kind"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "parameter"
+            },
+            "key": {
+              "type": "string"
+            }
+          },
+          "required": ["kind", "key"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "requestBody"
+            },
+            "mediaType": {
+              "type": "string"
+            }
+          },
+          "required": ["kind"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "response"
+            },
+            "status": {
+              "type": "string"
+            },
+            "mediaType": {
+              "type": "string"
+            }
+          },
+          "required": ["kind", "status"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "responseHeader"
+            },
+            "status": {
+              "type": "string"
+            },
+            "header": {
+              "type": "string"
+            }
+          },
+          "required": ["kind", "status", "header"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "security"
+            }
+          },
+          "required": ["kind"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "const": "servers"
+            }
+          },
+          "required": ["kind"],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "sourceRef": {
+      "type": "object",
+      "properties": {
+        "uri": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pointer": {
+          "type": "string",
+          "pattern": "^#"
+        },
+        "range": {
+          "$ref": "#/$defs/range"
+        }
+      },
+      "required": ["uri", "pointer"],
+      "additionalProperties": false
+    }
+  }
+}
