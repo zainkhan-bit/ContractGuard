@@ -73,7 +73,12 @@ export interface PropertyChangeFacts {
 export interface SecurityChangeFacts {
   /** Indexes of base alternatives with no satisfiable candidate alternative. */
   readonly unsatisfiedBaseAlternatives: readonly number[];
-  readonly scopeAdditions: readonly { readonly scheme: string; readonly scopes: readonly string[] }[];
+  /** Unsatisfied base alternatives that a same-schemes candidate alternative covers except for extra scopes. */
+  readonly scopeAdditions: readonly {
+    readonly alternative: number;
+    readonly scheme: string;
+    readonly scopes: readonly string[];
+  }[];
   readonly anonymousRemoved: boolean;
   readonly relaxed: boolean;
 }
@@ -186,7 +191,13 @@ export type ContractChange =
 export type ChangeKind = ContractChange['kind'];
 
 /** Narrows a ContractChange by kind. */
-export type ChangeOfKind<K extends ChangeKind> = Extract<ContractChange, { readonly kind: K }>;
+export type ChangeOfKind<K extends ChangeKind> = ContractChange extends infer C
+  ? C extends { readonly kind: infer CK }
+    ? [Extract<CK, K>] extends [never]
+      ? never
+      : C
+    : never
+  : never;
 
 /** Every change kind, sorted. Kept in sync with the union by a compile-time check in tests. */
 export const CHANGE_KINDS: readonly ChangeKind[] = Object.freeze([
@@ -277,9 +288,13 @@ export function siteKey(site: UsageSite): string {
   }
 }
 
-/** Stable textual key of a schema path, e.g. "items/prop:address/prop:zip". */
+const pathKeyCache = new WeakMap<readonly SchemaPathSegment[], string>();
+
+/** Stable textual key of a schema path, e.g. "items/prop:address/prop:zip". Cached per (immutable) path array. */
 export function schemaPathKey(path: readonly SchemaPathSegment[]): string {
-  return path
+  const cached = pathKeyCache.get(path);
+  if (cached !== undefined) return cached;
+  const key = path
     .map((s) => {
       switch (s.kind) {
         case 'property':
@@ -295,4 +310,6 @@ export function schemaPathKey(path: readonly SchemaPathSegment[]): string {
       }
     })
     .join('/');
+  pathKeyCache.set(path, key);
+  return key;
 }

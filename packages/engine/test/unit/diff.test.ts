@@ -35,12 +35,15 @@ describe('diffContracts: invariants', () => {
     expect(await kinds(PETS, PETS)).toEqual([]);
   });
 
-  it('reports nothing for an equivalent 3.0 → 3.1 migration', async () => {
+  it('reports only representation changes for an equivalent 3.0 → 3.1 migration', async () => {
     const v31 = PETS.replace('openapi: 3.0.3', 'openapi: 3.1.0').replace(
       '{type: string, nullable: true}',
       "{type: [string, 'null']}",
     );
-    expect(await kinds(PETS, v31)).toEqual([]);
+    const out = await diff(PETS, v31);
+    expect(out.length).toBeGreaterThan(0);
+    expect(out.every((c) => c.kind === 'schema.representationChanged')).toBe(true);
+    expect(out[0]?.facts).toEqual({ what: 'nullability (oas30-nullable → type-includes-null)' });
   });
 
   it('reports nothing when components are renamed, moved or split with allOf', async () => {
@@ -283,7 +286,7 @@ components:
       '- | security | securityScheme.changed {"scheme":"basic","fields":["bearerFormat"],"incompatible":false}',
       '- | security | securityScheme.changed {"scheme":"oauth","fields":["flows.clientCredentials.tokenUrl","flows.clientCredentials.scopes"],"incompatible":true}',
       '- | security | securityScheme.renamed {"from":"key","to":"apiKey"}',
-      'GET /oauth | security | security.alternativesChanged {"unsatisfiedBaseAlternatives":[0],"scopeAdditions":[{"scheme":"oauth","scopes":["write"]}],"anonymousRemoved":false,"relaxed":false}',
+      'GET /oauth | security | security.alternativesChanged {"unsatisfiedBaseAlternatives":[0],"scopeAdditions":[{"alternative":0,"scheme":"oauth","scopes":["write"]}],"anonymousRemoved":false,"relaxed":false}',
       'GET /open | security | security.alternativesChanged {"unsatisfiedBaseAlternatives":[],"scopeAdditions":[],"anonymousRemoved":true,"relaxed":false}',
       'GET /opt | security | security.alternativesChanged {"unsatisfiedBaseAlternatives":[],"scopeAdditions":[],"anonymousRemoved":true,"relaxed":false}',
     ]);

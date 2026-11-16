@@ -90,6 +90,8 @@ export interface RuleContext {
   readonly base: ApiContract;
   readonly candidate: ApiContract;
   readonly honorExtensibleEnum: boolean;
+  /** Emit informational findings for equivalent changes (e.g. a default added where none existed). */
+  readonly includeEquivalentChanges: boolean;
 }
 
 export interface RuleDefinition<K extends ChangeKind = ChangeKind> {

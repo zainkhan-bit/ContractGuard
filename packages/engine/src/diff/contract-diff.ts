@@ -606,14 +606,14 @@ class ContractDiff {
     const unsatisfied = sc.anonymousAllowed
       ? []
       : baseAlts.flatMap((a, i) => (sc.alternatives.some((c) => satisfies(c, a)) ? [] : [i]));
-    const scopeAdditions: { scheme: string; scopes: string[] }[] = [];
+    const scopeAdditions: { alternative: number; scheme: string; scopes: string[] }[] = [];
     for (const i of unsatisfied) {
       const a = baseAlts[i] as SecurityAlternative;
       for (const c of sc.alternatives) {
         if (c.size !== a.size || ![...c.keys()].every((k) => a.has(k))) continue;
         for (const [scheme, scopes] of c) {
           const extra = [...scopes].filter((s) => !(a.get(scheme) as ReadonlySet<string>).has(s));
-          if (extra.length > 0) scopeAdditions.push({ scheme, scopes: extra.sort(compareCodeUnits) });
+          if (extra.length > 0) scopeAdditions.push({ alternative: i, scheme, scopes: extra.sort(compareCodeUnits) });
         }
       }
     }

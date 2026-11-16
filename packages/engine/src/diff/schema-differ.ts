@@ -231,6 +231,22 @@ export class SchemaDiffer {
         detail: 'type',
       });
     }
+    const spelled = new Set(['oas30-nullable', 'type-includes-null']);
+    if (
+      allowsNull(B) &&
+      allowsNull(C) &&
+      B.nullability.origin !== C.nullability.origin &&
+      spelled.has(B.nullability.origin) &&
+      spelled.has(C.nullability.origin)
+    ) {
+      push({
+        kind: 'schema.representationChanged',
+        facts: { what: `nullability (${B.nullability.origin} → ${C.nullability.origin})` },
+        base: located(B),
+        candidate: located(C),
+        detail: 'nullable-representation',
+      });
+    }
     if (allowsNull(B) !== allowsNull(C)) {
       push({
         kind: 'schema.nullabilityChanged',

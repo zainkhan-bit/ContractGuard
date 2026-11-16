@@ -27,3 +27,22 @@ export {
   type ConstraintRelation,
 } from './schema/relations.js';
 export { SchemaSide, isUnresolved } from './schema/view.js';
+export {
+  checkCompatibility,
+  DEFAULT_REGISTRY,
+  explainRule,
+  type CheckOptions,
+  type CheckResult,
+  type RuleExplanation,
+} from './check.js';
+export {
+  computeSeverity,
+  evaluate,
+  fingerprintDiscriminator,
+  fingerprintOf,
+  RuleRegistry,
+  type EvaluateOptions,
+} from './compat/evaluate.js';
+export { classifyByTable, CONSUMER_FORWARD, PROVIDER_BACKWARD } from './compat/perspectives.js';
+export { describeSubject, interpolate, schemaPathText } from './compat/text.js';
+export { RULES, RULESET_VERSION } from './rules/index.js';

@@ -4,7 +4,7 @@
 |---|---|
 | **Status** | Approved 2026-11-15 (D1–D22 with recommended defaults) — implementation in progress |
 | **Scope of this document** | Stage 0 investigation results + complete Stage 1 architecture blueprint |
-| **Implementation status** | M0 complete (repository foundations + `@contractguard/core`). See §19. |
+| **Implementation status** | M0–M5 complete (core, OpenAPI front end, diff engine, compatibility engine with the 83-rule catalog). See §19 and §19.1. |
 | **Date** | 2026-11-15 |
 | **Repository state at time of writing** | `github.com/zainkhan-bit/ContractGuard` — empty (no commits); local working copy empty |
 
@@ -3304,6 +3304,22 @@ flowchart LR
 | Later | Callbacks/webhooks analysis; pattern inclusion for a regular subset; oneOf overlap analysis; persistent cache (if benchmarks justify it); additional CI integrations | Rules and engine extensions only |
 
 ---
+
+## 19.1 Implementation log (amendments found while building)
+
+Decisions and deviations discovered during implementation. Each entry names the milestone and the section it amends.
+
+- **M1 · §8.2/R6 — YAML parse speed.** The `yaml` library parses at roughly 0.9 s/MB; strict JSON documents take a dedicated RFC 8259 fast path (~20 MB in ~2 s). Duplicate-key detection is done by ContractGuard (the library's check is quadratic).
+- **M1/M4 · §8.3 — pointer index is a trie.** Storing a full JSON pointer string per value is quadratic in nesting depth on Node 26, which flattens concatenated strings. The index stores (parent, token) per node and materializes pointers only for diagnostics: 100k-level nesting costs ~140 ms / 50 MB on Node 24 and 26.
+- **M2 · ADR-05 — structural validation spike: GO.** `@hyperjump/json-schema` validates a 5.4 MB 3.1 document in ~0.8 s offline. Only the root document is validated structurally.
+- **M3 · §8.4 — semantic checks live in the normalizer.** SEM-001…005/106 are detected while normalizing instead of in a separate stage; the stage policy of §8.8 is unchanged.
+- **M4 · §9.6 — keyword families are type-scoped on both sides.** Numeric/string/array/object keywords are compared only when both sides admit the family's type; otherwise the type change describes the difference.
+- **M4 · §11.5 — integer-only bounds are normalized during comparison** (`exclusiveMaximum: 9` ≡ `maximum: 8`), not only during normalization, so merged `allOf` views compare correctly.
+- **M5 · §10.6 — `schema.representationChanged` is emitted for nullability spelling changes** (3.0 `nullable` ↔ 3.1 `type: [.., 'null']`), so CG-SCHEMA-002 has a source. It reports only with `includeEquivalentChanges`.
+- **M5 · §10.6 — CG-RES-016 stays silent for `200 → 2XX`.** Consumers of 200 are covered by the range; schema differences are still compared at the range.
+- **M5 · §10.6 — CG-SCHEMA-900 also covers property additions/removals under a parent with `patternProperties`**, not only `unevaluatedProperties`.
+- **M5 · §10.6 — AUTH-004 is reported once per scheme** (not projected per operation); its explanation lists the operations whose baseline security uses the scheme.
+- **M5 · §18.6 — consumer-forward duality gaps (to resolve in M10).** Direction duality holds for value-space-accurate rules and is enforced by tests. Known gaps, pinned by tests: RES-004/005 label response property additions "widens/additive" (reader-centric, so `strictResponseValidation` applies); some reverse changes have no catalog rule (request property became optional, response no longer nullable); RES-006 classifies by provider-backward policy. Consumer-forward must not become user-selectable until these are resolved.
 
 # 20. Open-source release strategy
 
