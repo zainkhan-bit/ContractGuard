@@ -1,6 +1,7 @@
-import { readFileSync } from 'node:fs';
-import { access, mkdir, readdir, writeFile } from 'node:fs/promises';
+import { readFileSync, realpathSync } from 'node:fs';
+import { access, mkdir, readdir, realpath, writeFile } from 'node:fs/promises';
 import { dirname, join, relative, resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { parseArgs } from 'node:util';
 import {
   analyze,
@@ -131,12 +132,21 @@ function level(values: Values, io: CliIo): 'quiet' | 'normal' | 'verbose' | 'deb
   return env === 'quiet' || env === 'verbose' || env === 'debug' ? env : 'normal';
 }
 
+/** `file:` URI of a directory's real path: loaded documents are keyed by real paths (8.3 names expanded). */
+function rootUri(dir: string): string {
+  try {
+    return pathToFileURL(realpathSync.native(dir)).href;
+  } catch {
+    return pathToFileURL(dir).href;
+  }
+}
+
 /** `file:line:col  severity  CODE  message (hint)` */
 export function formatDiagnostic(d: Diagnostic, cwd: string): string {
   const where =
     d.location === undefined
       ? ''
-      : `${displayPath(d.location.uri, `file://${cwd}`)}${d.location.range === undefined ? '' : `:${String(d.location.range.start.line)}:${String(d.location.range.start.column)}`}  `;
+      : `${displayPath(d.location.uri, rootUri(cwd))}${d.location.range === undefined ? '' : `:${String(d.location.range.start.line)}:${String(d.location.range.start.column)}`}  `;
   return `${where}${d.severity}  ${d.code}  ${d.side === undefined ? '' : `[${d.side}] `}${d.message}${d.hint === undefined ? '' : ` (${d.hint})`}`;
 }
 
@@ -247,7 +257,8 @@ const check: Command = {
     printDiagnostics(run.diagnostics, io, lvl);
     if (io.signal?.aborted === true) return EXIT.interrupted;
     const { config, gitRoot, baseDir } = run.value.loaded;
-    const srcRoot = `file://${gitRoot ?? baseDir}`;
+    const root = gitRoot ?? baseDir;
+    const srcRoot = pathToFileURL(await realpath(root).catch(() => root)).href;
     const results = run.value.results;
     const common = { groupBy: config.report.groupBy, deterministic: config.report.deterministic, srcRoot } as const;
 

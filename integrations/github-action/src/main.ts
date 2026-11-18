@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, realpath, writeFile } from 'node:fs/promises';
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { analyze, BASE_TOKEN, type AdHocSpec, type CliOverrides } from '@contractguard/app';
 import type { AnalysisResult, Classification, Diagnostic, Severity } from '@contractguard/core';
@@ -100,7 +100,9 @@ export async function run(io: RunnerIo, deps: ActionDeps = {}): Promise<ActionRu
   try {
     const ctx = await readContext(io, getInput(io, 'base-ref'));
     for (const w of ctx.warnings) io.write(command('warning', { title: 'ContractGuard' }, w));
-    const workdir = resolve(ctx.workspace, getInput(io, 'working-directory') || '.');
+    // Documents are keyed by their real path (8.3 short names expanded on Windows), so compare against the same.
+    const workspace = await realpath(ctx.workspace).catch(() => ctx.workspace);
+    const workdir = resolve(workspace, getInput(io, 'working-directory') || '.');
     const sarifInput = getInput(io, 'sarif-file');
     const wantSummary = getBooleanInput(io, 'summary', true);
     const wantAnnotations = getBooleanInput(io, 'annotations', true);
@@ -128,7 +130,7 @@ export async function run(io: RunnerIo, deps: ActionDeps = {}): Promise<ActionRu
     });
 
     if (run.value === undefined) {
-      io.write(diagnosticAnnotations(run.diagnostics, ctx.workspace));
+      io.write(diagnosticAnnotations(run.diagnostics, workspace));
       fail(
         run.diagnostics.some((d) => d.code === 'CGD-CONFIG-014')
           ? 'No .contractguard.yaml found. Add one (npx contractguard init) or set the "specs" input.'
@@ -139,7 +141,7 @@ export async function run(io: RunnerIo, deps: ActionDeps = {}): Promise<ActionRu
     }
     const { results, unchanged, added } = run.value;
     const config = run.value.loaded.config;
-    io.write(diagnosticAnnotations(run.diagnostics, ctx.workspace));
+    io.write(diagnosticAnnotations(run.diagnostics, workspace));
 
     // Console report in the log, with workflow commands disabled while user-controlled text is printed.
     const resume = stopCommands(io);
@@ -149,7 +151,7 @@ export async function run(io: RunnerIo, deps: ActionDeps = {}): Promise<ActionRu
       renderConsole(results, {
         groupBy: config.report.groupBy,
         deterministic: true,
-        srcRoot: ctx.workspace,
+        srcRoot: workspace,
         color: true,
         width: 120,
         verbose: true,
@@ -171,15 +173,15 @@ export async function run(io: RunnerIo, deps: ActionDeps = {}): Promise<ActionRu
       renderMarkdown(results, {
         groupBy: config.report.groupBy,
         deterministic: true,
-        srcRoot: ctx.workspace,
+        srcRoot: workspace,
         ...(linkBase === undefined ? {} : { linkBase }),
         ...(reproduce === undefined ? {} : { reproduceCommand: reproduce }),
         maxBytes,
       });
 
     if (wantSummary) await appendSummary(io, markdown(1_000_000));
-    if (wantAnnotations) io.write(findingAnnotations(results, ctx.workspace));
-    for (const r of results) io.write(diagnosticAnnotations(r.diagnostics, ctx.workspace));
+    if (wantAnnotations) io.write(findingAnnotations(results, workspace));
+    for (const r of results) io.write(diagnosticAnnotations(r.diagnostics, workspace));
 
     // Report files.
     const reportDir = join(io.env['RUNNER_TEMP'] ?? join(workdir, '.contractguard'), 'contractguard');
@@ -194,11 +196,11 @@ export async function run(io: RunnerIo, deps: ActionDeps = {}): Promise<ActionRu
         renderSarif(results, {
           groupBy: config.report.groupBy,
           deterministic: true,
-          srcRoot: ctx.workspace,
+          srcRoot: workspace,
           rules: RULES,
         }),
       );
-      log(`SARIF written to ${relative(ctx.workspace, sarifPath) || sarifPath}`);
+      log(`SARIF written to ${relative(workspace, sarifPath) || sarifPath}`);
     }
 
     let comment: CommentOutcome | undefined;

@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, symlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { COMMENT_MARKER } from '../src/comment.js';
@@ -303,5 +303,29 @@ describe('minimal environments', () => {
     const outcome = await run(r, { today, fetch: fakeGitHub().fetch });
     expect(outcome.comment).toBe('skipped-readonly');
     expect(r.log()).toContain('pull_request_target runs with a privileged token');
+  });
+});
+
+describe('paths', () => {
+  it.skipIf(process.platform === 'win32')(
+    'a workspace reached through a symlink still gets file annotations',
+    async () => {
+      const s = breakingPr();
+      const link = join(s.root, 'ws-link');
+      symlinkSync(s.workspace, link, 'dir');
+      const r = fakeRunner(link, prEvent(s.shas[0] as string), { specs: 'api/openapi.yaml' });
+      expect((await run(r, { today })).result).toBe('failed');
+      expect(r.log()).toContain('file=api/openapi.yaml,line=');
+      expect(r.summary()).toContain('/blob/');
+      expect(r.summary()).not.toContain(s.root);
+    },
+  );
+
+  it('CRLF line endings in the checkout still take the fast path', async () => {
+    const s = sandbox([{ 'openapi.yaml': SPEC() }, { 'openapi.yaml': SPEC(), 'CHANGELOG.md': 'x' }]);
+    write(s.workspace, { 'openapi.yaml': SPEC().replaceAll('\n', '\r\n') });
+    const r = fakeRunner(s.workspace, prEvent(s.shas[0] as string), { specs: 'openapi.yaml' });
+    expect((await run(r, { today })).result).toBe('passed');
+    expect(r.log()).toContain('openapi: no API changes');
   });
 });

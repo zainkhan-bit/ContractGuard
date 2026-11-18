@@ -9,6 +9,11 @@ import {
   type ResolvedConfiguration,
   type SourceRef,
   type StageResult,
+  isCanonicalArray,
+  isJsonNumber,
+  objectKeys,
+  sha256Hex,
+  type CanonicalJson,
 } from '@contractguard/core';
 import { assembleResult, checkCompatibility, RULESET_VERSION } from '@contractguard/engine';
 import { loadContract, type DocumentSet, type LoadedContract, type SpecValidator } from '@contractguard/openapi';
@@ -189,11 +194,25 @@ function timeoutReason(signal: AbortSignal): Diagnostic | undefined {
 }
 
 /** Runs one configured comparison. Never throws for expected failures; they become an input-error result. */
-/** Relative path + content hash of every document; equal sets mean the comparison cannot find anything. */
+/** Canonical text of a parsed document: independent of YAML/JSON formatting, line endings and key order. */
+function canonicalText(v: CanonicalJson): string {
+  if (v === null || typeof v === 'boolean' || typeof v === 'string') return JSON.stringify(v);
+  if (isJsonNumber(v)) return v.text;
+  if (isCanonicalArray(v)) return `[${v.map(canonicalText).join(',')}]`;
+  return `{${objectKeys(v)
+    .map((k) => `${JSON.stringify(k)}:${canonicalText(v[k] as CanonicalJson)}`)
+    .join(',')}}`;
+}
+
+/**
+ * Relative path + content hash of every document. Equal keys mean equal contracts, so the comparison cannot find
+ * anything (§13.6 fast path). Parsed content is hashed, not bytes: a Windows checkout with CRLF line endings
+ * compares equal to the LF blob in git.
+ */
 function documentKey(set: DocumentSet): string {
   const dir = new URL('.', set.root).href;
   const rows = [...set.documents.values()].map(
-    (d) => `${d.uri.startsWith(dir) ? d.uri.slice(dir.length) : d.uri}\0${d.sha256}`,
+    (d) => `${d.uri.startsWith(dir) ? d.uri.slice(dir.length) : d.uri}\0${sha256Hex(canonicalText(d.value))}`,
   );
   return `${set.root.slice(dir.length)}\n${rows.sort().join('\n')}`;
 }
