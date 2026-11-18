@@ -50,6 +50,8 @@ if (args.has('--check')) {
   process.exit(0);
 }
 
+if (!releasable && !args.has('--dry-run')) process.exit(1);
+
 if (pending.length === 0 && !args.has('--dry-run')) {
   console.log(`Nothing to publish (${version}).`);
   process.exit(0);
