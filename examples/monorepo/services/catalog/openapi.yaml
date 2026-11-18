@@ -1,0 +1,25 @@
+openapi: 3.1.0
+info: { title: Catalog, version: 5.0.0 }
+paths:
+  /products:
+    get:
+      parameters:
+        - { name: q, in: query, schema: { type: string, maxLength: 200 } }
+      responses:
+        '200':
+          description: Products.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required: [sku]
+                  properties:
+                    sku: { type: string }
+                    price: { type: number }
+  /products/beta-search:
+    get:
+      tags: [experimental]
+      responses:
+        '200': { description: Results. }

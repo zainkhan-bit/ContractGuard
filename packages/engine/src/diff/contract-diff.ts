@@ -113,6 +113,7 @@ interface PendingUsage extends SchemaUsage {
 class ContractDiff {
   readonly #out: ContractChange[] = [];
   readonly #usages: PendingUsage[] = [];
+  readonly #maxSchemaPairs: number;
   readonly #differ: SchemaDiffer;
   /** Base security scheme key → candidate key, for schemes that were renamed (§9.4.4). */
   readonly #renamed = new Map<string, string>();
@@ -123,6 +124,7 @@ class ContractDiff {
     options: DiffOptions,
   ) {
     this.#differ = new SchemaDiffer(B.schemas, C.schemas, { maxSchemaPairs: options.limits.maxSchemaPairs });
+    this.#maxSchemaPairs = options.limits.maxSchemaPairs;
   }
 
   run(): DiffResult {
@@ -130,7 +132,9 @@ class ContractDiff {
     this.#securitySchemes();
     this.#operations();
     this.#differ.finalize();
-    for (const u of this.#usages) this.#out.push(...projectUsage(this.#differ, u.pair, u));
+    // Projection work is bounded relative to the comparison budget (default 4 × 250,000 visited pairs).
+    const budget = { remaining: 4 * this.#maxSchemaPairs };
+    for (const u of this.#usages) this.#out.push(...projectUsage(this.#differ, u.pair, u, budget));
     return { changes: sortChanges(this.#out), schemaPairs: this.#differ.pairCount };
   }
 

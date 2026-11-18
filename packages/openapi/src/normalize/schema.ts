@@ -10,6 +10,7 @@ import {
   isJsonNumber,
   jsonEquals,
   parsePointer,
+  pointerSegments,
   schemaNodeId,
   sortUniqueJson,
   sortedMap,
@@ -81,9 +82,15 @@ const ANNOTATION_KEYWORDS = new Set([
  * Builds the schema graph (§7.5, ADR-07). Nodes are identified by source location; `$ref`s
  * become edges. Construction uses a worklist, never recursion.
  */
+interface PendingNode {
+  readonly id: SchemaNodeId;
+  readonly loc: Loc;
+  readonly via: readonly SourceRef[];
+}
+
 export class SchemaGraphBuilder {
   readonly nodes: Map<SchemaNodeId, SchemaNode> = new Map<SchemaNodeId, SchemaNode>();
-  readonly #pending: { readonly id: SchemaNodeId; readonly loc: Loc; readonly via: readonly SourceRef[] }[] = [];
+  readonly #pending: PendingNode[] = [];
   readonly #scheduled = new Set<SchemaNodeId>();
 
   constructor(private readonly ctx: NormalizeContext) {}
@@ -125,9 +132,12 @@ export class SchemaGraphBuilder {
 
   /** Builds every scheduled node (and the nodes they reference). */
   drain(): void {
-    for (let item = this.#pending.shift(); item !== undefined; item = this.#pending.shift()) {
+    // Iterating (not Array#shift, which is O(n) and made this loop quadratic); the array iterator also visits
+    // items #build schedules while the loop runs.
+    for (const item of this.#pending) {
       if (!this.nodes.has(item.id)) this.nodes.set(item.id, this.#build(item.id, item.loc, item.via));
     }
+    this.#pending.length = 0;
   }
 
   #raw(loc: Loc): CanonicalJson | undefined {
@@ -512,6 +522,53 @@ export class SchemaGraphBuilder {
       if (pointer === undefined || !this.ctx.set.documents.has(docUri)) return undefined;
       target = { uri: docUri, pointer };
     }
+    if (this.#raw(target) !== undefined) return target;
+    // Bundlers often write mappings as paths into the dereferenced document, passing through a $ref
+    // (e.g. #/paths/~1x/get/…/schema/allOf/0/… where schema is a $ref). Follow such $refs, as those tools do.
+    const through = this.#throughRefs(target);
+    if (through !== undefined) {
+      this.ctx.report(
+        'CGD-SEM-107',
+        `Discriminator mapping "${value}" only resolves by following a $ref inside the pointer`,
+        child(loc, 'discriminator'),
+      );
+    }
+    return through;
+  }
+
+  /** Resolves a pointer segment by segment, continuing at the target of any `$ref` object on the way. */
+  #throughRefs(start: Loc): Loc | undefined {
+    const segments = pointerSegments(start.pointer);
+    let uri = start.uri;
+    let at: string[] = [];
+    let hops = 0;
+    for (let i = 0; i < segments.length; i++) {
+      const here = this.#raw({ uri, pointer: appendPointer(ROOT_POINTER, ...at) });
+      const segment = segments[i] as string;
+      if (
+        here !== undefined &&
+        isCanonicalObject(here) &&
+        !Object.hasOwn(here, segment) &&
+        typeof here['$ref'] === 'string'
+      ) {
+        if (++hops > this.ctx.limits.maxRefHops) return undefined;
+        let url: URL;
+        try {
+          url = new URL(here['$ref'], uri);
+        } catch {
+          return undefined;
+        }
+        const pointer = parsePointer(decodeURIComponent(url.hash.slice(1)));
+        const docUri = url.href.split('#')[0] as Loc['uri'];
+        if (pointer === undefined || !this.ctx.set.documents.has(docUri)) return undefined;
+        uri = docUri;
+        at = pointerSegments(pointer);
+        i--; // retry this segment at the $ref target
+        continue;
+      }
+      at = [...at, segment];
+    }
+    const target: Loc = { uri, pointer: appendPointer(ROOT_POINTER, ...at) };
     return this.#raw(target) === undefined ? undefined : target;
   }
 }

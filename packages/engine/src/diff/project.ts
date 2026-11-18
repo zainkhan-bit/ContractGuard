@@ -25,14 +25,36 @@ export function hiddenIn(access: PropertyAccess | undefined, direction: Directio
  * Projects pair deltas into ContractChanges for one usage site (§9.7): skips unchanged subtrees,
  * hides direction-invisible properties, and reports each change at its shallowest path.
  */
-export function projectUsage(differ: SchemaDiffer, rootPair: string, usage: SchemaUsage): ContractChange[] {
+export interface ProjectionBudget {
+  /** Schema pairs that may still be visited; shared by all usages of one comparison. */
+  remaining: number;
+}
+
+/**
+ * Projects pair deltas into ContractChanges for one usage site (§9.7). A shared budget bounds the work on
+ * pathological graphs (long reference chains reached from many operations): when it runs out, the usage gets one
+ * `schema.budgetExceeded` change (undetermined) instead of an unbounded walk (NFR-04).
+ */
+export function projectUsage(
+  differ: SchemaDiffer,
+  rootPair: string,
+  usage: SchemaUsage,
+  budget: ProjectionBudget = { remaining: Number.POSITIVE_INFINITY },
+): ContractChange[] {
   differ.finalize();
   const out: ContractChange[] = [];
   const onPath = new Set<string>();
   const path: SchemaPathSegment[] = []; // shared stack; copied only when a change is emitted
-  const visit = (pairKey: string): void => {
+  // Iterative depth-first walk (explicit stack): reference chains can be thousands of schemas deep.
+  const stack: { key: string; d: ReturnType<SchemaDiffer['delta']>; next: number }[] = [];
+  const state = { exhausted: false };
+  const enter = (pairKey: string): boolean => {
     const d = differ.delta(pairKey);
-    if (!d.changed || onPath.has(pairKey)) return;
+    if (!d.changed || onPath.has(pairKey)) return false;
+    if (--budget.remaining < 0) {
+      state.exhausted = true;
+      return false;
+    }
     onPath.add(pairKey);
     let snapshot: readonly SchemaPathSegment[] | undefined;
     for (const ch of d.local) {
@@ -51,14 +73,33 @@ export function projectUsage(differ: SchemaDiffer, rootPair: string, usage: Sche
         causeKey: `${ch.kind}|${where === undefined ? '' : `${where.uri}${where.pointer}`}|${detail}`,
       });
     }
-    for (const child of d.children) {
-      if (hiddenIn(child.access, usage.direction)) continue;
-      path.push(child.segment);
-      visit(child.pair);
-      path.pop();
-    }
-    onPath.delete(pairKey);
+    stack.push({ key: pairKey, d, next: 0 });
+    return true;
   };
-  visit(rootPair);
+  enter(rootPair);
+  while (stack.length > 0 && !state.exhausted) {
+    const top = stack[stack.length - 1] as (typeof stack)[number];
+    const child = top.d.children[top.next++];
+    if (child === undefined) {
+      onPath.delete(top.key);
+      stack.pop();
+      if (stack.length > 0) path.pop(); // the segment that led to this pair
+      continue;
+    }
+    if (hiddenIn(child.access, usage.direction)) continue;
+    path.push(child.segment);
+    if (!enter(child.pair)) path.pop();
+  }
+  if (state.exhausted) {
+    const { detail, access: _access, ...rest } = differ.budgetChange(rootPair, 'projection');
+    const where = rest.candidate.location ?? rest.base.location;
+    return [
+      {
+        ...rest,
+        subject: { operationKey: usage.operationKey, site: usage.site, direction: usage.direction, schemaPath: [] },
+        causeKey: `${rest.kind}|${where === undefined ? '' : `${where.uri}${where.pointer}`}|${detail}`,
+      },
+    ];
+  }
   return out;
 }

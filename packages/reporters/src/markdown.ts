@@ -12,6 +12,7 @@ import {
   verdictText,
   type FindingGroup,
   type RenderOptions,
+  stripControl,
 } from './shared.js';
 
 /** GitHub's limit for a job summary. */
@@ -33,9 +34,21 @@ const ICON: Record<string, string> = {
   informational: 'ℹ️',
 };
 
-/** Escapes text for Markdown table cells and inline use. */
+/**
+ * Escapes spec-derived text for Markdown table cells and inline use: no table breaks, no HTML (a property named
+ * `<!--` must not hide the rest of a PR comment), no control characters (§16.2 T12).
+ */
 function esc(text: string): string {
-  return text.replaceAll('|', '\\|').replaceAll('\n', ' ');
+  return stripControl(text).replaceAll('|', '\\|').replaceAll('<', '&lt;').replaceAll('\n', ' ');
+}
+
+/** An inline code span that a value containing backticks cannot break out of. */
+function code(text: string): string {
+  const t = stripControl(text).replaceAll('\n', ' ');
+  const longest = Math.max(0, ...[...t.matchAll(/`+/g)].map((m) => m[0].length));
+  const fence = '`'.repeat(longest + 1);
+  const pad = longest > 0 ? ' ' : '';
+  return `${fence}${pad}${t}${pad}${fence}`;
 }
 
 /** A location as code text, linked when linkBase is set. Baseline locations are never linked (other revision). */
@@ -43,7 +56,7 @@ function loc(ref: CompatibilityFinding['location']['anchor'] | undefined, o: Ren
   if (ref === undefined) return '';
   const text = locationText(ref, o.srcRoot);
   const link = linkable ? locationLink(ref, o) : undefined;
-  return link === undefined ? `\`${text}\`` : `[\`${text}\`](${link})`;
+  return link === undefined ? code(text) : `[${code(text)}](${link})`;
 }
 
 function renderGroup(g: FindingGroup, o: RenderOptions): string {
@@ -54,7 +67,7 @@ function renderGroup(g: FindingGroup, o: RenderOptions): string {
   lines.push(esc(f.message));
   lines.push('');
   const change = valueChange(f);
-  if (change !== undefined) lines.push(`- **Change:** \`${esc(change)}\``);
+  if (change !== undefined) lines.push(`- **Change:** ${code(change)}`);
   lines.push(`- **Why:** ${esc(f.explanation)}`);
   const ops = operationsOf(g.findings);
   const shown = ops.slice(0, 10);
@@ -84,7 +97,7 @@ interface Section {
 function diagnosticsText(diagnostics: readonly Diagnostic[], o: RenderOptions): string {
   return diagnostics
     .map((d) => {
-      const where = d.location === undefined ? '' : ` \`${locationText(d.location, o.srcRoot)}\``;
+      const where = d.location === undefined ? '' : ` ${code(locationText(d.location, o.srcRoot))}`;
       return `- \`${d.code}\` ${d.severity}${d.side === undefined ? '' : ` (${d.side})`}:${where} ${esc(d.message)}${d.hint === undefined ? '' : ` — ${esc(d.hint)}`}`;
     })
     .join('\n');
@@ -141,10 +154,10 @@ function header(r: AnalysisResult, o: MarkdownOptions): string {
   const side = (s: AnalysisResult['base']): string =>
     s === undefined
       ? '_not loaded_'
-      : `${esc(s.revision ?? '')}${s.revision === undefined ? '' : ' '}\`${displayPath(s.rootUri, o.srcRoot)}\` (OpenAPI ${s.specVersion}, ${String(s.operationCount)} operations)`;
+      : `${esc(s.revision ?? '')}${s.revision === undefined ? '' : ' '}${code(displayPath(s.rootUri, o.srcRoot))} (OpenAPI ${s.specVersion}, ${String(s.operationCount)} operations)`;
   const sum = r.summary;
   const lines = [
-    `## ContractGuard · \`${esc(r.specId)}\``,
+    `## ContractGuard · ${code(r.specId)}`,
     '',
     `**${icon} ${verdictText(r)}**${r.status === 'completed-degraded' ? ' _(degraded: invalid input was tolerated)_' : ''}`,
     '',

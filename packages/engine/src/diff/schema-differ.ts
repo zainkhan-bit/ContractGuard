@@ -95,12 +95,26 @@ function componentName(edge: SchemaEdge): string | undefined {
  * Compares schema pairs coinductively with a shared memo (§9.6). Call `compare` for every usage root,
  * then `finalize` once, then read deltas with `delta`.
  */
+/** Nested compare() calls kept on the call stack; deeper pairs go to a worklist. */
+const MAX_RECURSION = 256;
+
+/** Result of pairing the branches of a composition. */
+interface BranchMatch {
+  pairs: [number, number, string][];
+  removed: number[];
+  added: number[];
+  ambiguous: boolean;
+}
+
 export class SchemaDiffer {
   readonly base: SchemaSide;
   readonly candidate: SchemaSide;
   readonly #memo = new Map<string, PairDelta>();
   readonly #options: SchemaDifferOptions;
   #finalized = false;
+  /** Current recursion depth of compare(); pairs deeper than MAX_RECURSION are deferred to a worklist. */
+  #depth = 0;
+  readonly #deferred: { d: PairDelta; b: SchemaNodeId; c: SchemaNodeId }[] = [];
 
   constructor(base: SchemaGraph, candidate: SchemaGraph, options: SchemaDifferOptions) {
     this.base = new SchemaSide(base);
@@ -114,6 +128,18 @@ export class SchemaDiffer {
 
   delta(key: string): PairDelta {
     return this.#memo.get(key) as PairDelta;
+  }
+
+  /** A `schema.budgetExceeded` change located at the two schemas of a pair. */
+  budgetChange(key: string, limit: string): LocalChange {
+    const [b, c] = key.split('|') as [SchemaNodeId, SchemaNodeId];
+    return {
+      kind: 'schema.budgetExceeded',
+      facts: { limit },
+      base: located(this.base.node(b)),
+      candidate: located(this.candidate.node(c)),
+      detail: limit,
+    };
   }
 
   /** Compares a base node with a candidate node and returns the pair key. */
@@ -136,8 +162,26 @@ export class SchemaDiffer {
       return key;
     }
     this.#memo.set(key, d);
-    this.#comparePair(d, this.base.view(b), this.candidate.view(c));
+    // Callers only need the pair key (results are read after finalize()), so very deep $ref chains are
+    // compared from a worklist instead of the call stack: no stack overflow, identical results (§16.2 T2).
+    if (this.#depth >= MAX_RECURSION) {
+      this.#deferred.push({ d, b, c });
+      return key;
+    }
+    this.#run(d, b, c);
+    if (this.#depth === 0) {
+      for (let t = this.#deferred.pop(); t !== undefined; t = this.#deferred.pop()) this.#run(t.d, t.b, t.c);
+    }
     return key;
+  }
+
+  #run(d: PairDelta, b: SchemaNodeId, c: SchemaNodeId): void {
+    this.#depth++;
+    try {
+      this.#comparePair(d, this.base.view(b), this.candidate.view(c));
+    } finally {
+      this.#depth--;
+    }
   }
 
   /** Marks every pair from which a local change is reachable (reverse reachability, linear time). */
@@ -557,17 +601,24 @@ export class SchemaDiffer {
     if (bl.length === 0 && cl.length === 0) return;
     const hasDiscriminator = B.discriminator !== undefined || C.discriminator !== undefined;
     const limit = this.#options.maxBranches ?? 64;
+    let m: BranchMatch | undefined;
     if (bl.length > limit || cl.length > limit) {
-      push({
-        kind: 'schema.compositionUnanalyzable',
-        facts: { reason: `more than ${limit} ${kind} branches` },
-        base: located(B),
-        candidate: located(C),
-        detail: kind,
-      });
-      return;
+      // Too many branches for similarity matching, but exact structural matching is linear: identical branch
+      // sets are unchanged, and pure additions or pure removals are precise. Only a mix (where a branch may have
+      // been modified) cannot be analysed.
+      m = this.#matchExact(bl, cl, B);
+      if (m === undefined) {
+        push({
+          kind: 'schema.compositionUnanalyzable',
+          facts: { reason: `more than ${limit} ${kind} branches` },
+          base: located(B),
+          candidate: located(C),
+          detail: kind,
+        });
+        return;
+      }
     }
-    const m = this.#matchBranches(bl, cl, B, C);
+    m ??= this.#matchBranches(bl, cl, B, C);
     for (const [i, j, matchKey] of m.pairs) {
       d.children.push({
         segment: { kind: 'variant', composition: kind, matchKey },
@@ -620,13 +671,31 @@ export class SchemaDiffer {
     );
   }
 
+  /**
+   * Exact matching by structural fingerprint for large compositions. Returns undefined when branches were both
+   * added and removed (a modification cannot be told apart from a replacement without similarity matching).
+   */
+  #matchExact(bl: readonly SchemaEdge[], cl: readonly SchemaEdge[], B: SchemaNode): BranchMatch | undefined {
+    const free = new Map<string, number[]>();
+    cl.forEach((e, j) => {
+      const fp = this.candidate.fingerprint(e.target);
+      free.set(fp, [...(free.get(fp) ?? []), j]);
+    });
+    const pairs: [number, number, string][] = [];
+    const removed: number[] = [];
+    bl.forEach((e, i) => {
+      const js = free.get(this.base.fingerprint(e.target));
+      const j = js?.shift();
+      if (j === undefined) removed.push(i);
+      else pairs.push([i, j, this.#branchKey(this.base, e, B, i)]);
+    });
+    const added = [...free.values()].flat().sort((x, y) => x - y);
+    if (removed.length > 0 && added.length > 0) return undefined;
+    return { pairs, removed, added, ambiguous: false };
+  }
+
   /** Deterministic branch matching (§11.6). */
-  #matchBranches(
-    bl: readonly SchemaEdge[],
-    cl: readonly SchemaEdge[],
-    B: SchemaNode,
-    C: SchemaNode,
-  ): { pairs: [number, number, string][]; removed: number[]; added: number[]; ambiguous: boolean } {
+  #matchBranches(bl: readonly SchemaEdge[], cl: readonly SchemaEdge[], B: SchemaNode, C: SchemaNode): BranchMatch {
     const freeB = new Set(bl.map((_, i) => i));
     const freeC = new Set(cl.map((_, j) => j));
     const pairs: [number, number, string][] = [];

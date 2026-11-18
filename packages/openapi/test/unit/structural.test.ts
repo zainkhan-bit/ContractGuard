@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { HyperjumpSpecValidator, toPlainJson } from '../../src/validate/structural.js';
+import { HyperjumpSpecValidator, toPlainJson, withoutRefSiblings } from '../../src/validate/structural.js';
 import { codes, parseOk } from '../helpers.js';
 
 const validator = new HyperjumpSpecValidator();
@@ -30,6 +30,27 @@ paths:
       'oas31',
     );
     expect(v31.diagnostics).toEqual([]);
+  });
+
+  it('3.0: keywords next to $ref are ignored, as the specification says, not structural errors', async () => {
+    // Found by the real-world corpus (Twilio): `{$ref, description}` is common and the official schema rejects it.
+    const doc = parseOk(`openapi: 3.0.3
+info: {title: t, version: '1'}
+paths: {}
+components:
+  schemas:
+    E: {type: string, enum: [a]}
+    O:
+      type: object
+      properties:
+        s: {$ref: '#/components/schemas/E', description: The status, nullable: true, type: string}
+        "$ref": {type: string}
+`);
+    expect((await validator.validate(doc, 'oas30')).diagnostics).toEqual([]);
+    expect(withoutRefSiblings({ a: [{ $ref: '#/x', description: 'd' }], b: { $ref: { type: 'string' } } })).toEqual({
+      a: [{ $ref: '#/x' }],
+      b: { $ref: { type: 'string' } },
+    });
   });
 
   it('reports precise locations for invalid documents', async () => {

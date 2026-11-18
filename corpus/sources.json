@@ -1,0 +1,28 @@
+{
+  "$comment": "Public OpenAPI 3.x specifications with git history. Each source yields up to `pairs` consecutive version pairs (newest first). `path` is the root document; `scope` (optional) is the directory whose changes define a version for split specifications.",
+  "sources": [
+    { "id": "openai", "repo": "openai/openai-openapi", "path": "openapi.yaml", "pairs": 50 },
+    { "id": "discord", "repo": "discord/discord-api-spec", "path": "specs/openapi.json", "pairs": 50 },
+    { "id": "pagerduty", "repo": "PagerDuty/api-schema", "path": "reference/REST/openapiv3.json", "pairs": 50 },
+    { "id": "twilio", "repo": "twilio/twilio-oai", "path": "spec/yaml/twilio_api_v2010.yaml", "pairs": 50 },
+    { "id": "box", "repo": "box/box-openapi", "path": "openapi.json", "pairs": 50 },
+    { "id": "adyen-checkout", "repo": "Adyen/adyen-openapi", "path": "json/CheckoutService-v71.json", "pairs": 50 },
+    { "id": "asana", "repo": "Asana/openapi", "path": "defs/asana_oas.yaml", "pairs": 50 },
+    { "id": "plaid", "repo": "plaid/plaid-openapi", "path": "2020-09-14.yml", "pairs": 50 },
+    {
+      "id": "digitalocean",
+      "repo": "digitalocean/openapi",
+      "path": "specification/DigitalOcean-public.v2.yaml",
+      "scope": "specification",
+      "pairs": 50
+    },
+    { "id": "cloudflare", "repo": "cloudflare/api-schemas", "path": "openapi.yaml", "pairs": 25 },
+    {
+      "id": "github",
+      "repo": "github/rest-api-description",
+      "path": "descriptions/api.github.com/api.github.com.yaml",
+      "pairs": 25
+    },
+    { "id": "stripe", "repo": "stripe/openapi", "path": "openapi/spec3.json", "pairs": 10 }
+  ]
+}

@@ -36,6 +36,7 @@ export type DiagnosticCode =
   | 'CGD-SPEC-101'
   | 'CGD-SPEC-105'
   | 'CGD-SPEC-106'
+  | 'CGD-SPEC-107'
   | 'CGD-SPEC-110'
   | 'CGD-REF-001'
   | 'CGD-REF-002'
@@ -52,6 +53,7 @@ export type DiagnosticCode =
   | 'CGD-SEM-004'
   | 'CGD-SEM-005'
   | 'CGD-SEM-106'
+  | 'CGD-SEM-107'
   | 'CGD-SEM-120'
   | 'CGD-SEM-121'
   | 'CGD-UNSUP-101'
@@ -113,6 +115,11 @@ export const DIAGNOSTIC_CODES: Readonly<Record<DiagnosticCode, DiagnosticCodeInf
   },
   'CGD-SPEC-105': { category: 'specification', severity: 'warning', title: 'Unknown HTTP method key ignored' },
   'CGD-SPEC-106': { category: 'specification', severity: 'warning', title: 'Header parameter ignored by OpenAPI' },
+  'CGD-SPEC-107': {
+    category: 'specification',
+    severity: 'warning',
+    title: 'Content entry that is not a media type ignored',
+  },
   'CGD-SPEC-110': { category: 'specification', severity: 'warning', title: 'nullable without type has no effect' },
   'CGD-REF-001': { category: 'reference', severity: 'error', title: 'Unresolved reference' },
   'CGD-REF-002': { category: 'reference', severity: 'error', title: 'Invalid JSON pointer in reference' },
@@ -129,6 +136,7 @@ export const DIAGNOSTIC_CODES: Readonly<Record<DiagnosticCode, DiagnosticCodeInf
   'CGD-SEM-004': { category: 'semantic', severity: 'error', title: 'Unknown security scheme' },
   'CGD-SEM-005': { category: 'semantic', severity: 'error', title: 'Discriminator mapping target missing' },
   'CGD-SEM-106': { category: 'semantic', severity: 'warning', title: 'Required property not defined in closed schema' },
+  'CGD-SEM-107': { category: 'semantic', severity: 'warning', title: 'Discriminator mapping resolved through a $ref' },
   'CGD-SEM-120': {
     category: 'semantic',
     severity: 'warning',

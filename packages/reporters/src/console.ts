@@ -9,6 +9,7 @@ import {
   valueChange,
   type FindingGroup,
   type RenderOptions,
+  stripControl,
 } from './shared.js';
 
 export interface ConsoleOptions extends RenderOptions {
@@ -60,6 +61,8 @@ export function renderConsole(results: readonly AnalysisResult[], o: ConsoleOpti
   const bold = (s: string): string => paint('1', s);
   const dim = (s: string): string => paint('2', s);
   const out: string[] = [];
+  // Spec-derived text is shown with control characters escaped (§16.2 T12).
+  const t = stripControl;
 
   for (const r of results) {
     out.push(bold(`ContractGuard ${r.tool.version} · perspective: ${r.perspective} · spec: ${r.specId}`));
@@ -70,7 +73,7 @@ export function renderConsole(results: readonly AnalysisResult[], o: ConsoleOpti
       out.push(
         s === undefined
           ? `${name} ${paint('31', 'not loaded')}`
-          : `${name} ${s.revision === undefined ? '' : `${s.revision} `}${displayPath(s.rootUri, o.srcRoot)} (OpenAPI ${s.specVersion}, ${String(s.operationCount)} operations)`,
+          : `${name} ${s.revision === undefined ? '' : `${t(s.revision)} `}${t(displayPath(s.rootUri, o.srcRoot))} (OpenAPI ${s.specVersion}, ${String(s.operationCount)} operations)`,
       );
     }
     if (r.status === 'completed-degraded') {
@@ -94,20 +97,20 @@ export function renderConsole(results: readonly AnalysisResult[], o: ConsoleOpti
         const f = g.lead;
         if (brief) {
           out.push(
-            `${paint(STYLE[classification].code, STYLE[classification].mark)} ${f.ruleId}  ${wrap(f.message, width - 14, ' '.repeat(14))}`,
+            `${paint(STYLE[classification].code, STYLE[classification].mark)} ${f.ruleId}  ${wrap(t(f.message), width - 14, ' '.repeat(14))}`,
           );
           continue;
         }
         out.push(head(g));
-        out.push(`  ${dim('what:')}     ${wrap(f.message, width, ' '.repeat(12))}`);
+        out.push(`  ${dim('what:')}     ${wrap(t(f.message), width, ' '.repeat(12))}`);
         const change = valueChange(f);
-        if (change !== undefined) out.push(`  ${dim('change:')}   ${wrap(change, width, ' '.repeat(12))}`);
-        out.push(`  ${dim('where:')}    ${locationText(f.location.anchor, o.srcRoot)}`);
-        const ops = operationsOf(g.findings);
+        if (change !== undefined) out.push(`  ${dim('change:')}   ${wrap(t(change), width, ' '.repeat(12))}`);
+        out.push(`  ${dim('where:')}    ${t(locationText(f.location.anchor, o.srcRoot))}`);
+        const ops = operationsOf(g.findings).map(t);
         out.push(`  ${dim('affects:')}  ${ops.slice(0, 3).join(`\n${' '.repeat(12)}`)}`);
         if (ops.length > 3) out.push(`${' '.repeat(12)}+ ${String(ops.length - 3)} more`);
-        out.push(`  ${dim('why:')}      ${wrap(f.explanation, width, ' '.repeat(12))}`);
-        out.push(`  ${dim('fix:')}      ${wrap(f.resolution, width, ' '.repeat(12))}`);
+        out.push(`  ${dim('why:')}      ${wrap(t(f.explanation), width, ' '.repeat(12))}`);
+        out.push(`  ${dim('fix:')}      ${wrap(t(f.resolution), width, ' '.repeat(12))}`);
         out.push('');
       }
       if (groups.length > limit)
@@ -121,8 +124,8 @@ export function renderConsole(results: readonly AnalysisResult[], o: ConsoleOpti
     }
 
     for (const d of r.diagnostics) {
-      const where = d.location === undefined ? '' : `${locationText(d.location, o.srcRoot)}  `;
-      out.push(`${paint(d.severity === 'error' ? '31' : '33', d.severity)}  ${d.code}  ${where}${d.message}`);
+      const where = d.location === undefined ? '' : `${t(locationText(d.location, o.srcRoot))}  `;
+      out.push(`${paint(d.severity === 'error' ? '31' : '33', d.severity)}  ${d.code}  ${where}${t(d.message)}`);
     }
     if (r.diagnostics.length > 0) out.push('');
 

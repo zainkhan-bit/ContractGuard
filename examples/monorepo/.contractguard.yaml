@@ -1,0 +1,23 @@
+# One configuration for three services. In the GitHub Action, git:@base: is the pull request's base commit;
+# locally run: contractguard check --base-ref origin/main
+version: 1
+specs:
+  - id: users
+    base: 'git:@base:services/users/openapi.yaml'
+    candidate: services/users/openapi.yaml
+  - id: billing
+    base: 'git:@base:services/billing/openapi.yaml'
+    candidate: services/billing/openapi.yaml
+  - id: catalog
+    base: 'git:@base:services/catalog/openapi.yaml'
+    candidate: services/catalog/openapi.yaml
+policy:
+  failOn: [breaking]
+filters:
+  exclude: ['*:/internal/**']
+  excludeTags: [experimental]
+rules:
+  ignore:
+    - rule: CG-RES-006
+      operation: 'GET /invoices/{id}'
+      reason: 'Billing clients treat unknown invoice states as "pending" (contract test BILL-17)'

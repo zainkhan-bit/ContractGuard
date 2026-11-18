@@ -1,0 +1,20 @@
+openapi: 3.0.3
+info: { title: Billing, version: 1.4.0 }
+paths:
+  /invoices/{id}:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: string } }
+    get:
+      responses:
+        '200':
+          description: An invoice.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [id, state, amount]
+                properties:
+                  id: { type: string }
+                  state: { type: string, enum: [draft, open, paid] }
+                  amount: { type: integer, minimum: 0 }
+                  memo: { type: string, nullable: true }

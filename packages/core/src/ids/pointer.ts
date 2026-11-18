@@ -9,11 +9,13 @@ export const ROOT_POINTER: JsonPointer = '#' as JsonPointer;
 
 /** Escapes one reference token per RFC 6901 ("~" → "~0", "/" → "~1"). */
 export function escapeToken(token: string): string {
+  if (!token.includes('~') && !token.includes('/')) return token; // the common case, without allocating
   return token.replaceAll('~', '~0').replaceAll('/', '~1');
 }
 
 /** Unescapes one reference token. Returns undefined for invalid escape sequences ("~2", trailing "~"). */
 export function unescapeToken(token: string): string | undefined {
+  if (!token.includes('~')) return token; // the common case, without a regular expression
   if (/~(?![01])/.test(token)) return undefined;
   return token.replaceAll('~1', '/').replaceAll('~0', '~');
 }

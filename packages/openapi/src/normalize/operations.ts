@@ -256,7 +256,9 @@ export class OperationNormalizer {
       const key = mediaTypeKey(raw);
       const loc = child(ownerLoc, 'content', raw);
       if (key === undefined) {
-        this.ctx.report('CGD-SPEC-005', `Invalid media type "${raw}"`, loc);
+        // Not a media type at all (e.g. `examples` misplaced into `content`): it describes no format a consumer
+        // could use, so it is ignored with a warning instead of rejecting the whole document.
+        this.ctx.report('CGD-SPEC-107', `"${raw}" is not a media type; the entry is ignored`, loc);
         continue;
       }
       if (seen.has(key)) {

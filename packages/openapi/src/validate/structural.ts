@@ -55,6 +55,28 @@ export function toPlainJson(value: CanonicalJson): unknown {
   return out;
 }
 
+/**
+ * OpenAPI 3.0: properties next to a `$ref` "SHALL be ignored", yet the official JSON Schema rejects them, so the
+ * extremely common `{$ref, description}` would make the whole document invalid. Validate the document as the
+ * specification reads it: Reference Objects without their siblings (the resolver warns about them, CGD-SPEC-101).
+ */
+export function withoutRefSiblings(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(withoutRefSiblings);
+  if (value === null || typeof value !== 'object') return value;
+  const o = value as Record<string, unknown>;
+  if (typeof o['$ref'] === 'string') return { $ref: o['$ref'] };
+  const out: Record<string, unknown> = {};
+  for (const key of Object.keys(o)) {
+    Object.defineProperty(out, key, {
+      value: withoutRefSiblings(o[key]),
+      enumerable: true,
+      writable: true,
+      configurable: true,
+    });
+  }
+  return out;
+}
+
 const KEYWORD_HINTS: Readonly<Record<string, string>> = {
   required: 'a required property is missing',
   additionalProperties: 'an unknown property is present',
@@ -98,7 +120,12 @@ export class HyperjumpSpecValidator implements SpecValidator {
 
   async validate(doc: ParsedDocument, dialect: OasDialect, side?: 'base' | 'candidate'): Promise<StageResult<void>> {
     const validate = await this.#validator(dialect);
-    const output = await validate(SCHEMA_URIS[dialect], toPlainJson(doc.value), 'BASIC');
+    const instance = toPlainJson(doc.value);
+    const output = await validate(
+      SCHEMA_URIS[dialect],
+      dialect === 'oas30' ? withoutRefSiblings(instance) : instance,
+      'BASIC',
+    );
     if (output.valid) return stageOk(undefined);
     return { diagnostics: this.#toDiagnostics(doc, output.errors ?? [], side) };
   }

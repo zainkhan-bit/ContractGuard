@@ -13,3 +13,12 @@ coverage/
 .vscode/*
 !.vscode/extensions.json
 integrations/*/build/
+
+# VitePress output and cache
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+release/
+corpus/.cache/
+corpus/results/
+# Report files written by local runs
+.contractguard/reports/

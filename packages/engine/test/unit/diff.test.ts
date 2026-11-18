@@ -341,3 +341,35 @@ components:
     ]);
   });
 });
+
+describe('diffContracts: resource bounds (§16.2 T2, T16)', () => {
+  /** A response schema at the head of a chain of `n` schemas, each referencing the next. */
+  const chain = (n: number, leaf: string, ops = 1): string => {
+    const schemas = Array.from(
+      { length: n },
+      (_, i) =>
+        `    S${String(i)}: {type: object, properties: {next: ${i === n - 1 ? leaf : `{$ref: '#/components/schemas/S${String(i + 1)}'}`}}}`,
+    ).join('\n');
+    const paths = Array.from(
+      { length: ops },
+      (_, i) =>
+        `  /x${String(i)}:\n    get:\n      responses: {'200': {description: ok, content: {application/json: {schema: {$ref: '#/components/schemas/S0'}}}}}`,
+    ).join('\n');
+    return `${HEAD31}paths:\n${paths}\ncomponents:\n  schemas:\n${schemas}\n`;
+  };
+
+  it('compares a 3,000-schema reference chain without exhausting the call stack', async () => {
+    // Found by the NFR-03 benchmark: deep chains overflowed the recursive comparison (internal error).
+    const changes = await diff(chain(3000, '{type: string}'), chain(3000, '{type: integer}'));
+    expect(changes).toHaveLength(1);
+    expect(changes[0]?.kind).toBe('schema.typeChanged');
+    expect(changes[0]?.subject.schemaPath).toHaveLength(3000);
+  });
+
+  it('bounds projection work and reports the rest as budget exceeded', async () => {
+    const changes = await diff(chain(40, '{type: string}', 10), chain(40, '{type: integer}', 10), 50);
+    const kinds = changes.map((c) => `${c.kind}${c.kind === 'schema.budgetExceeded' ? `:${c.facts.limit}` : ''}`);
+    expect(kinds).toContain('schema.budgetExceeded:projection');
+    expect(kinds).toContain('schema.typeChanged');
+  });
+});

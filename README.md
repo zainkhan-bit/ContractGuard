@@ -4,7 +4,7 @@
 
 ContractGuard compares a baseline and a candidate API specification and tells you, for every change, **what changed**, **whether it is compatible under a named compatibility perspective**, **how certain that conclusion is**, and **exactly where the evidence lives** in your source files.
 
-> **Status: pre-alpha — under active construction.** The CLI works end to end (see below) but is not published to npm yet. The architecture is complete and approved ([blueprint](docs/architecture/BLUEPRINT.md)); implementation proceeds milestone by milestone (see [roadmap](docs/architecture/BLUEPRINT.md#19-implementation-roadmap)).
+> **Status: 1.0 release candidate.** The CLI, the GitHub Action and the libraries are complete; the first npm release is pending. Documentation: https://zainkhan-bit.github.io/ContractGuard/ The architecture is complete and approved ([blueprint](docs/architecture/BLUEPRINT.md)); implementation proceeds milestone by milestone (see [roadmap](docs/architecture/BLUEPRINT.md#19-implementation-roadmap)).
 
 ## What makes it different
 
@@ -27,7 +27,7 @@ ContractGuard compares a baseline and a candidate API specification and tells yo
 | M6        | Reporters (console, Markdown, JSON, SARIF)                  | ✅ Done |
 | M7        | CLI                                                         | ✅ Done |
 | M8        | GitHub Action                                               | ✅ Done |
-| M9        | 1.0 production readiness                                    | ⏳ Next |
+| M9        | 1.0 production readiness                                    | ✅ Done |
 
 ## Try the CLI (from a clone)
 

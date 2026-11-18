@@ -1,0 +1,97 @@
+# Release automation (§20.5).
+#  1. On every push to main, Changesets opens or updates the "Version Packages" pull request.
+#  2. Merging that pull request bumps the versions; the next run sees an unpublished version and runs `publish`,
+#     which waits for approval in the protected `release` environment, re-runs the full test suite, publishes to
+#     npm with provenance, tags vX.Y.Z (and moves vX for the GitHub Action) and creates the GitHub Release.
+name: Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  version:
+    name: Version Packages PR
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      pending: ${{ steps.check.outputs.pending }}
+      version: ${{ steps.check.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Create or update the Version Packages pull request
+        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        with:
+          version: pnpm run version-packages
+          title: 'Release: version packages'
+          commit: 'chore(release): version packages'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - id: check
+        name: Is there an unpublished version?
+        run: node scripts/release.mjs --check
+
+  publish:
+    name: Publish ${{ needs.version.outputs.version }}
+    needs: version
+    if: needs.version.outputs.pending == 'true'
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: write # tags and the GitHub Release
+      id-token: write # npm trusted publishing and provenance
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      - name: npm ≥ 11.5.1 (trusted publishing)
+        run: npm install -g npm@11
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm test
+      - run: pnpm run smoke:pack
+      - name: Action bundle matches the release
+        run: |
+          pnpm --filter @zainkhan-bit/contractguard-github-action run bundle
+          git diff --exit-code -- integrations/github-action/dist
+      - name: Publish, tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/release.mjs
+        env:
+          # Only needed until trusted publishing is configured for every package on npmjs.com.
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.version.outputs.version }}
+        run: |
+          awk "/^## ${VERSION//./\\.}\$/{f=1;next} /^## /{f=0} f" packages/cli/CHANGELOG.md > release/notes.md
+          gh release create "v${VERSION}" release/*.tgz release/manifest.json --title "ContractGuard ${VERSION}" --notes-file release/notes.md --verify-tag
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release-${{ needs.version.outputs.version }}
+          path: release/

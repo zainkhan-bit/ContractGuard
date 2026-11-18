@@ -1,3 +1,4 @@
+import { isSecretContext, REDACTED, safeParams, safeValue } from './sanitize.js';
 import {
   DEFAULT_CLASSIFICATION_POLICY,
   InternalError,
@@ -249,11 +250,12 @@ export function evaluate(
         ...(op === undefined ? {} : { method: op.method, path: op.path }),
       };
       // Rules refer to operations by key (`GET /users/{}`); messages show the declared path.
-      const params = {
+      const secret = isSecretContext(change.kind, change.subject);
+      const params = safeParams({
         ...a.params,
         ...(op !== undefined && 'operation' in a.params ? { operation: `${op.method} ${op.path}` } : {}),
         where: describeSubject(subject),
-      };
+      });
       const evidence: EvidenceItem[] = [...a.evidence];
       if (change.base.location !== undefined) {
         evidence.push({ kind: 'base-source', text: 'Baseline definition', location: change.base.location });
@@ -294,8 +296,10 @@ export function evaluate(
           ...(change.candidate.location === undefined ? {} : { candidate: change.candidate.location }),
           anchor: change.candidate.location ?? change.base.location ?? fallbackAnchor,
         },
-        ...(change.base.value === undefined ? {} : { previous: change.base.value }),
-        ...(change.candidate.value === undefined ? {} : { current: change.candidate.value }),
+        ...(change.base.value === undefined ? {} : { previous: secret ? REDACTED : safeValue(change.base.value) }),
+        ...(change.candidate.value === undefined
+          ? {}
+          : { current: secret ? REDACTED : safeValue(change.candidate.value) }),
         message: interpolate(rule.messages.message, params),
         explanation: interpolate(rule.messages.explanation, params),
         evidence,

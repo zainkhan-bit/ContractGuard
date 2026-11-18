@@ -3,11 +3,13 @@
   "type": "object",
   "properties": {
     "$schema": {
+      "description": "JSON Schema URL for editor support; ignored by ContractGuard.",
       "type": "string"
     },
     "version": {
       "type": "number",
-      "const": 1
+      "const": 1,
+      "description": "Configuration format version. Always 1."
     },
     "specs": {
       "minItems": 1,
@@ -17,15 +19,18 @@
         "properties": {
           "id": {
             "type": "string",
-            "pattern": "^[a-z0-9][a-z0-9-]{0,62}$"
+            "pattern": "^[a-z0-9][a-z0-9-]{0,62}$",
+            "description": "Name of this comparison; also the report file name."
           },
           "candidate": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "description": "The new version: a path, git:<ref>:<path>, snapshot:<file> or an https URL."
           },
           "base": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "description": "The version to compare against, e.g. git:origin/main:openapi.yaml or git:@base:openapi.yaml in CI."
           }
         },
         "required": [
@@ -34,12 +39,15 @@
           "base"
         ],
         "additionalProperties": false
-      }
+      },
+      "description": "The comparisons to run, each with a base and a candidate."
     },
     "compatibility": {
+      "description": "Compatibility model.",
       "type": "object",
       "properties": {
         "perspective": {
+          "description": "Whose compatibility is checked. provider-backward (default): can existing consumers keep working against the new provider?",
           "type": "string",
           "enum": [
             "provider-backward"
@@ -52,6 +60,7 @@
       "type": "object",
       "properties": {
         "failOn": {
+          "description": "Classifications that fail the check. Default: [breaking].",
           "type": "array",
           "items": {
             "type": "string",
@@ -65,6 +74,7 @@
           }
         },
         "minSeverity": {
+          "description": "Findings below this severity never fail the check. Default: low.",
           "type": "string",
           "enum": [
             "critical",
@@ -75,6 +85,7 @@
           ]
         },
         "undetermined": {
+          "description": "Findings whose compatibility cannot be decided: fail the check, show for review (default) or hide.",
           "type": "string",
           "enum": [
             "fail",
@@ -89,9 +100,11 @@
       "type": "object",
       "properties": {
         "strictResponseValidation": {
+          "description": "Assume consumers reject unknown response properties (new response properties become potentially breaking). Default: false.",
           "type": "boolean"
         },
         "constraintTightening": {
+          "description": "Classification of tighter request constraints such as a lower maximum or a stricter pattern. Default: potentially-breaking.",
           "type": "string",
           "enum": [
             "potentially-breaking",
@@ -99,6 +112,7 @@
           ]
         },
         "responseEnumAdditions": {
+          "description": "Classification of new enum values in responses. Default: potentially-breaking.",
           "type": "string",
           "enum": [
             "potentially-breaking",
@@ -107,6 +121,7 @@
           ]
         },
         "removedRequestParameters": {
+          "description": "Classification of removed optional request parameters that consumers may still send. Default: non-breaking.",
           "type": "string",
           "enum": [
             "non-breaking",
@@ -114,6 +129,7 @@
           ]
         },
         "closedResponseAdditions": {
+          "description": "Classification of new properties in responses declared closed (additionalProperties: false). Default: potentially-breaking.",
           "type": "string",
           "enum": [
             "potentially-breaking",
@@ -121,18 +137,22 @@
           ]
         },
         "honorExtensibleEnum": {
+          "description": "Treat x-extensible-enum (and enums marked extensible) as open: new values are non-breaking. Default: true.",
           "type": "boolean"
         },
         "includeEquivalentChanges": {
+          "description": "Report changes that only alter the representation, e.g. nullable: true ↔ type: [.., null]. Default: false.",
           "type": "boolean"
         },
         "allowInvalidSpec": {
+          "description": "Continue past specification errors; the run is marked degraded. Default: false.",
           "type": "boolean"
         },
         "limits": {
           "type": "object",
           "properties": {
             "maxDocumentBytes": {
+              "description": "Largest single document, e.g. 20MB (default).",
               "anyOf": [
                 {
                   "type": "integer",
@@ -146,6 +166,7 @@
               ]
             },
             "maxTotalBytes": {
+              "description": "Total size of all documents of one side. Default: 100MB.",
               "anyOf": [
                 {
                   "type": "integer",
@@ -159,26 +180,31 @@
               ]
             },
             "maxDocuments": {
+              "description": "Documents reachable through $ref per side. Default: 500.",
               "type": "integer",
               "exclusiveMinimum": 0,
               "maximum": 100000
             },
             "maxDepth": {
+              "description": "Maximum nesting depth of a document. Default: 256.",
               "type": "integer",
               "exclusiveMinimum": 0,
               "maximum": 10000
             },
             "maxRefHops": {
+              "description": "Maximum length of a $ref chain. Default: 64.",
               "type": "integer",
               "exclusiveMinimum": 0,
               "maximum": 10000
             },
             "maxSchemaPairs": {
+              "description": "Schema pairs compared before the rest becomes undetermined. Default: 250000.",
               "type": "integer",
               "exclusiveMinimum": 0,
               "maximum": 100000000
             },
             "timeoutMs": {
+              "description": "Time limit per spec in milliseconds. Default: 120000.",
               "type": "integer",
               "exclusiveMinimum": 0,
               "maximum": 3600000
@@ -193,6 +219,7 @@
       "type": "object",
       "properties": {
         "disable": {
+          "description": "Rule ids to turn off completely.",
           "type": "array",
           "items": {
             "type": "string",
@@ -251,26 +278,32 @@
             "type": "object",
             "properties": {
               "rule": {
+                "description": "Silence this rule (optionally narrowed by operation and path).",
                 "type": "string",
                 "pattern": "^CG-[A-Z]+-\\d{3}$"
               },
               "fingerprint": {
+                "description": "Silence exactly one finding (fingerprints are stable across runs).",
                 "type": "string",
                 "pattern": "^[0-9a-f]{32}$"
               },
               "operation": {
+                "description": "Limit the ignore to one operation, e.g. \"GET /users/{id}\".",
                 "type": "string",
                 "pattern": "^[A-Za-z]+ \\/\\S*$"
               },
               "path": {
+                "description": "Schema path the ignore applies to, e.g. $.items[].name.",
                 "type": "string",
                 "minLength": 1
               },
               "reason": {
                 "type": "string",
-                "minLength": 10
+                "minLength": 10,
+                "description": "Why this is acceptable. Shown in reports."
               },
               "expires": {
+                "description": "YYYY-MM-DD after which the ignore stops applying (warned 30 days ahead).",
                 "type": "string",
                 "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
               }
@@ -288,6 +321,7 @@
       "type": "object",
       "properties": {
         "include": {
+          "description": "Only check operations matching one of these, e.g. \"*:/public/**\".",
           "type": "array",
           "items": {
             "type": "string",
@@ -295,6 +329,7 @@
           }
         },
         "exclude": {
+          "description": "Skip operations matching one of these, e.g. \"*:/internal/**\" or \"POST:/admin/*\".",
           "type": "array",
           "items": {
             "type": "string",
@@ -302,6 +337,7 @@
           }
         },
         "excludeTags": {
+          "description": "Skip operations with any of these tags.",
           "type": "array",
           "items": {
             "type": "string",
@@ -309,6 +345,7 @@
           }
         },
         "excludeExtensions": {
+          "description": "Skip operations where one of these extensions is true, e.g. x-internal.",
           "type": "array",
           "items": {
             "type": "string",
@@ -322,13 +359,16 @@
       "type": "object",
       "properties": {
         "root": {
+          "description": "Local $ref targets must be inside this directory. Default: the git repository root.",
           "type": "string",
           "minLength": 1
         },
         "allowRemote": {
+          "description": "Allow http(s) $refs to allowedHosts. Default: false. In CI it also needs --allow-remote-references.",
           "type": "boolean"
         },
         "allowedHosts": {
+          "description": "Exact host names remote $refs may load from (no wildcards).",
           "type": "array",
           "items": {
             "type": "string",
@@ -336,6 +376,7 @@
           }
         },
         "allowedSchemes": {
+          "description": "URL schemes for remote $refs. Default: [https].",
           "type": "array",
           "items": {
             "type": "string",
@@ -346,11 +387,13 @@
           }
         },
         "fetchTimeoutMs": {
+          "description": "Timeout per remote document. Default: 10000.",
           "type": "integer",
           "exclusiveMinimum": 0,
           "maximum": 600000
         },
         "maxRemoteBytes": {
+          "description": "Largest remote document. Default: 5MB.",
           "anyOf": [
             {
               "type": "integer",
@@ -370,6 +413,7 @@
       "type": "object",
       "properties": {
         "formats": {
+          "description": "Report formats. Default: [console]; in CI [console, json]. Files are written to outputDir.",
           "type": "array",
           "items": {
             "type": "string",
@@ -382,10 +426,12 @@
           }
         },
         "outputDir": {
+          "description": "Directory for report files, relative to this file. Default: .contractguard/reports.",
           "type": "string",
           "minLength": 1
         },
         "groupBy": {
+          "description": "Group findings by root cause (default) or by operation.",
           "type": "string",
           "enum": [
             "cause",
@@ -393,6 +439,7 @@
           ]
         },
         "deterministic": {
+          "description": "Omit timestamps so reports are byte-identical across runs. Default: false.",
           "type": "boolean"
         }
       },

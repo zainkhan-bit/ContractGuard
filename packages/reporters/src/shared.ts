@@ -21,6 +21,15 @@ export interface RenderOptions {
   readonly srcRoot?: string;
 }
 
+/** C0/C1 control characters except tab and newline: escape sequences in spec text must not reach a terminal. */
+// eslint-disable-next-line no-control-regex
+const CONTROL = /[\u0000-\u0008\u000b-\u001f\u007f-\u009f]/g;
+
+/** Shows control characters in spec-derived text as `\uXXXX` instead of emitting them (§16.2 T12). */
+export function stripControl(text: string): string {
+  return text.replace(CONTROL, (c) => `\\u${c.charCodeAt(0).toString(16).padStart(4, '0')}`);
+}
+
 /** Deterministic JSON writer: sorted object keys, Map/Set as sorted arrays/objects, exact decimals, no undefined. */
 export function toJsonText(value: unknown, indent = 2): string {
   const pad = (depth: number): string => (indent === 0 ? '' : `\n${' '.repeat(indent * depth)}`);

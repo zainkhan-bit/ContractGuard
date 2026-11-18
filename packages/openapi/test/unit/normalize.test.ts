@@ -280,7 +280,9 @@ paths:
     expect(op?.responses.get('404' as never)?.statusClass).toBe('client-error');
   });
 
-  it('reports invalid media types, statuses, paths and duplicate normalized keys', async () => {
+  it('reports invalid media types (ignored, warning), statuses, paths and duplicate normalized keys', async () => {
+    // A content key that is not a media type is ignored with a warning (CGD-SPEC-107): real specs (Plaid)
+    // misplace `examples` into `content`, and rejecting the whole document for it helps nobody.
     const r = await load(
       `openapi: 3.0.0
 info: {title: t, version: v}
@@ -300,7 +302,7 @@ paths:
       expect.arrayContaining([
         'Path "nope" must start with "/"',
         'Parameter needs "name" and "in"',
-        'Invalid media type "not a type"',
+        '"not a type" is not a media type; the entry is ignored',
         'Invalid response status "999x"',
       ]),
     );
@@ -417,6 +419,38 @@ components:
     const pet = node(r.contract as ApiContract, '#/components/schemas/Pet');
     expect(pet.discriminator?.propertyName).toBe('kind');
     expect(pet.composition.oneOf.map((e) => e.target)).toEqual([`${ROOT}#/components/schemas/Cat`]);
+  });
+
+  it('resolves discriminator mappings that point through a $ref (bundler output), with a warning', async () => {
+    // Found by the real-world corpus (PagerDuty): the mapping is a path into the dereferenced document.
+    const r = await load(`openapi: 3.1.0
+info: {title: t, version: v}
+paths:
+  /x:
+    get:
+      responses:
+        '200':
+          description: ok
+          content: {application/json: {schema: {$ref: '#/components/schemas/Wrapper'}}}
+components:
+  schemas:
+    Wrapper:
+      type: object
+      properties:
+        data:
+          oneOf:
+            - {type: object, properties: {kind: {const: a}}}
+            - {type: object, properties: {kind: {const: b}}}
+          discriminator:
+            propertyName: kind
+            mapping:
+              a: '#/paths/~1x/get/responses/200/content/application~1json/schema/properties/data/oneOf/0'
+`);
+    expect(codes(r.diagnostics)).toEqual(['CGD-SEM-107']);
+    const data = node(r.contract as ApiContract, '#/components/schemas/Wrapper/properties/data');
+    expect(data.discriminator?.mapping.get('a')?.target).toBe(
+      `${ROOT}#/components/schemas/Wrapper/properties/data/oneOf/0`,
+    );
   });
 
   it('handles 3.1 boolean schemas, const, prefixItems and $ref siblings', async () => {

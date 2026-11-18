@@ -11,6 +11,7 @@ export default tseslint.config(
       '**/node_modules/**',
       'integrations/*/dist/**',
       'integrations/*/build/**',
+      'docs/.vitepress/**',
     ],
   },
   js.configs.recommended,
@@ -68,6 +69,10 @@ export default tseslint.config(
         {
           selector: "ThrowStatement > NewExpression[callee.name='Error']",
           message: 'Report expected failures as Diagnostics; use InternalError/assert for invariants (ADR-18).',
+        },
+        {
+          selector: "NewExpression[callee.name='RegExp'], CallExpression[callee.name='RegExp']",
+          message: 'Spec patterns are never executed (§16.2 T9, ReDoS); compare pattern text instead.',
         },
       ],
     },

@@ -1,0 +1,370 @@
+[
+  {
+    "text": "Operations and paths",
+    "collapsed": true,
+    "items": [
+      {
+        "text": "CG-API-001",
+        "link": "/rules/CG-API-001"
+      },
+      {
+        "text": "CG-API-002",
+        "link": "/rules/CG-API-002"
+      },
+      {
+        "text": "CG-API-003",
+        "link": "/rules/CG-API-003"
+      },
+      {
+        "text": "CG-API-004",
+        "link": "/rules/CG-API-004"
+      },
+      {
+        "text": "CG-API-005",
+        "link": "/rules/CG-API-005"
+      },
+      {
+        "text": "CG-API-006",
+        "link": "/rules/CG-API-006"
+      },
+      {
+        "text": "CG-API-007",
+        "link": "/rules/CG-API-007"
+      }
+    ]
+  },
+  {
+    "text": "Servers",
+    "collapsed": true,
+    "items": [
+      {
+        "text": "CG-SRV-001",
+        "link": "/rules/CG-SRV-001"
+      },
+      {
+        "text": "CG-SRV-002",
+        "link": "/rules/CG-SRV-002"
+      },
+      {
+        "text": "CG-SRV-003",
+        "link": "/rules/CG-SRV-003"
+      }
+    ]
+  },
+  {
+    "text": "Requests",
+    "collapsed": true,
+    "items": [
+      {
+        "text": "CG-REQ-001",
+        "link": "/rules/CG-REQ-001"
+      },
+      {
+        "text": "CG-REQ-002",
+        "link": "/rules/CG-REQ-002"
+      },
+      {
+        "text": "CG-REQ-003",
+        "link": "/rules/CG-REQ-003"
+      },
+      {
+        "text": "CG-REQ-004",
+        "link": "/rules/CG-REQ-004"
+      },
+      {
+        "text": "CG-REQ-005",
+        "link": "/rules/CG-REQ-005"
+      },
+      {
+        "text": "CG-REQ-006",
+        "link": "/rules/CG-REQ-006"
+      },
+      {
+        "text": "CG-REQ-007",
+        "link": "/rules/CG-REQ-007"
+      },
+      {
+        "text": "CG-REQ-008",
+        "link": "/rules/CG-REQ-008"
+      },
+      {
+        "text": "CG-REQ-009",
+        "link": "/rules/CG-REQ-009"
+      },
+      {
+        "text": "CG-REQ-010",
+        "link": "/rules/CG-REQ-010"
+      },
+      {
+        "text": "CG-REQ-011",
+        "link": "/rules/CG-REQ-011"
+      },
+      {
+        "text": "CG-REQ-012",
+        "link": "/rules/CG-REQ-012"
+      },
+      {
+        "text": "CG-REQ-013",
+        "link": "/rules/CG-REQ-013"
+      },
+      {
+        "text": "CG-REQ-014",
+        "link": "/rules/CG-REQ-014"
+      },
+      {
+        "text": "CG-REQ-015",
+        "link": "/rules/CG-REQ-015"
+      },
+      {
+        "text": "CG-REQ-020",
+        "link": "/rules/CG-REQ-020"
+      },
+      {
+        "text": "CG-REQ-021",
+        "link": "/rules/CG-REQ-021"
+      },
+      {
+        "text": "CG-REQ-022",
+        "link": "/rules/CG-REQ-022"
+      },
+      {
+        "text": "CG-REQ-023",
+        "link": "/rules/CG-REQ-023"
+      },
+      {
+        "text": "CG-REQ-024",
+        "link": "/rules/CG-REQ-024"
+      },
+      {
+        "text": "CG-REQ-025",
+        "link": "/rules/CG-REQ-025"
+      },
+      {
+        "text": "CG-REQ-026",
+        "link": "/rules/CG-REQ-026"
+      },
+      {
+        "text": "CG-REQ-027",
+        "link": "/rules/CG-REQ-027"
+      },
+      {
+        "text": "CG-REQ-028",
+        "link": "/rules/CG-REQ-028"
+      },
+      {
+        "text": "CG-REQ-029",
+        "link": "/rules/CG-REQ-029"
+      },
+      {
+        "text": "CG-REQ-030",
+        "link": "/rules/CG-REQ-030"
+      },
+      {
+        "text": "CG-REQ-031",
+        "link": "/rules/CG-REQ-031"
+      },
+      {
+        "text": "CG-REQ-032",
+        "link": "/rules/CG-REQ-032"
+      },
+      {
+        "text": "CG-REQ-033",
+        "link": "/rules/CG-REQ-033"
+      },
+      {
+        "text": "CG-REQ-034",
+        "link": "/rules/CG-REQ-034"
+      },
+      {
+        "text": "CG-REQ-035",
+        "link": "/rules/CG-REQ-035"
+      },
+      {
+        "text": "CG-REQ-036",
+        "link": "/rules/CG-REQ-036"
+      },
+      {
+        "text": "CG-REQ-037",
+        "link": "/rules/CG-REQ-037"
+      },
+      {
+        "text": "CG-REQ-038",
+        "link": "/rules/CG-REQ-038"
+      }
+    ]
+  },
+  {
+    "text": "Responses",
+    "collapsed": true,
+    "items": [
+      {
+        "text": "CG-RES-001",
+        "link": "/rules/CG-RES-001"
+      },
+      {
+        "text": "CG-RES-002",
+        "link": "/rules/CG-RES-002"
+      },
+      {
+        "text": "CG-RES-003",
+        "link": "/rules/CG-RES-003"
+      },
+      {
+        "text": "CG-RES-004",
+        "link": "/rules/CG-RES-004"
+      },
+      {
+        "text": "CG-RES-005",
+        "link": "/rules/CG-RES-005"
+      },
+      {
+        "text": "CG-RES-006",
+        "link": "/rules/CG-RES-006"
+      },
+      {
+        "text": "CG-RES-007",
+        "link": "/rules/CG-RES-007"
+      },
+      {
+        "text": "CG-RES-008",
+        "link": "/rules/CG-RES-008"
+      },
+      {
+        "text": "CG-RES-009",
+        "link": "/rules/CG-RES-009"
+      },
+      {
+        "text": "CG-RES-010",
+        "link": "/rules/CG-RES-010"
+      },
+      {
+        "text": "CG-RES-011",
+        "link": "/rules/CG-RES-011"
+      },
+      {
+        "text": "CG-RES-012",
+        "link": "/rules/CG-RES-012"
+      },
+      {
+        "text": "CG-RES-013",
+        "link": "/rules/CG-RES-013"
+      },
+      {
+        "text": "CG-RES-014",
+        "link": "/rules/CG-RES-014"
+      },
+      {
+        "text": "CG-RES-015",
+        "link": "/rules/CG-RES-015"
+      },
+      {
+        "text": "CG-RES-016",
+        "link": "/rules/CG-RES-016"
+      },
+      {
+        "text": "CG-RES-017",
+        "link": "/rules/CG-RES-017"
+      },
+      {
+        "text": "CG-RES-018",
+        "link": "/rules/CG-RES-018"
+      },
+      {
+        "text": "CG-RES-019",
+        "link": "/rules/CG-RES-019"
+      },
+      {
+        "text": "CG-RES-020",
+        "link": "/rules/CG-RES-020"
+      },
+      {
+        "text": "CG-RES-021",
+        "link": "/rules/CG-RES-021"
+      },
+      {
+        "text": "CG-RES-022",
+        "link": "/rules/CG-RES-022"
+      },
+      {
+        "text": "CG-RES-023",
+        "link": "/rules/CG-RES-023"
+      },
+      {
+        "text": "CG-RES-024",
+        "link": "/rules/CG-RES-024"
+      },
+      {
+        "text": "CG-RES-025",
+        "link": "/rules/CG-RES-025"
+      },
+      {
+        "text": "CG-RES-026",
+        "link": "/rules/CG-RES-026"
+      },
+      {
+        "text": "CG-RES-027",
+        "link": "/rules/CG-RES-027"
+      }
+    ]
+  },
+  {
+    "text": "Schemas",
+    "collapsed": true,
+    "items": [
+      {
+        "text": "CG-SCHEMA-001",
+        "link": "/rules/CG-SCHEMA-001"
+      },
+      {
+        "text": "CG-SCHEMA-002",
+        "link": "/rules/CG-SCHEMA-002"
+      },
+      {
+        "text": "CG-SCHEMA-900",
+        "link": "/rules/CG-SCHEMA-900"
+      },
+      {
+        "text": "CG-SCHEMA-901",
+        "link": "/rules/CG-SCHEMA-901"
+      },
+      {
+        "text": "CG-SCHEMA-902",
+        "link": "/rules/CG-SCHEMA-902"
+      },
+      {
+        "text": "CG-SCHEMA-903",
+        "link": "/rules/CG-SCHEMA-903"
+      }
+    ]
+  },
+  {
+    "text": "Security",
+    "collapsed": true,
+    "items": [
+      {
+        "text": "CG-AUTH-001",
+        "link": "/rules/CG-AUTH-001"
+      },
+      {
+        "text": "CG-AUTH-002",
+        "link": "/rules/CG-AUTH-002"
+      },
+      {
+        "text": "CG-AUTH-003",
+        "link": "/rules/CG-AUTH-003"
+      },
+      {
+        "text": "CG-AUTH-004",
+        "link": "/rules/CG-AUTH-004"
+      },
+      {
+        "text": "CG-AUTH-005",
+        "link": "/rules/CG-AUTH-005"
+      },
+      {
+        "text": "CG-AUTH-006",
+        "link": "/rules/CG-AUTH-006"
+      }
+    ]
+  }
+]

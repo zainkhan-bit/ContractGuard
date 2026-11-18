@@ -4,7 +4,7 @@
 |---|---|
 | **Status** | Approved 2026-11-15 (D1–D22 with recommended defaults) — implementation in progress |
 | **Scope of this document** | Stage 0 investigation results + complete Stage 1 architecture blueprint |
-| **Implementation status** | M0–M8 complete (core, OpenAPI front end, diff engine, compatibility engine with the 83-rule catalog, reporters, CLI, GitHub Action). See §19 and §19.1. |
+| **Implementation status** | M0–M9 complete (core, OpenAPI front end, diff engine, compatibility engine with the 83-rule catalog, reporters, CLI, GitHub Action, 1.0 readiness). See §19 and §19.1. |
 | **Date** | 2026-11-15 |
 | **Repository state at time of writing** | `github.com/zainkhan-bit/ContractGuard` — empty (no commits); local working copy empty |
 
@@ -3339,6 +3339,11 @@ Decisions and deviations discovered during implementation. Each entry names the 
 - **M8 · §13.6 — new specifications pass.** When the base document does not exist and the candidate loads, the Action reports `CGD-FS-101` (info) and passes: adding an API breaks no consumer. The CLI keeps this an input error unless `newSpecs: 'pass'` is requested through the library. Git sources now report a path missing at a revision as `CGD-FS-001` (File not found) instead of `CGD-FS-011`.
 - **M8 · §12.2 — `git:@base:<path>`** resolves against the Action's base commit, or `--base-ref` on the command line. Ad-hoc comparisons accept several specs (the Action's `specs` input); duplicate ids get `-2`, `-3` suffixes.
 - **M8 · Q3 — location.** The Action lives at `integrations/github-action` (`uses: zainkhan-bit/ContractGuard/integrations/github-action@<ref>`) until the 1.0 mirror repository. This repository dogfoods it on `examples/basic-api` (`.github/workflows/contract.yml`).
+- **M9 · Q4 — npm names.** `@contractguard` belongs to an unrelated project; libraries are `@zainkhan-bit/contractguard-*`, the CLI stays `contractguard`.
+- **M9 · §16.2 — security review findings fixed** (see `docs/reports/security-review-1.0.md`): value truncation and secret redaction in findings (T11); control characters and HTML escaped in console and Markdown output (T12); stack-safe comparison (worklist beyond 256 nested pairs) and iterative projection (T2); a shared projection budget of 4 × `maxSchemaPairs` with the rest reported as `CG-SCHEMA-902` (T16); lint ban on `RegExp` construction (T9); license allowlist and Scorecard (T14/T15).
+- **M9 · real-world corpus findings fixed:** compositions above 64 branches are matched exactly by fingerprint (identical sets, pure additions and pure removals are precise; only mixed changes stay undetermined); OpenAPI 3.0 siblings of `$ref` are ignored during structural validation, as the 3.0 text says; discriminator mappings that point through a `$ref` resolve with `CGD-SEM-107`; a `content` key that is not a media type is ignored with `CGD-SPEC-107` instead of rejecting the document.
+- **M9 · §18 — performance.** `Array#shift` in the normalizer's work queue made it quadratic; it is index-based now. Measurements are in `docs/reports/performance-1.0.md`.
+- **M9 · §20.5 — release.** Changesets "Version Packages" PR, then a `publish` job in the protected `release` environment that publishes with provenance, tags `vX.Y.Z`, moves `vX`, and attaches tarballs and a SHA-256 manifest to the GitHub Release. `scripts/release-verify.mjs` rebuilds a tag from a clean clone and compares every tarball with npm byte for byte. The GitHub Action stays at `integrations/github-action` (`uses: zainkhan-bit/ContractGuard/integrations/github-action@v1`); a Marketplace mirror repository is deferred.
 
 # 20. Open-source release strategy
 

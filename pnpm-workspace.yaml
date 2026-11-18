@@ -5,3 +5,7 @@ packages:
 # Supply-chain hardening (pnpm 11 defaults are kept; stated explicitly for reviewers).
 # New versions must be at least one day old before they can be installed.
 minimumReleaseAge: 1440
+
+# esbuild (via VitePress) ships its binary as a platform package; its postinstall only verifies it. Not needed.
+allowBuilds:
+  esbuild: false

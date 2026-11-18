@@ -269,6 +269,22 @@ describe('schema comparison: composition', () => {
     ]);
   });
 
+  it('matches oversize compositions exactly: identical, pure additions and pure removals are precise', async () => {
+    // Found by the real-world corpus: check(A, A) on a spec with a 70-branch oneOf reported "undetermined".
+    const many = (k: number): string => `{oneOf: [${Array.from({ length: k }, (_, i) => `{const: ${i}}`).join(', ')}]}`;
+    expect(await res(many(70), many(70))).toEqual([]);
+    // Reordered branches are the same set.
+    const reversed = `{oneOf: [${Array.from({ length: 70 }, (_, i) => `{const: ${69 - i}}`).join(', ')}]}`;
+    expect(await res(many(70), reversed)).toEqual([]);
+    expect(await res(many(70), many(72))).toEqual([
+      'schema.variantAdded {"composition":"oneOf","hasDiscriminator":false}',
+      'schema.variantAdded {"composition":"oneOf","hasDiscriminator":false}',
+    ]);
+    expect(await res(many(71), many(70))).toEqual([
+      'schema.variantRemoved {"composition":"oneOf","hasDiscriminator":false}',
+    ]);
+  });
+
   it('compares non-mergeable allOf branch-wise and merged allOf as one object', async () => {
     expect(
       await res(

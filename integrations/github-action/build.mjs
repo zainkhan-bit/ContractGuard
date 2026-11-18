@@ -5,7 +5,8 @@ import { dirname, join } from 'node:path';
 import { rolldown } from 'rolldown';
 
 const here = import.meta.dirname;
-const version = JSON.parse(readFileSync(join(here, 'package.json'), 'utf8')).version;
+// The released version is the CLI's (all packages move in lockstep; this private package is not versioned).
+const version = JSON.parse(readFileSync(join(here, '../../packages/cli/package.json'), 'utf8')).version;
 
 const bundle = await rolldown({
   input: join(here, 'src/index.ts'),

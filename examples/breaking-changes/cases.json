@@ -1,0 +1,53 @@
+{
+  "operation-removed": {
+    "exit": 1,
+    "findings": ["CG-API-001/breaking"],
+    "about": "DELETE /orders/{orderId} was removed"
+  },
+  "server-moved": {
+    "exit": 0,
+    "findings": ["CG-SRV-002/potentially-breaking"],
+    "about": "The server URL changed from /v1 to /v2"
+  },
+  "request-property-required": {
+    "exit": 1,
+    "findings": ["CG-REQ-003/breaking"],
+    "about": "coupon became required in NewOrder"
+  },
+  "request-limit-tightened": {
+    "exit": 0,
+    "findings": ["CG-REQ-024/potentially-breaking"],
+    "about": "limit maximum lowered from 100 to 50"
+  },
+  "request-enum-value-removed": {
+    "exit": 1,
+    "findings": ["CG-REQ-020/breaking", "CG-RES-007/non-breaking"],
+    "about": "Status lost \"shipped\": breaking for the status query parameter, safe in responses"
+  },
+  "response-property-removed": {
+    "exit": 1,
+    "findings": ["CG-RES-001/breaking"],
+    "about": "total was removed from Order"
+  },
+  "response-enum-value-added": {
+    "exit": 0,
+    "findings": ["CG-RES-006/potentially-breaking", "CG-REQ-021/non-breaking"],
+    "about": "Status gained \"refunded\": consumers may not handle it in responses, safe in requests"
+  },
+  "response-became-nullable": { "exit": 1, "findings": ["CG-RES-009/breaking"], "about": "total can now be null" },
+  "scope-added": {
+    "exit": 0,
+    "findings": ["CG-AUTH-002/potentially-breaking"],
+    "about": "The global security requirement needs an extra scope"
+  },
+  "compatible-additions": {
+    "exit": 0,
+    "findings": ["CG-RES-005/non-breaking", "CG-API-002/non-breaking"],
+    "about": "A new optional response property and a new endpoint"
+  },
+  "refactor-only": {
+    "exit": 0,
+    "findings": ["CG-API-005/informational"],
+    "about": "Path parameter renamed: {orderId} → {id} matches the same URLs"
+  }
+}
