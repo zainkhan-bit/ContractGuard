@@ -52,7 +52,7 @@ components:
   schemas:
     NewBook:
       type: object
-      required: [title, author]
+      required: [title]
       properties:
         title: { type: string }
         author: { type: string }
