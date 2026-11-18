@@ -1,4 +1,4 @@
-import type { ChangeSubject, RuleParams, SchemaPathSegment } from '@contractguard/core';
+import type { ChangeSubject, RuleParams, SchemaPathSegment } from '@zainkhan-bit/contractguard-core';
 
 /** Human-readable schema path: `items[].address.zip`, `oneOf[Card].number`. */
 export function schemaPathText(path: readonly SchemaPathSegment[]): string {

@@ -1,8 +1,8 @@
 ---
 'contractguard': minor
-'@contractguard/app': minor
-'@contractguard/core': minor
-'@contractguard/reporters': patch
+'@zainkhan-bit/contractguard-app': minor
+'@zainkhan-bit/contractguard-core': minor
+'@zainkhan-bit/contractguard-reporters': patch
 ---
 
 GitHub Action support. `git:@base:<path>` sources resolve against a base revision (`--base-ref` on the CLI),

@@ -1,4 +1,4 @@
-import type { AnalysisResult, CompatibilityFinding, Diagnostic } from '@contractguard/core';
+import type { AnalysisResult, CompatibilityFinding, Diagnostic } from '@zainkhan-bit/contractguard-core';
 import {
   CLASSIFICATION_TITLE,
   SECTION_ORDER,

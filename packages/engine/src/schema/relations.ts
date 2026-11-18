@@ -8,7 +8,7 @@ import {
   type JsonNumber,
   type JsonType,
   type SetRelation,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 
 /** Relation of the candidate's value space to the base's: tightened = candidate accepts less. */
 export type ConstraintRelation = 'tightened' | 'relaxed' | 'incomparable';

@@ -11,7 +11,7 @@ import {
   type SchemaNodeId,
   type StageResult,
   type UnsupportedFeature,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import type { DocumentSet } from '../resolve/resolver.js';
 import type { DetectedVersion } from '../version/detect.js';
 import { NormalizeContext, child, objectAt, str, type Loc } from './context.js';

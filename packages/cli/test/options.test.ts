@@ -5,7 +5,7 @@ import { dirname, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { afterAll, describe, expect, it } from 'vitest';
 import { EXIT, formatDiagnostic, run, type CliIo } from '../src/index.js';
-import { diagnostic, documentUri, type JsonPointer } from '@contractguard/core';
+import { diagnostic, documentUri, type JsonPointer } from '@zainkhan-bit/contractguard-core';
 
 const dirs: string[] = [];
 afterAll(() => {

@@ -1,9 +1,9 @@
 import { mkdir, realpath, writeFile } from 'node:fs/promises';
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
-import { analyze, BASE_TOKEN, type AdHocSpec, type CliOverrides } from '@contractguard/app';
-import type { AnalysisResult, Classification, Diagnostic, Severity } from '@contractguard/core';
-import { RULES } from '@contractguard/engine';
-import { renderConsole, renderJson, renderMarkdown, renderSarif } from '@contractguard/reporters';
+import { analyze, BASE_TOKEN, type AdHocSpec, type CliOverrides } from '@zainkhan-bit/contractguard-app';
+import type { AnalysisResult, Classification, Diagnostic, Severity } from '@zainkhan-bit/contractguard-core';
+import { RULES } from '@zainkhan-bit/contractguard-engine';
+import { renderConsole, renderJson, renderMarkdown, renderSarif } from '@zainkhan-bit/contractguard-reporters';
 import { diagnosticAnnotations, findingAnnotations } from './annotations.js';
 import { commentBody, upsertComment, type CommentOutcome } from './comment.js';
 import { readContext } from './context.js';

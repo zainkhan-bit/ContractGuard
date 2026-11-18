@@ -1,4 +1,4 @@
-import { diagnostic, documentUri, type DocumentUri, type StageResult } from '@contractguard/core';
+import { diagnostic, documentUri, type DocumentUri, type StageResult } from '@zainkhan-bit/contractguard-core';
 import {
   CompositeSourceLoader,
   FileSourceLoader,
@@ -6,7 +6,7 @@ import {
   RemoteSourceLoader,
   fileUri,
   type SourceLoader,
-} from '@contractguard/openapi';
+} from '@zainkhan-bit/contractguard-openapi';
 import { GitSourceLoader, resolveGitSource } from './git.js';
 import { openSnapshot } from './snapshot.js';
 import { describeSpecifier, type SourceSpecifier } from './specifier.js';

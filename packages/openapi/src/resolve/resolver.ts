@@ -16,7 +16,7 @@ import {
   type OasDialect,
   type SourceRef,
   type StageResult,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import type { LoadContext, SourceLoader } from '../load/source.js';
 import { parseDocument, type ParsedDocument } from '../parse/parser.js';
 import { walkReferences, type RefSite } from './walk.js';

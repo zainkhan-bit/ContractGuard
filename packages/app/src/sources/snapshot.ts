@@ -8,8 +8,13 @@ import {
   type Diagnostic,
   type DocumentUri,
   type StageResult,
-} from '@contractguard/core';
-import { MemorySourceLoader, type LoadContext, type LoadedSource, type SourceLoader } from '@contractguard/openapi';
+} from '@zainkhan-bit/contractguard-core';
+import {
+  MemorySourceLoader,
+  type LoadContext,
+  type LoadedSource,
+  type SourceLoader,
+} from '@zainkhan-bit/contractguard-openapi';
 
 export const SNAPSHOT_FORMAT = 'contractguard-snapshot';
 

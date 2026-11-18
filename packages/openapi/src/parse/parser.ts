@@ -24,7 +24,7 @@ import {
   type JsonPointer,
   type SourceRef,
   type StageResult,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import type { LoadedSource } from '../load/source.js';
 import { parseJson } from './json-parser.js';
 import { PointerIndexBuilder, positionAt, type OffsetRange, type PointerIndex, type Slot } from './pointer-index.js';

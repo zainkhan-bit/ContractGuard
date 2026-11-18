@@ -6,7 +6,7 @@ import {
   type CompatibilityFinding,
   type Severity,
   type SourceRef,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 
 export interface RenderOptions {
   /** Group findings by root cause (default) or by operation. */

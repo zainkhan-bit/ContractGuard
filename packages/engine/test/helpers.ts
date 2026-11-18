@@ -4,7 +4,7 @@ import {
   type ApiContract,
   type ContractChange,
   type ReferencePolicy,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import {
   MemorySourceLoader,
   detectVersion,
@@ -12,7 +12,7 @@ import {
   normalize,
   parseDocument,
   resolveReferences,
-} from '@contractguard/openapi';
+} from '@zainkhan-bit/contractguard-openapi';
 import { diffContracts } from '../src/diff/contract-diff.js';
 
 export const ROOT = documentUri('file:///api/openapi.yaml');

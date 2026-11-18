@@ -7,7 +7,7 @@ import type {
   Diagnostic,
   Severity,
   SourceRef,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import { command, type AnnotationProps } from './runner.js';
 
 /** GitHub shows at most 10 annotations of each type per step. */

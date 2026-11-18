@@ -1,9 +1,16 @@
-import { ROOT_POINTER, diagnostic, stageFail, stageOk, type DocumentUri, type StageResult } from '@contractguard/core';
+import {
+  ROOT_POINTER,
+  diagnostic,
+  stageFail,
+  stageOk,
+  type DocumentUri,
+  type StageResult,
+} from '@zainkhan-bit/contractguard-core';
 import { formatHintFromUri, type LoadContext, type LoadedSource, type SourceLoader } from './source.js';
 
 /**
  * Serves documents from memory. Used for stdin, git blobs and snapshots (which are
- * read by @contractguard/app and handed over as bytes), and in tests.
+ * read by @zainkhan-bit/contractguard-app and handed over as bytes), and in tests.
  */
 export class MemorySourceLoader implements SourceLoader {
   readonly schemes: readonly string[];

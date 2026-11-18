@@ -1,4 +1,4 @@
-import { DEFAULT_LIMITS, JsonNumber, type ContractChange } from '@contractguard/core';
+import { DEFAULT_LIMITS, JsonNumber, type ContractChange } from '@zainkhan-bit/contractguard-core';
 import { describe, expect, it } from 'vitest';
 import { diffContracts } from '../../src/diff/contract-diff.js';
 import { hiddenIn } from '../../src/diff/project.js';

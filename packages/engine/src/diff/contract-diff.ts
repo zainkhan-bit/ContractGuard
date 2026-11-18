@@ -25,7 +25,7 @@ import {
   type SourceRef,
   type StatusKey,
   type UsageSite,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import { projectUsage, type SchemaUsage } from './project.js';
 import { SchemaDiffer } from './schema-differ.js';
 

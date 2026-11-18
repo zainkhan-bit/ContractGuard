@@ -1,5 +1,5 @@
 import { execFile } from 'node:child_process';
-import { isSafeGitRef } from '@contractguard/app';
+import { isSafeGitRef } from '@zainkhan-bit/contractguard-app';
 import { InputError } from './runner.js';
 
 interface GitResult {

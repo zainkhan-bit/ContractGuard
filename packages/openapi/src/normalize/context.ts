@@ -13,7 +13,7 @@ import {
   type JsonPointer,
   type OasDialect,
   type SourceRef,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import { followReferences } from '../resolve/follow.js';
 import { locate, type DocumentSet } from '../resolve/resolver.js';
 

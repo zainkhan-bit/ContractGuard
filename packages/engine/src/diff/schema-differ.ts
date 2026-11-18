@@ -15,7 +15,7 @@ import {
   type SchemaPathSegment,
   type SetRelation,
   type TypeSetFact,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import {
   compareBound,
   compareLimit,

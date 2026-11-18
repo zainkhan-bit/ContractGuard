@@ -11,7 +11,7 @@ import {
   type OasDialect,
   type SourceRef,
   type StageResult,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import type { ParsedDocument } from '../parse/parser.js';
 
 export interface DetectedVersion {

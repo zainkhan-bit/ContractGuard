@@ -6,7 +6,7 @@ import {
   type JsonPointer,
   type SourcePosition,
   type SourceRange,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 
 /** Offsets [start, end) in UTF-16 code units of the decoded document text. */
 export interface OffsetRange {

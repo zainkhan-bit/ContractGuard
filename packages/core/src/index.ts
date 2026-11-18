@@ -1,5 +1,5 @@
 /**
- * @contractguard/core — canonical contract model, findings, rule and perspective
+ * @zainkhan-bit/contractguard-core — canonical contract model, findings, rule and perspective
  * contracts, diagnostics and deterministic utilities. No I/O.
  */
 

@@ -1,4 +1,4 @@
-import type { AnalysisResult, CompatibilityFinding, RuleDefinition, SourceRef } from '@contractguard/core';
+import type { AnalysisResult, CompatibilityFinding, RuleDefinition, SourceRef } from '@zainkhan-bit/contractguard-core';
 import { displayPath, toJsonText, type RenderOptions } from './shared.js';
 
 export interface SarifOptions extends RenderOptions {

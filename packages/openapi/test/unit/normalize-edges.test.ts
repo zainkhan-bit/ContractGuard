@@ -5,7 +5,7 @@ import {
   type Diagnostic,
   type ReferencePolicy,
   type SchemaNode,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import { describe, expect, it } from 'vitest';
 import { loadContract } from '../../src/load-contract.js';
 import { MemorySourceLoader } from '../../src/load/memory-loader.js';

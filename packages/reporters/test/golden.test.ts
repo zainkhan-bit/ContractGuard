@@ -1,8 +1,8 @@
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { RULES } from '@contractguard/engine';
-import type { AnalysisResult } from '@contractguard/core';
+import { RULES } from '@zainkhan-bit/contractguard-engine';
+import type { AnalysisResult } from '@zainkhan-bit/contractguard-core';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { renderConsole } from '../src/console.js';
 import { renderJson } from '../src/json.js';

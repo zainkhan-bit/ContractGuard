@@ -10,7 +10,7 @@ import {
   type DocumentUri,
   type SourceRef,
   type StageResult,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import { formatHintFromUri, type LoadContext, type LoadedSource, type SourceLoader } from './source.js';
 
 /** Converts an absolute filesystem path into a canonical file: DocumentUri. */

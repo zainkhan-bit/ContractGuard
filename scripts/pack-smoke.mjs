@@ -68,7 +68,7 @@ paths:
   expect(npx('check', '--bogus'), 3, 'unknown option');
   const schema = execFileSync(
     process.execPath,
-    ['-e', "console.log(require.resolve('@contractguard/app/schemas/config.v1.json'))"],
+    ['-e', "console.log(require.resolve('@zainkhan-bit/contractguard-app/schemas/config.v1.json'))"],
     {
       cwd: proj,
       encoding: 'utf8',

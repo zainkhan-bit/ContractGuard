@@ -5,7 +5,7 @@ import {
   type AnalysisLimits,
   type Diagnostic,
   type DocumentUri,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import { parseDocument, type ParsedDocument } from '../src/parse/parser.js';
 
 export const URI: DocumentUri = documentUri('file:///spec/openapi.yaml');

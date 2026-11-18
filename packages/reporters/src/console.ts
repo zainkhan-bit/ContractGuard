@@ -1,4 +1,4 @@
-import type { AnalysisResult, Classification } from '@contractguard/core';
+import type { AnalysisResult, Classification } from '@zainkhan-bit/contractguard-core';
 import {
   SECTION_ORDER,
   displayPath,

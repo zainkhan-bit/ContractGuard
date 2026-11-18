@@ -41,10 +41,10 @@
     "provenance": true
   },
   "dependencies": {
-    "@contractguard/app": "workspace:*",
-    "@contractguard/core": "workspace:*",
-    "@contractguard/engine": "workspace:*",
-    "@contractguard/reporters": "workspace:*"
+    "@zainkhan-bit/contractguard-app": "workspace:*",
+    "@zainkhan-bit/contractguard-core": "workspace:*",
+    "@zainkhan-bit/contractguard-engine": "workspace:*",
+    "@zainkhan-bit/contractguard-reporters": "workspace:*"
   },
   "bin": {
     "contractguard": "./bin/contractguard.js"

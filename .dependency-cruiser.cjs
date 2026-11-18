@@ -12,14 +12,14 @@ module.exports = {
     {
       name: 'core-is-a-leaf',
       severity: 'error',
-      comment: '@contractguard/core must not depend on any other workspace package (§5.2).',
+      comment: '@zainkhan-bit/contractguard-core must not depend on any other workspace package (§5.2).',
       from: { path: '^packages/core/' },
       to: { path: '^packages/(?!core/)' },
     },
     {
       name: 'engine-not-openapi',
       severity: 'error',
-      comment: 'The engine is protocol-independent and must not import @contractguard/openapi (§5.2).',
+      comment: 'The engine is protocol-independent and must not import @zainkhan-bit/contractguard-openapi (§5.2).',
       from: { path: '^packages/engine/src/' },
       to: { path: '^packages/openapi/' },
     },
@@ -40,7 +40,8 @@ module.exports = {
     {
       name: 'action-uses-the-app-layer',
       severity: 'error',
-      comment: 'The Action shares the CLI use cases through @contractguard/app; it must not reach into the CLI (§6).',
+      comment:
+        'The Action shares the CLI use cases through @zainkhan-bit/contractguard-app; it must not reach into the CLI (§6).',
       from: { path: '^integrations/' },
       to: { path: '^packages/cli/' },
     },

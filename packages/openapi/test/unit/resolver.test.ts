@@ -7,7 +7,7 @@ import {
   type DocumentUri,
   type JsonPointer,
   type ReferencePolicy,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import { CompositeSourceLoader, MemorySourceLoader } from '../../src/load/memory-loader.js';
 import type { LoadContext } from '../../src/load/source.js';
 import { parseDocument } from '../../src/parse/parser.js';

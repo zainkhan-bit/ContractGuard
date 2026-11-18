@@ -11,10 +11,22 @@ import {
   loadConfiguration,
   validateSource,
   type CliOverrides,
-} from '@contractguard/app';
-import type { AnalysisResult, Classification, Diagnostic, ReportFormat, Severity } from '@contractguard/core';
-import { explainRule, RULES } from '@contractguard/engine';
-import { displayPath, renderConsole, renderJson, renderMarkdown, renderSarif } from '@contractguard/reporters';
+} from '@zainkhan-bit/contractguard-app';
+import type {
+  AnalysisResult,
+  Classification,
+  Diagnostic,
+  ReportFormat,
+  Severity,
+} from '@zainkhan-bit/contractguard-core';
+import { explainRule, RULES } from '@zainkhan-bit/contractguard-engine';
+import {
+  displayPath,
+  renderConsole,
+  renderJson,
+  renderMarkdown,
+  renderSarif,
+} from '@zainkhan-bit/contractguard-reporters';
 
 /** Stable exit codes (§12.4). */
 export const EXIT = { ok: 0, policyFailed: 1, input: 2, usage: 3, internal: 4, interrupted: 130 } as const;
@@ -511,7 +523,7 @@ const init: Command = {
       return `  - id: ${id}\n    candidate: ${rel}\n    base: git:${branch}:${rel}\n`;
     });
     const text = `# ContractGuard configuration — https://github.com/zainkhan-bit/ContractGuard
-# yaml-language-server: $schema=./node_modules/@contractguard/app/schemas/config.v1.json
+# yaml-language-server: $schema=./node_modules/@zainkhan-bit/contractguard-app/schemas/config.v1.json
 version: 1
 
 # Which specifications to compare. base/candidate accept a path, git:<ref>:<path>,

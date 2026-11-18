@@ -108,11 +108,11 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
-      - run: pnpm --filter @contractguard/github-action run bundle
+      - run: pnpm --filter @zainkhan-bit/contractguard-github-action run bundle
       - name: Fail if dist/ changed
         run: |
           if ! git diff --exit-code -- integrations/github-action/dist; then
-            echo "::error::integrations/github-action/dist is stale. Run: pnpm build && pnpm --filter @contractguard/github-action run bundle, then commit dist/."
+            echo "::error::integrations/github-action/dist is stale. Run: pnpm build && pnpm --filter @zainkhan-bit/contractguard-github-action run bundle, then commit dist/."
             exit 1
           fi
 

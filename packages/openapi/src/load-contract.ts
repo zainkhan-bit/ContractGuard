@@ -8,7 +8,7 @@ import {
   type DocumentUri,
   type ReferencePolicy,
   type StageResult,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import type { SourceLoader } from './load/source.js';
 import { normalize } from './normalize/normalize.js';
 import { parseDocument } from './parse/parser.js';

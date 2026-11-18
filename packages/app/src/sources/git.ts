@@ -1,7 +1,18 @@
 import { execFile } from 'node:child_process';
 import { isAbsolute, posix, relative, resolve, sep } from 'node:path';
-import { diagnostic, documentUri, type Diagnostic, type DocumentUri, type StageResult } from '@contractguard/core';
-import { formatHintFromUri, type LoadContext, type LoadedSource, type SourceLoader } from '@contractguard/openapi';
+import {
+  diagnostic,
+  documentUri,
+  type Diagnostic,
+  type DocumentUri,
+  type StageResult,
+} from '@zainkhan-bit/contractguard-core';
+import {
+  formatHintFromUri,
+  type LoadContext,
+  type LoadedSource,
+  type SourceLoader,
+} from '@zainkhan-bit/contractguard-openapi';
 import { isSafeGitRef } from './specifier.js';
 
 interface GitResult {

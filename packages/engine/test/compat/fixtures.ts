@@ -2,7 +2,7 @@
  * Executable compatibility fixtures (§10.6, §18.4): every rule has ≥ 1 positive (fires) and ≥ 1 negative
  * (stays silent) case. `expect` pins the classification/severity where the catalog states one.
  */
-import type { Classification, Severity } from '@contractguard/core';
+import type { Classification, Severity } from '@zainkhan-bit/contractguard-core';
 import type { CheckOptions } from '../../src/check.js';
 
 export interface Fixture {

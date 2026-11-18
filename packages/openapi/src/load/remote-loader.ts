@@ -10,7 +10,7 @@ import {
   type Diagnostic,
   type DocumentUri,
   type StageResult,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import { formatHintFromUri, type LoadContext, type LoadedSource, type SourceLoader } from './source.js';
 
 /**

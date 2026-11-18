@@ -1,5 +1,5 @@
 ---
-'@contractguard/openapi': minor
+'@zainkhan-bit/contractguard-openapi': minor
 ---
 
 Normalize OpenAPI 3.0/3.1 documents into the canonical, version-independent `ApiContract`

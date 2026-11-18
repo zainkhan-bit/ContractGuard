@@ -8,15 +8,15 @@ import {
   type AnalysisResult,
   type Diagnostic,
   type ReferencePolicy,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import {
   assembleResult,
   checkCompatibility,
   RULESET_VERSION,
   type CheckOptions,
   type ReportPolicy,
-} from '@contractguard/engine';
-import { loadContract, MemorySourceLoader } from '@contractguard/openapi';
+} from '@zainkhan-bit/contractguard-engine';
+import { loadContract, MemorySourceLoader } from '@zainkhan-bit/contractguard-openapi';
 
 export const SRC_ROOT = 'file:///repo';
 const POLICY: ReferencePolicy = {

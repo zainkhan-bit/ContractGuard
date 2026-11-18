@@ -1,4 +1,4 @@
-import type { RuleDefinition } from '@contractguard/core';
+import type { RuleDefinition } from '@zainkhan-bit/contractguard-core';
 import { API_RULES, SRV_RULES } from './api-srv.js';
 import { REQ_RULES } from './req.js';
 import { RES_RULES } from './res.js';

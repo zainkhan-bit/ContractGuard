@@ -15,7 +15,7 @@ import {
   validateSource,
   type AnalysisRequest,
 } from '../src/index.js';
-import { documentUri } from '@contractguard/core';
+import { documentUri } from '@zainkhan-bit/contractguard-core';
 import { git, repo, spec, tempDir, TODAY, write } from './helpers.js';
 
 describe('source specifiers', () => {

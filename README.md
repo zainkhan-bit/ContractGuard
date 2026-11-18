@@ -16,18 +16,18 @@ ContractGuard compares a baseline and a candidate API specification and tells yo
 
 ## Progress
 
-| Milestone | Scope                                          | Status  |
-| --------- | ---------------------------------------------- | ------- |
-| M0        | Repository foundations + `@contractguard/core` | ✅ Done |
-| M1        | Parsing with source maps                       | ✅ Done |
-| M2        | Reference resolution + validation              | ✅ Done |
-| M3        | Normalization to the canonical model           | ✅ Done |
-| M4        | Diff engine                                    | ✅ Done |
-| M5        | Compatibility engine + 83-rule catalog         | ✅ Done |
-| M6        | Reporters (console, Markdown, JSON, SARIF)     | ✅ Done |
-| M7        | CLI                                            | ✅ Done |
-| M8        | GitHub Action                                  | ✅ Done |
-| M9        | 1.0 production readiness                       | ⏳ Next |
+| Milestone | Scope                                                       | Status  |
+| --------- | ----------------------------------------------------------- | ------- |
+| M0        | Repository foundations + `@zainkhan-bit/contractguard-core` | ✅ Done |
+| M1        | Parsing with source maps                                    | ✅ Done |
+| M2        | Reference resolution + validation                           | ✅ Done |
+| M3        | Normalization to the canonical model                        | ✅ Done |
+| M4        | Diff engine                                                 | ✅ Done |
+| M5        | Compatibility engine + 83-rule catalog                      | ✅ Done |
+| M6        | Reporters (console, Markdown, JSON, SARIF)                  | ✅ Done |
+| M7        | CLI                                                         | ✅ Done |
+| M8        | GitHub Action                                               | ✅ Done |
+| M9        | 1.0 production readiness                                    | ⏳ Next |
 
 ## Try the CLI (from a clone)
 

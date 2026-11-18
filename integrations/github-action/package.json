@@ -1,5 +1,5 @@
 {
-  "name": "@contractguard/github-action",
+  "name": "@zainkhan-bit/contractguard-github-action",
   "version": "0.0.0",
   "private": true,
   "description": "GitHub Action for ContractGuard: OpenAPI breaking-change checks on pull requests.",
@@ -12,10 +12,10 @@
     "bundle": "node build.mjs"
   },
   "dependencies": {
-    "@contractguard/app": "workspace:*",
-    "@contractguard/core": "workspace:*",
-    "@contractguard/engine": "workspace:*",
-    "@contractguard/reporters": "workspace:*"
+    "@zainkhan-bit/contractguard-app": "workspace:*",
+    "@zainkhan-bit/contractguard-core": "workspace:*",
+    "@zainkhan-bit/contractguard-engine": "workspace:*",
+    "@zainkhan-bit/contractguard-reporters": "workspace:*"
   },
   "devDependencies": {
     "rolldown": "1.2.19"

@@ -101,7 +101,7 @@ export type AnalysisConfiguration = ResolvedConfiguration;
 
 const MB = 1024 * 1024;
 
-/** Defaults from §12.6 (the config loader in @contractguard/app applies these). */
+/** Defaults from §12.6 (the config loader in @zainkhan-bit/contractguard-app applies these). */
 export const DEFAULT_CLASSIFICATION_POLICY: ClassificationPolicy = Object.freeze({
   strictResponseValidation: false,
   constraintTightening: 'potentially-breaking',

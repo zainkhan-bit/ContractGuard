@@ -1,5 +1,5 @@
 {
-  "name": "@contractguard/engine",
+  "name": "@zainkhan-bit/contractguard-engine",
   "version": "0.0.0",
   "description": "ContractGuard engine: protocol-independent semantic diff of canonical API contracts and compatibility evaluation.",
   "license": "MIT",
@@ -38,9 +38,9 @@
     "provenance": true
   },
   "dependencies": {
-    "@contractguard/core": "workspace:*"
+    "@zainkhan-bit/contractguard-core": "workspace:*"
   },
   "devDependencies": {
-    "@contractguard/openapi": "workspace:*"
+    "@zainkhan-bit/contractguard-openapi": "workspace:*"
   }
 }

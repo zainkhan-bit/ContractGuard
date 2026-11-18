@@ -1,5 +1,5 @@
 /**
- * @contractguard/openapi — loading, parsing with source maps, reference resolution,
+ * @zainkhan-bit/contractguard-openapi — loading, parsing with source maps, reference resolution,
  * validation and normalization of OpenAPI 3.0/3.1 documents.
  */
 export { formatHintFromUri, type LoadContext, type LoadedSource, type SourceLoader } from './load/source.js';

@@ -1,7 +1,7 @@
 import { createServer, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { DEFAULT_LIMITS, documentUri, type ReferencePolicy } from '@contractguard/core';
+import { DEFAULT_LIMITS, documentUri, type ReferencePolicy } from '@zainkhan-bit/contractguard-core';
 import { RemoteSourceLoader, isPublicAddress } from '../../src/load/remote-loader.js';
 import type { LoadContext } from '../../src/load/source.js';
 import { codes } from '../helpers.js';

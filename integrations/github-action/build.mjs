@@ -35,7 +35,7 @@ for (const id of modules) {
   if (packages.has(dir)) continue;
   try {
     const pkg = JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'));
-    if (pkg.name.startsWith('@contractguard/')) continue;
+    if (pkg.name.startsWith('@zainkhan-bit/contractguard-')) continue;
     let text = '';
     for (const name of ['LICENSE', 'LICENSE.md', 'LICENSE.txt', 'license', 'LICENCE']) {
       try {

@@ -1,6 +1,6 @@
 import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_LIMITS, parsePointer, stringifyCanonical, type JsonPointer } from '@contractguard/core';
+import { DEFAULT_LIMITS, parsePointer, stringifyCanonical, type JsonPointer } from '@zainkhan-bit/contractguard-core';
 import { parseJson } from '../../src/parse/json-parser.js';
 import { codes, parseText } from '../helpers.js';
 

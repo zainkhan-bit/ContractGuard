@@ -1,4 +1,4 @@
-# @contractguard/engine
+# @zainkhan-bit/contractguard-engine
 
 Protocol-independent comparison engine for [ContractGuard](https://github.com/zainkhan-bit/ContractGuard).
 

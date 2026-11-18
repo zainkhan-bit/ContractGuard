@@ -22,7 +22,7 @@ import {
   type Severity,
   type SeverityProfile,
   type Strength,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 
 export interface RuleSpec<K extends ChangeKind> {
   readonly id: string;

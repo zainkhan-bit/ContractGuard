@@ -28,7 +28,7 @@ import {
   type RuleOverride,
   type Severity,
   type SourceRef,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import { PROVIDER_BACKWARD } from './perspectives.js';
 import { describeSubject, interpolate } from './text.js';
 

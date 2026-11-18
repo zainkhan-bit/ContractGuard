@@ -1,4 +1,4 @@
-# @contractguard/core
+# @zainkhan-bit/contractguard-core
 
 The dependency-free foundation of [ContractGuard](../../README.md). It defines the shared domain model and deterministic utilities used by every other package. It performs **no I/O**.
 

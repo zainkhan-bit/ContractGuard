@@ -1,4 +1,4 @@
-import { CHANGE_KINDS, type ApiContract, type CompatibilityFinding } from '@contractguard/core';
+import { CHANGE_KINDS, type ApiContract, type CompatibilityFinding } from '@zainkhan-bit/contractguard-core';
 import { describe, expect, it } from 'vitest';
 import { checkCompatibility, DEFAULT_REGISTRY, explainRule } from '../../src/check.js';
 import { fingerprintOf } from '../../src/compat/evaluate.js';

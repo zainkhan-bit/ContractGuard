@@ -6,8 +6,8 @@ import {
   type DocumentUri,
   type ReferencePolicy,
   type StageResult,
-} from '@contractguard/core';
-import { loadContract, type SpecValidator } from '@contractguard/openapi';
+} from '@zainkhan-bit/contractguard-core';
+import { loadContract, type SpecValidator } from '@zainkhan-bit/contractguard-openapi';
 import type { LoadedConfiguration } from './config/load.js';
 import { openSource } from './sources/open.js';
 import { buildSnapshot, type Snapshot } from './sources/snapshot.js';

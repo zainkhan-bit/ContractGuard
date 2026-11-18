@@ -28,7 +28,7 @@ import {
   type SchemaReference,
   type SourceRef,
   type UnsupportedKeyword,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import { followReferences } from '../resolve/follow.js';
 import { siteKey, valueAt, type ResolvedReference } from '../resolve/resolver.js';
 import { arrayAt, bool, child, count, extensions, objectAt, str, type Loc, type NormalizeContext } from './context.js';

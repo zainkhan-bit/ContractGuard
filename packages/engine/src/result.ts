@@ -17,7 +17,7 @@ import {
   type PolicyVerdict,
   type ResolvedConfiguration,
   type Severity,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 
 export type ReportPolicy = ResolvedConfiguration['policy'];
 

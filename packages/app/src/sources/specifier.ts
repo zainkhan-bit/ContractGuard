@@ -1,5 +1,5 @@
 import { resolve } from 'node:path';
-import { diagnostic, type StageResult } from '@contractguard/core';
+import { diagnostic, type StageResult } from '@zainkhan-bit/contractguard-core';
 
 /** A parsed source specifier (§12.2). Paths are absolute. */
 export type SourceSpecifier =

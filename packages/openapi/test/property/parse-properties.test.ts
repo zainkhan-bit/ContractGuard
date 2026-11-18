@@ -1,7 +1,7 @@
 import fc from 'fast-check';
 import { stringify } from 'yaml';
 import { describe, expect, it } from 'vitest';
-import { fromPlainJson, stringifyCanonical, type CanonicalJson } from '@contractguard/core';
+import { fromPlainJson, stringifyCanonical, type CanonicalJson } from '@zainkhan-bit/contractguard-core';
 import { parseText } from '../helpers.js';
 
 const canon = (v: unknown): CanonicalJson => {

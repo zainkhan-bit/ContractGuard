@@ -6,7 +6,7 @@ import {
   type CanonicalJson,
   type JsonPointer,
   type OasDialect,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 
 /** A `$ref` (or `$dynamicRef`) occurrence: the object at `site` contains the reference. */
 export interface RefSite {

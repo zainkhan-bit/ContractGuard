@@ -13,7 +13,7 @@ import {
   type SchemaGraph,
   type SchemaNode,
   type SchemaNodeId,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import { expandTypes } from './relations.js';
 
 const ANY_ID = '~any' as SchemaNodeId;

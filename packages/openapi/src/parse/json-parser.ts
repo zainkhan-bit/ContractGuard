@@ -5,7 +5,7 @@ import {
   type CanonicalJson,
   type DiagnosticCode,
   type JsonPointer,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import { PointerIndexBuilder, type OffsetRange, type PointerIndex, type Slot } from './pointer-index.js';
 
 /**

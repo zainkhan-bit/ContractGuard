@@ -1,5 +1,5 @@
 {
-  "name": "@contractguard/reporters",
+  "name": "@zainkhan-bit/contractguard-reporters",
   "version": "0.0.0",
   "description": "ContractGuard reporters: console, Markdown, JSON (with published schema) and SARIF 2.1.0 renderers for analysis results.",
   "license": "MIT",
@@ -40,11 +40,11 @@
     "provenance": true
   },
   "dependencies": {
-    "@contractguard/core": "workspace:*"
+    "@zainkhan-bit/contractguard-core": "workspace:*"
   },
   "devDependencies": {
-    "@contractguard/engine": "workspace:*",
-    "@contractguard/openapi": "workspace:*",
+    "@zainkhan-bit/contractguard-engine": "workspace:*",
+    "@zainkhan-bit/contractguard-openapi": "workspace:*",
     "@hyperjump/json-schema": "~1.18.0"
   }
 }

@@ -1,4 +1,4 @@
-import type { ApiContract, RuleDefinition } from '@contractguard/core';
+import type { ApiContract, RuleDefinition } from '@zainkhan-bit/contractguard-core';
 import { areaOf, assessed, defineRule, DEFAULT_SEVERITY, overridden, reasoning } from './define.js';
 import { typeParams } from './req.js';
 

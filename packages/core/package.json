@@ -1,5 +1,5 @@
 {
-  "name": "@contractguard/core",
+  "name": "@zainkhan-bit/contractguard-core",
   "version": "0.0.0",
   "description": "ContractGuard core domain: canonical contract model, findings, rule and perspective contracts, diagnostics and deterministic utilities.",
   "license": "MIT",

@@ -1,4 +1,4 @@
-import type { AnalysisLimits, DocumentUri, ReferencePolicy, StageResult } from '@contractguard/core';
+import type { AnalysisLimits, DocumentUri, ReferencePolicy, StageResult } from '@zainkhan-bit/contractguard-core';
 
 /** Raw bytes of one document, as read by a SourceLoader. */
 export interface LoadedSource {

@@ -1,6 +1,6 @@
 ---
-'@contractguard/engine': minor
-'@contractguard/core': minor
+'@zainkhan-bit/contractguard-engine': minor
+'@zainkhan-bit/contractguard-core': minor
 ---
 
 Add the compatibility engine and the v1 rule catalog: `checkCompatibility()` diffs two contracts and classifies

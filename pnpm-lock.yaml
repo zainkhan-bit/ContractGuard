@@ -47,16 +47,16 @@ importers:
 
   integrations/github-action:
     dependencies:
-      '@contractguard/app':
+      '@zainkhan-bit/contractguard-app':
         specifier: workspace:*
         version: link:../../packages/app
-      '@contractguard/core':
+      '@zainkhan-bit/contractguard-core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@contractguard/engine':
+      '@zainkhan-bit/contractguard-engine':
         specifier: workspace:*
         version: link:../../packages/engine
-      '@contractguard/reporters':
+      '@zainkhan-bit/contractguard-reporters':
         specifier: workspace:*
         version: link:../../packages/reporters
     devDependencies:
@@ -66,13 +66,13 @@ importers:
 
   packages/app:
     dependencies:
-      '@contractguard/core':
+      '@zainkhan-bit/contractguard-core':
         specifier: workspace:*
         version: link:../core
-      '@contractguard/engine':
+      '@zainkhan-bit/contractguard-engine':
         specifier: workspace:*
         version: link:../engine
-      '@contractguard/openapi':
+      '@zainkhan-bit/contractguard-openapi':
         specifier: workspace:*
         version: link:../openapi
       picomatch:
@@ -91,16 +91,16 @@ importers:
 
   packages/cli:
     dependencies:
-      '@contractguard/app':
+      '@zainkhan-bit/contractguard-app':
         specifier: workspace:*
         version: link:../app
-      '@contractguard/core':
+      '@zainkhan-bit/contractguard-core':
         specifier: workspace:*
         version: link:../core
-      '@contractguard/engine':
+      '@zainkhan-bit/contractguard-engine':
         specifier: workspace:*
         version: link:../engine
-      '@contractguard/reporters':
+      '@zainkhan-bit/contractguard-reporters':
         specifier: workspace:*
         version: link:../reporters
 
@@ -108,41 +108,41 @@ importers:
 
   packages/engine:
     dependencies:
-      '@contractguard/core':
+      '@zainkhan-bit/contractguard-core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
-      '@contractguard/openapi':
+      '@zainkhan-bit/contractguard-openapi':
         specifier: workspace:*
         version: link:../openapi
 
   packages/openapi:
     dependencies:
-      '@contractguard/core':
-        specifier: workspace:*
-        version: link:../core
       '@hyperjump/json-schema':
         specifier: ~1.18.0
         version: 1.18.0(@hyperjump/browser@1.6.0)
+      '@zainkhan-bit/contractguard-core':
+        specifier: workspace:*
+        version: link:../core
       yaml:
         specifier: ^2.9.1
         version: 2.9.1
 
   packages/reporters:
     dependencies:
-      '@contractguard/core':
+      '@zainkhan-bit/contractguard-core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
-      '@contractguard/engine':
-        specifier: workspace:*
-        version: link:../engine
-      '@contractguard/openapi':
-        specifier: workspace:*
-        version: link:../openapi
       '@hyperjump/json-schema':
         specifier: ~1.18.0
         version: 1.18.0(@hyperjump/browser@1.6.0)
+      '@zainkhan-bit/contractguard-engine':
+        specifier: workspace:*
+        version: link:../engine
+      '@zainkhan-bit/contractguard-openapi':
+        specifier: workspace:*
+        version: link:../openapi
 
 packages:
 

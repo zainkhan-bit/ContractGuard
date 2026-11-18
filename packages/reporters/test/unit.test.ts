@@ -1,4 +1,4 @@
-import { JsonNumber, type AnalysisResult } from '@contractguard/core';
+import { JsonNumber, type AnalysisResult } from '@zainkhan-bit/contractguard-core';
 import { describe, expect, it } from 'vitest';
 import { renderConsole, wrap } from '../src/console.js';
 import { renderJson } from '../src/json.js';

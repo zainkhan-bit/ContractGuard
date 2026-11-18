@@ -64,7 +64,7 @@ The five ideas that define the design:
 
 5. **Untrusted input by default.** Specs are data and are never executed. YAML parsing has alias, size and depth limits. Remote references are off by default. When they are enabled, they go through an SSRF-hardened fetcher, and in CI mode they need an explicit flag or Action input. Settings in the repository config file can only *restrict* network access, never grant it.
 
-**Recommended package layout** (ADR-02): six published workspace packages instead of the nine proposed in the brief. They are `@contractguard/core`, `@contractguard/openapi`, `@contractguard/engine` (schema analysis + diff + compatibility + rules), `@contractguard/reporters`, `@contractguard/app` (use cases, config, I/O adapters) and the `contractguard` CLI. There is also one private, bundled GitHub Action. Test generation and consumer-aware analysis get their own packages only when they are built (post-1.0).
+**Recommended package layout** (ADR-02): six published workspace packages instead of the nine proposed in the brief. They are `@zainkhan-bit/contractguard-core`, `@zainkhan-bit/contractguard-openapi`, `@zainkhan-bit/contractguard-engine` (schema analysis + diff + compatibility + rules), `@zainkhan-bit/contractguard-reporters`, `@zainkhan-bit/contractguard-app` (use cases, config, I/O adapters) and the `contractguard` CLI. There is also one private, bundled GitHub Action. Test generation and consumer-aware analysis get their own packages only when they are built (post-1.0).
 
 **Runtime and tooling** (ADR-03, ADR-17): Node.js ≥ 24, ESM-only, TypeScript 6.0 in strict mode (TS 7 typecheck job in CI), pnpm 11 workspaces, Vitest 5, fast-check, ESLint + typescript-eslint, Changesets 3, npm trusted publishing with provenance.
 
@@ -94,7 +94,7 @@ Existing tools help, but they usually express results as a severity level or a b
 | API provider engineer | Know before merging whether a spec change breaks existing clients, and why | CLI locally, PR check |
 | Platform / API governance team | Enforce a consistent policy across many services in a monorepo | Config file, GitHub Action, JSON reports |
 | Reviewer | Understand the impact of a PR's API change without reading YAML | PR summary, annotations |
-| Tool builder | Embed compatibility analysis in other Node tooling | `@contractguard/app` / `engine` libraries |
+| Tool builder | Embed compatibility analysis in other Node tooling | `@zainkhan-bit/contractguard-app` / `engine` libraries |
 | (Future) Consumer team | Know whether a provider change affects *their* usage | Consumer-aware analysis (post-1.0) |
 
 ## 2.4 Core user workflows
@@ -145,7 +145,7 @@ IDs are referenced by tests (§18) and milestones (§19).
 | FR-14 | Support include/exclude filters by operation (method + path glob), tag and extension flag. |
 | FR-15 | Provide a GitHub Action with job summary, annotations, an optional sticky PR comment, SARIF output and outputs for downstream steps. It must work safely on fork PRs. |
 | FR-16 | Provide `explain` documentation for every rule, generated from the same rule catalog the engine uses. |
-| FR-17 | Provide the programmatic API (`@contractguard/app`, `@contractguard/engine`) with typed, documented public interfaces. |
+| FR-17 | Provide the programmatic API (`@zainkhan-bit/contractguard-app`, `@zainkhan-bit/contractguard-engine`) with typed, documented public interfaces. |
 
 ## 2.6 Non-functional requirements
 
@@ -293,15 +293,15 @@ Format for each ADR: **Problem · Alternatives · Criteria · Decision · Justif
 
 | Package | Contains (logical modules from brief §7) | Why a separate package |
 |---|---|---|
-| `@contractguard/core` | A. Core domain: canonical model types, change/finding types, rule & perspective contracts, config *types*, diagnostics, identity/hash/pointer utilities | Zero-dependency foundation everyone shares. Must never import I/O. |
-| `@contractguard/openapi` | B. Specification: load, parse, source maps, resolve, validate, normalize | Has the heavy third-party dependencies (`yaml`, `@hyperjump/json-schema`) and I/O ports. The engine must not depend on it (protocol-independent engine). |
-| `@contractguard/engine` | C + D + E + rules: schema analysis, diff, compatibility evaluation, rule registry & catalog | These four are tightly coupled. Rules consume change kinds from the differ and helpers from schema analysis, and no external consumer needs one without the others. They are separated as **internal modules** with lint-enforced boundaries (§6.3) and can be split later without breaking the public API. |
-| `@contractguard/reporters` | G. Reporting | Pure functions from `AnalysisResult` to text. Other tools may consume them without the CLI. |
-| `@contractguard/app` | Application services: `analyze()` use case, config discovery/validation, git/file/snapshot source adapters, policy application, ignore/filter handling | Shared by CLI and Action. Keeps both thin. This is where Node I/O lives. |
+| `@zainkhan-bit/contractguard-core` | A. Core domain: canonical model types, change/finding types, rule & perspective contracts, config *types*, diagnostics, identity/hash/pointer utilities | Zero-dependency foundation everyone shares. Must never import I/O. |
+| `@zainkhan-bit/contractguard-openapi` | B. Specification: load, parse, source maps, resolve, validate, normalize | Has the heavy third-party dependencies (`yaml`, `@hyperjump/json-schema`) and I/O ports. The engine must not depend on it (protocol-independent engine). |
+| `@zainkhan-bit/contractguard-engine` | C + D + E + rules: schema analysis, diff, compatibility evaluation, rule registry & catalog | These four are tightly coupled. Rules consume change kinds from the differ and helpers from schema analysis, and no external consumer needs one without the others. They are separated as **internal modules** with lint-enforced boundaries (§6.3) and can be split later without breaking the public API. |
+| `@zainkhan-bit/contractguard-reporters` | G. Reporting | Pure functions from `AnalysisResult` to text. Other tools may consume them without the CLI. |
+| `@zainkhan-bit/contractguard-app` | Application services: `analyze()` use case, config discovery/validation, git/file/snapshot source adapters, policy application, ignore/filter handling | Shared by CLI and Action. Keeps both thin. This is where Node I/O lives. |
 | `contractguard` (CLI) | H. CLI | The npm entry point (`npx contractguard`). Argument parsing, console rendering, exit codes. |
 | `integrations/github-action` (private) | I. GitHub integration | Bundled into a single `dist/index.js` (actions do not run `npm install`). Not published to npm. |
 
-  Deferred packages (created only when their milestone starts): `@contractguard/testgen` (F, M11) and `@contractguard/consumers` (§10.8, M12).
+  Deferred packages (created only when their milestone starts): `@zainkhan-bit/contractguard-testgen` (F, M11) and `@zainkhan-bit/contractguard-consumers` (§10.8, M12).
 - **Justification.** Each package boundary is a *dependency-direction* boundary or a *distribution* boundary. Splitting diff/compatibility/rules into separate packages would need lockstep releases with no independent consumer. `config` is not a package of its own: config *types* live in `core` (so the engine can read resolved options) and config *loading* (I/O + zod) lives in `app`.
 - **Trade-offs.** `engine` is the largest package. Internal boundaries depend on lint rules rather than package walls.
 - **Consequences.** Public API surfaces: `core` (types), `engine` (`diffContracts`, `evaluate`, `ruleCatalog`), `openapi` (`loadContract`), `app` (`analyze`), `reporters` (`render*`). Everything else is internal (§6.4).
@@ -418,7 +418,7 @@ Format for each ADR: **Problem · Alternatives · Criteria · Decision · Justif
 - **Decision.** **`.contractguard.yaml`** (also `.contractguard.yml` / `.contractguard.json`), versioned (`version: 1`). Validated with a zod 4 schema that also generates `schemas/config.v1.json` for editor completion. No JS/TS config files.
 - **Justification.** YAML matches the domain (OpenAPI users already write YAML). JS config would execute repository code and kill determinism (C2). Zod gives typed parsing, readable errors and JSON Schema export from one definition.
 - **Trade-offs.** No computed configuration. Users who need it can generate the YAML.
-- **Consequences.** Config discovery, validation and defaults live in `@contractguard/app`. The resolved config type lives in `core`.
+- **Consequences.** Config discovery, validation and defaults live in `@zainkhan-bit/contractguard-app`. The resolved config type lives in `core`.
 
 ---
 
@@ -451,7 +451,7 @@ Format for each ADR: **Problem · Alternatives · Criteria · Decision · Justif
 
 ### ADR-15 — CI integration
 
-- **Alternatives.** (a) JavaScript action wrapping `@contractguard/app`. (b) Composite action running `npx contractguard`. (c) Docker action. (d) GitHub App.
+- **Alternatives.** (a) JavaScript action wrapping `@zainkhan-bit/contractguard-app`. (b) Composite action running `npx contractguard`. (c) Docker action. (d) GitHub App.
 - **Decision.** **(a)** bundled with esbuild to `dist/index.js`, `runs.using: node24`. Publishing channels, in order of reliance: **job summary** (always), **annotations** (top-N), **outputs**, **SARIF file** (for users who upload it), **sticky PR comment** (opt-in; skipped with a notice when the token is read-only). No Checks API in v1. The job itself is the check, and Checks API writes are unavailable on fork PRs.
 - **Justification.** (a) starts quickly, needs no network install, can use the library directly and allows rich outputs. (b) depends on registry availability at run time. (c) is slow and Linux-only. (d) needs hosted infrastructure (out of scope).
 - **Consequences.** The Action's `dist` must be rebuilt and verified in CI (`git diff --exit-code dist/`).
@@ -460,7 +460,7 @@ Format for each ADR: **Problem · Alternatives · Criteria · Decision · Justif
 
 ### ADR-16 — Reporting architecture
 
-- **Decision.** Reporters are pure functions `render(result: AnalysisResult, options) → string` in `@contractguard/reporters`. The engine produces structured data only: explanations are composed from rule message templates plus structured parameters, and wording lives with rule metadata (in `engine`), not in reporters. Reporters do layout only. The JSON report is the canonical machine format, with a versioned JSON Schema (`schemas/report.v1.json`). SARIF is derived from the same `AnalysisResult`.
+- **Decision.** Reporters are pure functions `render(result: AnalysisResult, options) → string` in `@zainkhan-bit/contractguard-reporters`. The engine produces structured data only: explanations are composed from rule message templates plus structured parameters, and wording lives with rule metadata (in `engine`), not in reporters. Reporters do layout only. The JSON report is the canonical machine format, with a versioned JSON Schema (`schemas/report.v1.json`). SARIF is derived from the same `AnalysisResult`.
 - **Consequences.** Golden-file tests per reporter. No reporter may reach into canonical models or source files. Everything it needs is in `AnalysisResult` (including pre-resolved line/column ranges).
 
 ---
@@ -516,7 +516,7 @@ flowchart LR
   dev["Developer (local)"] -->|"contractguard check"| cli["contractguard CLI"]
   ci["CI system"] -->|"contractguard check --ci"| cli
   gh["GitHub pull_request event"] --> action["ContractGuard GitHub Action"]
-  lib["Other Node tools"] -->|"import"| app["@contractguard/app"]
+  lib["Other Node tools"] -->|"import"| app["@zainkhan-bit/contractguard-app"]
   cli --> app
   action --> app
   app --> fs[("Local files")]
@@ -530,11 +530,11 @@ flowchart LR
 
 ```mermaid
 flowchart TB
-  core["@contractguard/core<br/>types, diagnostics, ids"]
-  openapi["@contractguard/openapi<br/>load, parse, resolve, validate, normalize"]
-  engine["@contractguard/engine<br/>schema, diff, compat, rules"]
-  reporters["@contractguard/reporters"]
-  app["@contractguard/app<br/>use cases, config, adapters"]
+  core["@zainkhan-bit/contractguard-core<br/>types, diagnostics, ids"]
+  openapi["@zainkhan-bit/contractguard-openapi<br/>load, parse, resolve, validate, normalize"]
+  engine["@zainkhan-bit/contractguard-engine<br/>schema, diff, compat, rules"]
+  reporters["@zainkhan-bit/contractguard-reporters"]
+  app["@zainkhan-bit/contractguard-app<br/>use cases, config, adapters"]
   cli["contractguard (CLI)"]
   action["github-action (private, bundled)"]
 
@@ -564,21 +564,21 @@ flowchart LR
     c["Candidate source"]
     cfg[".contractguard.yaml + flags"]
   end
-  subgraph OAS["@contractguard/openapi (per side)"]
+  subgraph OAS["@zainkhan-bit/contractguard-openapi (per side)"]
     l["SourceLoader"] --> p["DocumentParser<br/>JSON/YAML + PointerIndex"]
     p --> v1["VersionDetector"]
     v1 --> r["ReferenceResolver<br/>DocumentSet + RefEdges"]
     r --> sv["SpecValidator<br/>structural + semantic"]
     sv --> n["Normalizer<br/>Oas30Adapter / Oas31Adapter"]
   end
-  subgraph ENG["@contractguard/engine"]
+  subgraph ENG["@zainkhan-bit/contractguard-engine"]
     m["OperationMatcher"] --> d["ContractDiffer<br/>params, bodies, responses, security"]
     d --> sd["SchemaDiffer<br/>pair memo, cycles"]
     sd --> pr["UsageProjector"]
     d --> ev["CompatibilityEvaluator<br/>rules + perspective table"]
     pr --> ev
   end
-  subgraph APP["@contractguard/app"]
+  subgraph APP["@zainkhan-bit/contractguard-app"]
     pol["PolicyApplier<br/>filters, ignores, overrides, failOn"]
   end
   b --> l
@@ -587,7 +587,7 @@ flowchart LR
   n -->|"ApiContract (candidate)"| m
   cfg --> pol
   ev -->|"Finding[]"| pol
-  pol -->|"AnalysisResult"| rep["@contractguard/reporters"]
+  pol -->|"AnalysisResult"| rep["@zainkhan-bit/contractguard-reporters"]
   rep --> out["console / md / json / sarif"]
   pol -->|"policy verdict"| exit["Exit code / Action outcome"]
 ```
@@ -620,7 +620,7 @@ sequenceDiagram
   participant R as Runner (checkout of merge commit)
   participant A as ContractGuard Action
   participant G as git (local)
-  participant APP as @contractguard/app
+  participant APP as @zainkhan-bit/contractguard-app
   participant API as GitHub REST API
   GH->>R: trigger workflow (read-only token on forks)
   R->>A: run with inputs
@@ -642,7 +642,7 @@ sequenceDiagram
 ```mermaid
 flowchart LR
   repo["Monorepo (GitHub)"] -->|"Changesets release PR merged"| rel["Release workflow<br/>(OIDC, provenance)"]
-  rel -->|"npm publish"| npm[("npm registry<br/>contractguard, @contractguard/*")]
+  rel -->|"npm publish"| npm[("npm registry<br/>contractguard, @zainkhan-bit/contractguard-*")]
   rel -->|"build dist + tag vX.Y.Z, move vX"| act[("Action ref<br/>repo tag (or mirror repo, Q3)")]
   rel -->|"build docs"| docs[("Docs site (GitHub Pages)")]
   users1["Developers"] -->|"npx contractguard / devDependency"| npm
@@ -704,7 +704,7 @@ engine/schema   ← engine/diff ← engine/compat
 
 | Package | Public (SemVer-governed) | Internal (may change in any release) |
 |---|---|---|
-| core | All exported types and the pure utilities in `@contractguard/core/ids` | — (core is intentionally all-public, so it must stay small) |
+| core | All exported types and the pure utilities in `@zainkhan-bit/contractguard-core/ids` | — (core is intentionally all-public, so it must stay small) |
 | openapi | `loadContract()`, `validateSpec()`, `SourceLoader`/`SpecValidator` port interfaces, `ReferencePolicy` | Parser, resolver, adapter internals |
 | engine | `diffContracts()`, `evaluate()`, `builtinRules`, `perspectives`, `RuleDefinition` (for library users who add rules) | Schema differ, projector, matcher internals |
 | reporters | `renderJson`, `renderMarkdown`, `renderSarif`, `renderConsole`, report JSON Schema | Template helpers |
@@ -719,7 +719,7 @@ Every public package uses an explicit `exports` map. Deep imports are impossible
 Parser-side ports (`SourceLoader`, `DocumentParser`, `ReferenceResolver`, `SpecValidator`, `Normalizer`, `VersionAdapter`) are specified in §8.1. Domain types are in §7. The remaining contracts:
 
 ```ts
-// ---------- @contractguard/openapi (public) ----------
+// ---------- @zainkhan-bit/contractguard-openapi (public) ----------
 export type SourceSpecifier =
   | { readonly kind: 'path'; readonly path: string }
   | { readonly kind: 'git'; readonly ref: string; readonly path: string }
@@ -730,7 +730,7 @@ export interface LoadOptions { readonly loaders: SourceLoaderRegistry; readonly 
 export function loadContract(spec: SourceSpecifier, options: LoadOptions): Promise<StageResult<ApiContract>>;
 export function validateSpec(spec: SourceSpecifier, options: LoadOptions): Promise<StageResult<void>>;
 
-// ---------- @contractguard/engine (public) ----------
+// ---------- @zainkhan-bit/contractguard-engine (public) ----------
 export interface DiffOptions { readonly limits: AnalysisLimits; readonly honorExtensibleEnum: boolean; readonly includeEquivalentChanges: boolean; readonly signal?: AbortSignal }
 export interface ContractDiff {
   readonly base: ApiContract;
@@ -758,7 +758,7 @@ export function createRuleRegistry(rules: readonly RuleDefinition[]): RuleRegist
 export const builtinRules: readonly RuleDefinition[];
 export const perspectives: ReadonlyMap<PerspectiveId, CompatibilityPerspective>;
 
-// ---------- @contractguard/app (public) ----------
+// ---------- @zainkhan-bit/contractguard-app (public) ----------
 export interface AnalysisRequest {
   readonly cwd: string;
   readonly configPath?: string | false;                  // false = --no-config
@@ -799,7 +799,7 @@ Which interfaces are public is defined in §6.4. All others are internal and may
 
 # 7. Canonical contract model
 
-All types live in `@contractguard/core`. Every canonical object is **deeply readonly** and **frozen in development builds** (`Object.freeze` behind a `CONTRACTGUARD_DEV_FREEZE` flag used in tests; skipped in production for speed).
+All types live in `@zainkhan-bit/contractguard-core`. Every canonical object is **deeply readonly** and **frozen in development builds** (`Object.freeze` behind a `CONTRACTGUARD_DEV_FREEZE` flag used in tests; skipped in production for speed).
 
 ## 7.1 Identity and traceability primitives
 
@@ -2320,7 +2320,7 @@ export interface ConsumerImpact {
 - **Integration point:** `app.analyze()` gains an optional `consumerEvidence` step *after* `evaluate()`. Core findings are unchanged. Impacts are attached in a new `AnalysisResult.consumerImpacts` field (additive, report v1.x).
 - **Perspective `consumer-specific:<name>`** (future): re-evaluates findings where consumer evidence turns a *consumer-dependent* basis into a contract-guaranteed one for that consumer (e.g. RES-003 for a consumer that does not read the field → non-breaking for that consumer). Findings without evidence keep their original classification. Unknown stays unknown.
 - **Pact mapping:** v3/v4 interactions → match request path against operation templates, derive `sends` from request body/query/header keys and `reads` from response matching rules and body keys. `confidence: derived`.
-- **No core dependency:** `@contractguard/consumers` depends on `core` (+ `engine` types). Nothing depends on it.
+- **No core dependency:** `@zainkhan-bit/contractguard-consumers` depends on `core` (+ `engine` types). Nothing depends on it.
 
 ---
 
@@ -2690,7 +2690,7 @@ Size management: Markdown for the GitHub job summary is capped at 1 MiB (GitHub 
 
 ## 13.3 JSON report
 
-The canonical, versioned (`reportVersion`) machine format. Its JSON Schema (`schemas/report.v1.json`) is published in `@contractguard/reporters` and on the docs site. Contents = `AnalysisResult[]` serialized with sorted keys, and `Map`/`Set` as sorted arrays. Stability rules are in §7.9.
+The canonical, versioned (`reportVersion`) machine format. Its JSON Schema (`schemas/report.v1.json`) is published in `@zainkhan-bit/contractguard-reporters` and on the docs site. Contents = `AnalysisResult[]` serialized with sorted keys, and `Map`/`Set` as sorted arrays. Stability rules are in §7.9.
 
 ## 13.4 SARIF 2.1.0
 
@@ -2785,7 +2785,7 @@ ContractGuard never sends requests to arbitrary URLs and never executes generate
 
 ## 14.2 Package and data flow
 
-`@contractguard/testgen` depends on `core` (+ `engine/schema` helpers via a public subpath). It consumes the **canonical model**, not raw specs.
+`@zainkhan-bit/contractguard-testgen` depends on `core` (+ `engine/schema` helpers via a public subpath). It consumes the **canonical model**, not raw specs.
 
 ```
 ApiContract ──► CaseGenerator ──► TestCase[] (data) ──► Emitter(vitest | jest | json-fixtures | http-file) ──► files
@@ -2912,7 +2912,7 @@ Trust levels: **CLI flags / Action inputs** (trusted: written by the workflow ow
 ```text
 contractguard/
 ├── packages/
-│   ├── core/                       @contractguard/core
+│   ├── core/                       @zainkhan-bit/contractguard-core
 │   │   ├── src/
 │   │   │   ├── model/              canonical contract types (§7.1–7.5)
 │   │   │   ├── findings/           changes, findings, classifications (§7.6)
@@ -2923,7 +2923,7 @@ contractguard/
 │   │   │   └── index.ts
 │   │   ├── test/
 │   │   └── README.md
-│   ├── openapi/                    @contractguard/openapi
+│   ├── openapi/                    @zainkhan-bit/contractguard-openapi
 │   │   ├── src/
 │   │   │   ├── load/               SourceLoader port, file/stdin/remote loaders, ReferencePolicy enforcement
 │   │   │   ├── parse/              yaml-based parser, PointerIndex, limits
@@ -2933,7 +2933,7 @@ contractguard/
 │   │   │   ├── normalize/          Normalizer + adapters/oas30.ts, adapters/oas31.ts
 │   │   │   └── index.ts            loadContract, validateSpec
 │   │   └── test/
-│   ├── engine/                     @contractguard/engine
+│   ├── engine/                     @zainkhan-bit/contractguard-engine
 │   │   ├── src/
 │   │   │   ├── schema/             type lattice, bounds, enum ops, allOf merge, branch matching, format lattice
 │   │   │   ├── diff/               operation matcher, contract differ, schema pair differ, projector
@@ -2941,11 +2941,11 @@ contractguard/
 │   │   │   ├── rules/              api.ts, srv.ts, req.ts, res.ts, schema.ts, auth.ts, catalog.ts
 │   │   │   └── index.ts            diffContracts, evaluate, builtinRules, perspectives
 │   │   └── test/
-│   ├── reporters/                  @contractguard/reporters
+│   ├── reporters/                  @zainkhan-bit/contractguard-reporters
 │   │   ├── src/{json,markdown,sarif,console}/
 │   │   ├── schemas/report.v1.json
 │   │   └── test/golden/
-│   ├── app/                        @contractguard/app
+│   ├── app/                        @zainkhan-bit/contractguard-app
 │   │   ├── src/
 │   │   │   ├── analyze/            use case, stage policy, filters, ignores, policy verdict
 │   │   │   ├── config/             discovery, zod schema, defaults, trust boundary; emits schemas/config.v1.json
@@ -3199,7 +3199,7 @@ flowchart LR
 
 ### M0 — Repository foundations and core domain
 
-- **Objective:** a buildable, lint-clean, CI-verified workspace with the real `@contractguard/core` package.
+- **Objective:** a buildable, lint-clean, CI-verified workspace with the real `@zainkhan-bit/contractguard-core` package.
 - **Modules:** root tooling; `core` (model types, findings/rules/config types, diagnostics, ids utilities).
 - **Prerequisites:** blueprint approved; ADRs committed.
 - **Deliverables:** pnpm workspace, tsconfig (strict), ESLint/Prettier/dependency-cruiser, Vitest projects, CI workflow (3 OS × Node 24/26), Changesets, LICENSE/README/CONTRIBUTING/SECURITY/CoC; `core` with pointer encode/decode, canonical JSON + equality/ordering, decimal compare, sha256 helpers, sorted-map utilities, PRNG, diagnostic codes registry.
@@ -3299,8 +3299,8 @@ flowchart LR
 | Milestone | Scope | Architectural impact |
 |---|---|---|
 | **M10** | OpenAPI 3.2 (adapter, `query` method, `additionalOperations`, `querystring`, `itemSchema`); consumer-forward perspective made user-selectable | Additive model fields; new adapter; new rules for new constructs |
-| **M11** | `@contractguard/testgen` offline generation + emitters (§14) | New package; reads canonical model only |
-| **M12** | `@contractguard/consumers` (manifests, Pact) + consumer impact in reports (§10.8) | New package; additive report fields |
+| **M11** | `@zainkhan-bit/contractguard-testgen` offline generation + emitters (§14) | New package; reads canonical model only |
+| **M12** | `@zainkhan-bit/contractguard-consumers` (manifests, Pact) + consumer impact in reports (§10.8) | New package; additive report fields |
 | Later | Callbacks/webhooks analysis; pattern inclusion for a regular subset; oneOf overlap analysis; persistent cache (if benchmarks justify it); additional CI integrations | Rules and engine extensions only |
 
 ---
@@ -3326,7 +3326,7 @@ Decisions and deviations discovered during implementation. Each entry names the 
 - **M6 · §13.2 — truncation order** under the size cap: informational, non-breaking, suppressed, diagnostics, undetermined, potentially breaking, breaking; a hard cut on a character boundary is the last resort.
 - **M6 · §13.4 — SARIF** uses the 2.1.0 property `automationDetails` (type `runAutomationDetails`); rule tags are `contractguard` + area. Removed elements anchor to the candidate root (line 1) with the baseline in `relatedLocations`; precise nearest-ancestor anchors (§13.5) need the candidate pointer index and are resolved in the app layer (M7).
 - **M6 · §13.3 — `report.v1.json`** accepts any `1.x` `reportVersion`, so additive minor versions validate against the v1 schema. Golden files are excluded from Prettier and are LF-only.
-- **M7 · §6 — `@contractguard/app` holds every use case** (`analyze`, `validateSource`, `createBaseline`) plus configuration and sources, so the CLI and the Action (M8) share one implementation and differ only in I/O. The app package builds with `isolatedDeclarations: false`; the zod schema stays private behind typed functions (`parseConfigFile`, `configJsonSchema`).
+- **M7 · §6 — `@zainkhan-bit/contractguard-app` holds every use case** (`analyze`, `validateSource`, `createBaseline`) plus configuration and sources, so the CLI and the Action (M8) share one implementation and differ only in I/O. The app package builds with `isolatedDeclarations: false`; the zod schema stays private behind typed functions (`parseConfigFile`, `configJsonSchema`).
 - **M7 · §12.6 — `references.root` is a filesystem path** (default: the git root, else the config directory). In CI a root outside the repository is clamped to the repository, and `allowRemote` from a committed file takes effect only with `--allow-remote-references` (T8); otherwise a warning explains why it was ignored.
 - **M7 · §12.2 — git sources** are `git:<ref>:<path>` with the path relative to the working directory. Refs are validated against a strict pattern before git runs, every call uses `execFile` with an argument array and `--end-of-options`, and documents are read with `git show <sha>:<path>` so relative `$ref`s resolve inside the same commit (T10). Without `origin/HEAD`, `init` falls back to `origin/main`, `origin/master`, `main`, `master`.
 - **M7 · §12.2 — snapshots** (`baseline create`) bundle every loaded document with per-document and whole-file SHA-256 checksums; a hand-edited snapshot is rejected. stdin (`-`) is candidate-only and self-contained.
@@ -3364,7 +3364,7 @@ VitePress (Vite is already in the toolchain via Vitest), deployed to GitHub Page
 
 ## 20.4 Versioning policy
 
-SemVer per package, with packages versioned **in lockstep** (Changesets `fixed` group) so users never reason about compatibility matrices between `@contractguard/*` versions.
+SemVer per package, with packages versioned **in lockstep** (Changesets `fixed` group) so users never reason about compatibility matrices between `@zainkhan-bit/contractguard-*` versions.
 
 | Surface | Breaking change (major) | Minor | Patch |
 |---|---|---|---|
@@ -3473,7 +3473,7 @@ These limits are stated in the docs (`docs/concepts/uncertainty.md`), in rule li
 | Q1 | Minimum Node version: ≥ 24 (recommended) or ≥ 22 for wider CI compatibility until April 2027? | **≥ 24.** Node 22 is EOL before 1.0 and the Action runs on node24 regardless | Low. Lowering is easy before 1.0; raising later is a major |
 | Q2 | Structural validator: confirm `@hyperjump/json-schema` subject to the M2 spike? | **Yes**, with the documented fallback | Low (port interface) |
 | Q3 | GitHub Action location: monorepo subpath (`owner/ContractGuard/integrations/github-action@v1`) or a mirrored dist-only repo (`owner/contractguard-action@v1`) required for Marketplace listing? | **Subpath until M9, mirror repo at 1.0** (Marketplace needs `action.yml` at a repo root) | Low: users change one `uses:` line |
-| Q4 | npm names: unscoped `contractguard` for the CLI plus the `@contractguard` scope — availability must be checked and reserved | **Reserve both now** (pending verification; not checked during Stage 0) | Medium: renaming after release is disruptive |
+| Q4 | npm names: unscoped `contractguard` for the CLI plus a scope for the libraries | **Resolved in M9:** `@contractguard` was taken by an unrelated project (July 2026), so the libraries are `@zainkhan-bit/contractguard-*`; the CLI keeps `contractguard` | Medium: renaming after release is disruptive |
 | Q5 | Default for value-space request tightening: potentially-breaking (recommended) or breaking? | **potentially-breaking**, configurable | Low (policy knob) |
 | Q6 | Default for response enum additions: potentially-breaking (recommended) or non-breaking? | **potentially-breaking**, configurable; honor `x-extensible-enum` | Low |
 | Q7 | Contribution terms: DCO (recommended) or CLA? | **DCO** | Medium (hard to add a CLA later) |

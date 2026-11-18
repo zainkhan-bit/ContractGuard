@@ -10,7 +10,7 @@ import {
   type Diagnostic,
   type OasDialect,
   type StageResult,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import type { ParsedDocument } from '../parse/parser.js';
 import { locate } from '../resolve/resolver.js';
 

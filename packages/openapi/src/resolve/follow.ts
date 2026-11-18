@@ -6,7 +6,7 @@ import {
   type DocumentUri,
   type JsonPointer,
   type SourceRef,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import { locate, siteKey, valueAt, type DocumentSet } from './resolver.js';
 
 export interface FollowedValue {

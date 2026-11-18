@@ -6,7 +6,7 @@ import type {
   PerspectiveClassification,
   Role,
   Strength,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 
 const cell = (
   classification: PerspectiveClassification['classification'],

@@ -80,5 +80,5 @@ sarif:
 
 ## Development
 
-`dist/index.js` is a committed bundle (`pnpm build && pnpm --filter @contractguard/github-action run bundle`).
+`dist/index.js` is a committed bundle (`pnpm build && pnpm --filter @zainkhan-bit/contractguard-github-action run bundle`).
 CI fails when it is out of date. `dist/licenses.txt` lists the bundled third-party packages.

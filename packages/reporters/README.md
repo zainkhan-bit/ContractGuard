@@ -1,4 +1,4 @@
-# @contractguard/reporters
+# @zainkhan-bit/contractguard-reporters
 
 Renderers for [ContractGuard](https://github.com/zainkhan-bit/ContractGuard) analysis results.
 
@@ -10,6 +10,6 @@ Renderers for [ContractGuard](https://github.com/zainkhan-bit/ContractGuard) ana
 | `renderSarif(results, { srcRoot, rules })`          | SARIF 2.1.0 for GitHub code scanning, with stable `partialFingerprints`               |
 
 All renderers are pure and deterministic. The JSON Schema is exported as
-`@contractguard/reporters/schemas/report.v1.json`.
+`@zainkhan-bit/contractguard-reporters/schemas/report.v1.json`.
 
 MIT licensed.

@@ -1,4 +1,4 @@
-import type { ChangeOfKind, RuleContext, RuleDefinition } from '@contractguard/core';
+import type { ChangeOfKind, RuleContext, RuleDefinition } from '@zainkhan-bit/contractguard-core';
 import { expandTypes } from '../schema/relations.js';
 import { assessed, assumption, defineRule, DEFAULT_SEVERITY, overridden, reasoning, show } from './define.js';
 

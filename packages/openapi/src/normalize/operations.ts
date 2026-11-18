@@ -38,7 +38,7 @@ import {
   type Server,
   type ServerVariable,
   type StatusKey,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import {
   arrayAt,
   bool,

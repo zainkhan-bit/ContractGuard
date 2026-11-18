@@ -2,7 +2,12 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { diagnostic, documentUri, type AnalysisResult, type CompatibilityFinding } from '@contractguard/core';
+import {
+  diagnostic,
+  documentUri,
+  type AnalysisResult,
+  type CompatibilityFinding,
+} from '@zainkhan-bit/contractguard-core';
 import { ANNOTATIONS_PER_TYPE, diagnosticAnnotations, findingAnnotations, workspacePath } from '../src/annotations.js';
 import { COMMENT_MARKER, commentBody, MAX_COMMENT_CHARS, upsertComment } from '../src/comment.js';
 import { readContext } from '../src/context.js';

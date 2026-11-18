@@ -1,4 +1,10 @@
-import type { ContractChange, Direction, OperationKey, SchemaPathSegment, UsageSite } from '@contractguard/core';
+import type {
+  ContractChange,
+  Direction,
+  OperationKey,
+  SchemaPathSegment,
+  UsageSite,
+} from '@zainkhan-bit/contractguard-core';
 import type { PropertyAccess, SchemaDiffer } from './schema-differ.js';
 
 export interface SchemaUsage {

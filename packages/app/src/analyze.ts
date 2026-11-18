@@ -14,9 +14,14 @@ import {
   objectKeys,
   sha256Hex,
   type CanonicalJson,
-} from '@contractguard/core';
-import { assembleResult, checkCompatibility, RULESET_VERSION } from '@contractguard/engine';
-import { loadContract, type DocumentSet, type LoadedContract, type SpecValidator } from '@contractguard/openapi';
+} from '@zainkhan-bit/contractguard-core';
+import { assembleResult, checkCompatibility, RULESET_VERSION } from '@zainkhan-bit/contractguard-engine';
+import {
+  loadContract,
+  type DocumentSet,
+  type LoadedContract,
+  type SpecValidator,
+} from '@zainkhan-bit/contractguard-openapi';
 import picomatch from 'picomatch';
 import { loadConfiguration, type ConfigRequest, type LoadedConfiguration } from './config/load.js';
 import { openSource, type OpenedSource } from './sources/open.js';

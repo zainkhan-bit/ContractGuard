@@ -1,4 +1,4 @@
-import type { RuleDefinition } from '@contractguard/core';
+import type { RuleDefinition } from '@zainkhan-bit/contractguard-core';
 import { assessed, assumption, DEFAULT_SEVERITY, defineRule, overridden, reasoning } from './define.js';
 
 export const API_RULES: readonly RuleDefinition[] = [

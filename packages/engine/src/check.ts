@@ -8,7 +8,7 @@ import {
   type RuleExample,
   type RuleOptionSpec,
   type SeverityProfile,
-} from '@contractguard/core';
+} from '@zainkhan-bit/contractguard-core';
 import { evaluate, RuleRegistry, type EvaluateOptions } from './compat/evaluate.js';
 import { diffContracts } from './diff/contract-diff.js';
 import { RULES, RULESET_VERSION } from './rules/index.js';

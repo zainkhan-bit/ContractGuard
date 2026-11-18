@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, realpath, rm, symlink, writeFile } from 'node:fs/promis
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { DEFAULT_LIMITS, documentUri, type ReferencePolicy } from '@contractguard/core';
+import { DEFAULT_LIMITS, documentUri, type ReferencePolicy } from '@zainkhan-bit/contractguard-core';
 import { FileSourceLoader, fileUri, isForbiddenWindowsPath, isPathInside } from '../../src/load/file-loader.js';
 import { CompositeSourceLoader, MemorySourceLoader } from '../../src/load/memory-loader.js';
 import { formatHintFromUri, type LoadContext } from '../../src/load/source.js';

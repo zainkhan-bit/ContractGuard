@@ -19,9 +19,9 @@ import {
   type Severity,
   type SourceRef,
   type StageResult,
-} from '@contractguard/core';
-import { DEFAULT_REGISTRY, DEFAULT_REPORT_POLICY } from '@contractguard/engine';
-import { parseDocument, toPlainJson, type PointerIndex } from '@contractguard/openapi';
+} from '@zainkhan-bit/contractguard-core';
+import { DEFAULT_REGISTRY, DEFAULT_REPORT_POLICY } from '@zainkhan-bit/contractguard-engine';
+import { parseDocument, toPlainJson, type PointerIndex } from '@zainkhan-bit/contractguard-openapi';
 import { didYouMean } from '../text.js';
 import { CONFIG_KEYS, parseConfigFile, parseSize, type ConfigFile, type ConfigIssue as $ZodIssue } from './schema.js';
 

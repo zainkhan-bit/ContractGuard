@@ -1,7 +1,7 @@
-import type { AnalysisResult } from '@contractguard/core';
+import type { AnalysisResult } from '@zainkhan-bit/contractguard-core';
 import { toJsonText, type RenderOptions } from './shared.js';
 
-/** URL of the published JSON Schema for the report (also shipped as `@contractguard/reporters/schemas/report.v1.json`). */
+/** URL of the published JSON Schema for the report (also shipped as `@zainkhan-bit/contractguard-reporters/schemas/report.v1.json`). */
 export const REPORT_SCHEMA_ID = 'https://contractguard.dev/schemas/report.v1.json';
 
 /**

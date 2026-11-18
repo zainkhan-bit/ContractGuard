@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_LIMITS, isJsonNumber, parsePointer, type CanonicalJson, type JsonPointer } from '@contractguard/core';
+import {
+  DEFAULT_LIMITS,
+  isJsonNumber,
+  parsePointer,
+  type CanonicalJson,
+  type JsonPointer,
+} from '@zainkhan-bit/contractguard-core';
 import { parseDocument } from '../../src/parse/parser.js';
 import { URI, codes, json, parseOk, parseText } from '../helpers.js';
 

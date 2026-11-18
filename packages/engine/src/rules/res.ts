@@ -1,4 +1,4 @@
-import type { RuleDefinition } from '@contractguard/core';
+import type { RuleDefinition } from '@zainkhan-bit/contractguard-core';
 import { assessed, assumption, defineRule, DEFAULT_SEVERITY, overridden, reasoning, show } from './define.js';
 import { typeParams } from './req.js';
 
