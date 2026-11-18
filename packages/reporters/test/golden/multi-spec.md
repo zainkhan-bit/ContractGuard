@@ -102,7 +102,7 @@ Response 404 of GET /users/{id} is no longer documented.
 
 </details>
 
-<sub>Reproduce locally: `npx contractguard check --spec mixed-changes` · 3 breaking · 6 potentially breaking · 0 undetermined · 1 non-breaking · 0 informational</sub>
+<sub>Reproduce locally: `npx @zainkhan-bit/contractguard check --spec mixed-changes` · 3 breaking · 6 potentially breaking · 0 undetermined · 1 non-breaking · 0 informational</sub>
 
 ---
 
@@ -135,4 +135,4 @@ Base path of server https://eu.api.example.com/v1 is no longer served by any can
 - **Fix:** Serve both base paths during a transition, or release as a new major version.
 - **Fingerprint:** `4475ad0e0a63abc7c57cd0194c506695`
 
-<sub>Reproduce locally: `npx contractguard check --spec servers` · 0 breaking · 1 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational</sub>
+<sub>Reproduce locally: `npx @zainkhan-bit/contractguard check --spec servers` · 0 breaking · 1 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational</sub>

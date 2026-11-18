@@ -102,4 +102,4 @@ Response 404 of GET /users/{id} is no longer documented.
 
 </details>
 
-<sub>Reproduce locally: `npx contractguard check --spec mixed-changes` · 3 breaking · 6 potentially breaking · 0 undetermined · 1 non-breaking · 0 informational</sub>
+<sub>Reproduce locally: `npx @zainkhan-bit/contractguard check --spec mixed-changes` · 3 breaking · 6 potentially breaking · 0 undetermined · 1 non-breaking · 0 informational</sub>

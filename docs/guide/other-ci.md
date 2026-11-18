@@ -84,8 +84,8 @@ pipelines:
 Freeze the released version once and compare against the snapshot:
 
 ```sh
-npx contractguard baseline create openapi.yaml -o contract/v1.snapshot.json   # commit this file
-npx contractguard check snapshot:contract/v1.snapshot.json openapi.yaml
+npx @zainkhan-bit/contractguard baseline create openapi.yaml -o contract/v1.snapshot.json   # commit this file
+npx @zainkhan-bit/contractguard check snapshot:contract/v1.snapshot.json openapi.yaml
 ```
 
 Snapshots contain every document of the spec with SHA-256 checksums; edited snapshots are rejected.

@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v7
       - uses: zainkhan-bit/ContractGuard/integrations/github-action@main
         with:
-          specs: api/openapi.yaml # or commit a .contractguard.yaml (npx contractguard init)
+          specs: api/openapi.yaml # or commit a .contractguard.yaml (npx @zainkhan-bit/contractguard init)
           comment: true
 ```
 

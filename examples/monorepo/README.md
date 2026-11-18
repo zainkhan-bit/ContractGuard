@@ -8,7 +8,7 @@ Three services, one `.contractguard.yaml`:
 
 ```bash
 # from this folder, comparing with your main branch
-npx contractguard check --base-ref origin/main
+npx @zainkhan-bit/contractguard check --base-ref origin/main
 ```
 
 Each service gets its own report (`users.md`, `billing.json`, …) and its own section in the GitHub Action's summary.

@@ -19,7 +19,7 @@ version, with a moving major tag (`v1`).
 ## Two things to know
 
 - **New rules arrive in minor versions** and can find problems that older versions missed. Pin the version in CI
-  (`npx contractguard@1.2.3`, or `@v1.2.3` for the Action) if you need reproducible builds.
+  (`npx @zainkhan-bit/contractguard@1.2.3`, or `@v1.2.3` for the Action) if you need reproducible builds.
 - **Fixing a missed breaking change is a patch.** If a rule failed to detect something it documents, the fix ships in
   a patch release even though it can newly fail a build. An analyzer that keeps known false negatives for
   compatibility's sake would defeat its purpose.

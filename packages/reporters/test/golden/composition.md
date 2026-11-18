@@ -51,4 +51,4 @@ POST /p: response 200 (application/json) may now return payloads of a new anyOf 
 - **Fix:** Make sure consumers have a fallback for unknown variants.
 - **Fingerprint:** `545075be91607e63206f2e1105eaf087`
 
-<sub>Reproduce locally: `npx contractguard check --spec composition` · 2 breaking · 1 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational</sub>
+<sub>Reproduce locally: `npx @zainkhan-bit/contractguard check --spec composition` · 2 breaking · 1 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational</sub>

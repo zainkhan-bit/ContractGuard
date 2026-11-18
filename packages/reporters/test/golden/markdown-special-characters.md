@@ -26,4 +26,4 @@ Required property "pipe\|name" was removed from GET /a\|b: response 200 (applica
 - **Fix:** Keep returning "pipe\|name" (deprecate it first), or release as a new major version.
 - **Fingerprint:** `5e54fe3b57c27700abf3fc9a81556153`
 
-<sub>Reproduce locally: `npx contractguard check --spec markdown-special-characters` · 1 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational</sub>
+<sub>Reproduce locally: `npx @zainkhan-bit/contractguard check --spec markdown-special-characters` · 1 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational</sub>

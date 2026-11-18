@@ -133,7 +133,7 @@ export async function run(io: RunnerIo, deps: ActionDeps = {}): Promise<ActionRu
       io.write(diagnosticAnnotations(run.diagnostics, workspace));
       fail(
         run.diagnostics.some((d) => d.code === 'CGD-CONFIG-014')
-          ? 'No .contractguard.yaml found. Add one (npx contractguard init) or set the "specs" input.'
+          ? 'No .contractguard.yaml found. Add one (npx @zainkhan-bit/contractguard init) or set the "specs" input.'
           : 'ContractGuard could not start: fix the configuration errors above.',
       );
       await setOutputs(io, outputs);
@@ -168,7 +168,7 @@ export async function run(io: RunnerIo, deps: ActionDeps = {}): Promise<ActionRu
     const reproduce =
       firstSpec === undefined
         ? undefined
-        : `npx contractguard check ${firstSpec.base.replace(BASE_TOKEN, `git:${baseSha.slice(0, 12)}:`)} ${firstSpec.candidate}`;
+        : `npx @zainkhan-bit/contractguard check ${firstSpec.base.replace(BASE_TOKEN, `git:${baseSha.slice(0, 12)}:`)} ${firstSpec.candidate}`;
     const markdown = (maxBytes: number): string =>
       renderMarkdown(results, {
         groupBy: config.report.groupBy,

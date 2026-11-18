@@ -67,4 +67,4 @@ Security scheme "key" was renamed to "apiKey".
 
 </details>
 
-<sub>Reproduce locally: `npx contractguard check --spec security` · 2 breaking · 1 potentially breaking · 0 undetermined · 0 non-breaking · 1 informational</sub>
+<sub>Reproduce locally: `npx @zainkhan-bit/contractguard check --spec security` · 2 breaking · 1 potentially breaking · 0 undetermined · 0 non-breaking · 1 informational</sub>

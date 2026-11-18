@@ -62,4 +62,4 @@ Serialization of GET /s: query parameter "ids" changed (explode).
 - **Fix:** Keep the previous serialization, or accept both encodings.
 - **Fingerprint:** `7820dc621254cabfd230a476fc15edbe`
 
-<sub>Reproduce locally: `npx contractguard check --spec parameters` · 4 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational</sub>
+<sub>Reproduce locally: `npx @zainkhan-bit/contractguard check --spec parameters` · 4 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational</sub>

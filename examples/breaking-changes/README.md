@@ -5,7 +5,7 @@ ContractGuard classifies it. The same pairs run as tests (`packages/cli/test/exa
 always true.
 
 ```bash
-npx contractguard check examples/breaking-changes/base.yaml examples/breaking-changes/request-property-required/candidate.yaml
+npx @zainkhan-bit/contractguard check examples/breaking-changes/base.yaml examples/breaking-changes/request-property-required/candidate.yaml
 ```
 
 | Case                         | Change                              | Findings                                                                        | Exit code |

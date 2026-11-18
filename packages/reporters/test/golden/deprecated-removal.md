@@ -27,4 +27,4 @@ Operation POST /users was removed.
 - **Fix:** Keep the operation (mark it deprecated first), or release the removal as a new major version.
 - **Fingerprint:** `07daf660dfd3b5c31338a6081278fdc9`
 
-<sub>Reproduce locally: `npx contractguard check --spec deprecated-removal` · 1 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational</sub>
+<sub>Reproduce locally: `npx @zainkhan-bit/contractguard check --spec deprecated-removal` · 1 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational</sub>

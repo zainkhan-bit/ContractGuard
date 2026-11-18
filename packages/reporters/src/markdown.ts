@@ -178,7 +178,7 @@ function header(r: AnalysisResult, o: MarkdownOptions): string {
 }
 
 function footer(r: AnalysisResult, o: MarkdownOptions): string {
-  const cmd = o.reproduceCommand ?? `npx contractguard check --spec ${r.specId}`;
+  const cmd = o.reproduceCommand ?? `npx @zainkhan-bit/contractguard check --spec ${r.specId}`;
   return `<sub>Reproduce locally: \`${cmd}\`${o.docsUrl === undefined ? '' : ` · [Rule documentation](${o.docsUrl})`} · ${esc(summaryLine(r))}</sub>\n`;
 }
 

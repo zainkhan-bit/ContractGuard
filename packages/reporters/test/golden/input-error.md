@@ -17,4 +17,4 @@
 
 - `CGD-PARSE-001` error (candidate): `api/openapi.yaml:3` Flow map in block collection must be sufficiently indented and end with a }
 
-<sub>Reproduce locally: `npx contractguard check --spec input-error` · 0 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational</sub>
+<sub>Reproduce locally: `npx @zainkhan-bit/contractguard check --spec input-error` · 0 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational</sub>

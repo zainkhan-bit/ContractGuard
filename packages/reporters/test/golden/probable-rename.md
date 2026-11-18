@@ -27,4 +27,4 @@ Operation GET /users/{} appears to have moved to GET /members/{}.
 - **Fix:** Keep GET /users/{} as a deprecated alias of GET /members/{}, or release the move as a new major version.
 - **Fingerprint:** `dba4785d5b27766fd565831e65fd66b1`
 
-<sub>Reproduce locally: `npx contractguard check --spec probable-rename` · 1 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational</sub>
+<sub>Reproduce locally: `npx @zainkhan-bit/contractguard check --spec probable-rename` · 1 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational</sub>

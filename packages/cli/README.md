@@ -4,7 +4,7 @@ Detect breaking changes between two versions of an OpenAPI 3.0/3.1 contract — 
 CI-ready Markdown, JSON and SARIF reports, and stable exit codes.
 
 ```sh
-npx contractguard check git:origin/main:api/openapi.yaml api/openapi.yaml
+npx @zainkhan-bit/contractguard check git:origin/main:api/openapi.yaml api/openapi.yaml
 ```
 
 | Command                                          | Purpose                                                                          |

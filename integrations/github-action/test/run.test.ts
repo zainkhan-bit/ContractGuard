@@ -34,7 +34,7 @@ describe('pull_request', () => {
     expect(summary).toContain('Policy failed');
     expect(summary).toContain(`https://github.com/octo/api/blob/${'e'.repeat(40)}/api/openapi.yaml#L`);
     expect(summary).toContain(
-      `npx contractguard check git:${(s.shas[0] as string).slice(0, 12)}:api/openapi.yaml api/openapi.yaml`,
+      `npx @zainkhan-bit/contractguard check git:${(s.shas[0] as string).slice(0, 12)}:api/openapi.yaml api/openapi.yaml`,
     );
     const sarif = JSON.parse(readFileSync(join(s.workspace, 'out', 'cg.sarif'), 'utf8')) as {
       runs: { results: unknown[] }[];

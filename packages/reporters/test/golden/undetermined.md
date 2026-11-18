@@ -27,4 +27,4 @@ Pattern of POST /x: the request body (application/json) changed from `^[a-z]+$` 
 - **Fix:** Review whether every value matching `^[a-z]+$` also matches `^[a-z0-9]+$`.
 - **Fingerprint:** `c878dbfe1462e288a02176dd7663b7ec`
 
-<sub>Reproduce locally: `npx contractguard check --spec undetermined` · 0 breaking · 0 potentially breaking · 1 undetermined · 0 non-breaking · 0 informational</sub>
+<sub>Reproduce locally: `npx @zainkhan-bit/contractguard check --spec undetermined` · 0 breaking · 0 potentially breaking · 1 undetermined · 0 non-breaking · 0 informational</sub>

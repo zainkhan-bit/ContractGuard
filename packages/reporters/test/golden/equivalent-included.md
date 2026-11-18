@@ -41,4 +41,4 @@ operationId of GET /users/{id} changed from "getUser" to "fetchUser".
 
 </details>
 
-<sub>Reproduce locally: `npx contractguard check --spec equivalent-included` · 0 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 3 informational</sub>
+<sub>Reproduce locally: `npx @zainkhan-bit/contractguard check --spec equivalent-included` · 0 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 3 informational</sub>

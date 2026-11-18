@@ -14,4 +14,4 @@
 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
 
-<sub>Reproduce locally: `npx contractguard check --spec identical` · 0 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational</sub>
+<sub>Reproduce locally: `npx @zainkhan-bit/contractguard check --spec identical` · 0 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational</sub>

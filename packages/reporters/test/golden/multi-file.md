@@ -26,4 +26,4 @@ GET /orders: response 200 (application/json) at `total` may now be number (was i
 - **Fix:** Keep the previous type, or release as a new major version.
 - **Fingerprint:** `e029135c4577e0d269940cd784ebdd95`
 
-<sub>Reproduce locally: `npx contractguard check --spec multi-file` · 1 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational</sub>
+<sub>Reproduce locally: `npx @zainkhan-bit/contractguard check --spec multi-file` · 1 breaking · 0 potentially breaking · 0 undetermined · 0 non-breaking · 0 informational</sub>

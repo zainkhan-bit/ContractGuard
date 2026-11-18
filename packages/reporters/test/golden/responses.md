@@ -70,4 +70,4 @@ Response 429 is now documented for GET /r.
 
 </details>
 
-<sub>Reproduce locally: `npx contractguard check --spec responses` · 1 breaking · 1 potentially breaking · 0 undetermined · 2 non-breaking · 0 informational</sub>
+<sub>Reproduce locally: `npx @zainkhan-bit/contractguard check --spec responses` · 1 breaking · 1 potentially breaking · 0 undetermined · 2 non-breaking · 0 informational</sub>

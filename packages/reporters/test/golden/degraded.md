@@ -35,4 +35,4 @@ Operation GET /dup/{a} was added.
 - `CGD-SEM-002` error (candidate): `api/openapi.yaml:7` Duplicate operationId "getUser"
 - `CGD-SEM-003` error (candidate): `api/openapi.yaml:20` Path template variable "{a}" has no path parameter in GET /dup/{a}
 
-<sub>Reproduce locally: `npx contractguard check --spec degraded` · 0 breaking · 0 potentially breaking · 0 undetermined · 1 non-breaking · 0 informational</sub>
+<sub>Reproduce locally: `npx @zainkhan-bit/contractguard check --spec degraded` · 0 breaking · 0 potentially breaking · 0 undetermined · 1 non-breaking · 0 informational</sub>

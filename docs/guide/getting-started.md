@@ -5,7 +5,7 @@ ContractGuard needs Node.js 24 or later.
 ## Compare two versions
 
 ```sh
-npx contractguard check git:origin/main:openapi.yaml openapi.yaml
+npx @zainkhan-bit/contractguard check git:origin/main:openapi.yaml openapi.yaml
 ```
 
 The first argument is the **base** (what consumers use today), the second the **candidate** (your change).
@@ -29,7 +29,7 @@ The exit code is `1` because a breaking change fails the default policy. See [ex
 ## Add a configuration
 
 ```sh
-npx contractguard init
+npx @zainkhan-bit/contractguard init
 ```
 
 `init` finds your OpenAPI files and writes a commented `.contractguard.yaml`:
@@ -44,7 +44,7 @@ policy:
   failOn: [breaking]
 ```
 
-Now `npx contractguard check` with no arguments checks every spec in the file. See
+Now `npx @zainkhan-bit/contractguard check` with no arguments checks every spec in the file. See
 [Configuration](/guide/configuration) for policies, filters and accepted changes.
 
 ## Run it in CI
@@ -55,9 +55,9 @@ Now `npx contractguard check` with no arguments checks every spec in the file. S
 ## Other things to try
 
 ```sh
-npx contractguard validate openapi.yaml            # is the document valid?
-npx contractguard explain CG-REQ-003               # what does this rule mean?
-npx contractguard check git:v1.0.0:openapi.yaml openapi.yaml --stdout json > report.json
-npx contractguard baseline create openapi.yaml -o api-v1.snapshot.json   # freeze a version
-npx contractguard check snapshot:api-v1.snapshot.json openapi.yaml
+npx @zainkhan-bit/contractguard validate openapi.yaml            # is the document valid?
+npx @zainkhan-bit/contractguard explain CG-REQ-003               # what does this rule mean?
+npx @zainkhan-bit/contractguard check git:v1.0.0:openapi.yaml openapi.yaml --stdout json > report.json
+npx @zainkhan-bit/contractguard baseline create openapi.yaml -o api-v1.snapshot.json   # freeze a version
+npx @zainkhan-bit/contractguard check snapshot:api-v1.snapshot.json openapi.yaml
 ```
