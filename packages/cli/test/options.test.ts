@@ -2,6 +2,7 @@ import { execFileSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { afterAll, describe, expect, it } from 'vitest';
 import { EXIT, formatDiagnostic, run, type CliIo } from '../src/index.js';
 import { diagnostic, documentUri, type JsonPointer } from '@contractguard/core';
@@ -167,13 +168,18 @@ describe('check options', () => {
 
 describe('formatDiagnostic', () => {
   it('prints location, side and hint', () => {
+    const cwd = realpathSync.native(mkdtempSync(join(tmpdir(), 'cg-fmt-')));
+    dirs.push(cwd);
     const d = diagnostic('CGD-FS-001', 'File not found', {
       hint: 'check the path',
-      location: { uri: documentUri('file:///w/api/openapi.yaml'), pointer: '#/paths' as JsonPointer },
+      location: {
+        uri: documentUri(pathToFileURL(join(cwd, 'api', 'openapi.yaml')).href),
+        pointer: '#/paths' as JsonPointer,
+      },
     });
-    expect(formatDiagnostic({ ...d, side: 'base' }, '/w')).toBe(
+    expect(formatDiagnostic({ ...d, side: 'base' }, cwd)).toBe(
       'api/openapi.yaml  error  CGD-FS-001  [base] File not found (check the path)',
     );
-    expect(formatDiagnostic(diagnostic('CGD-FS-001', 'x'), '/w')).toBe('error  CGD-FS-001  x');
+    expect(formatDiagnostic(diagnostic('CGD-FS-001', 'x'), cwd)).toBe('error  CGD-FS-001  x');
   });
 });

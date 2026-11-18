@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, symlinkSync } from 'node:fs';
+import { existsSync, readFileSync, realpathSync, symlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { COMMENT_MARKER } from '../src/comment.js';
@@ -288,7 +288,9 @@ describe('minimal environments', () => {
     const outcome = await run({ ...r, env }, { today });
     expect(outcome.result).toBe('failed');
     expect(existsSync(join(s.root, 'abs.sarif'))).toBe(true);
-    expect(r.outputs()['report-json']).toBe(join(s.workspace, '.contractguard', 'contractguard', 'report.json'));
+    expect(r.outputs()['report-json']).toBe(
+      join(realpathSync.native(s.workspace), '.contractguard', 'contractguard', 'report.json'),
+    );
     expect(r.summary()).toContain('https://github.com/octo/api/blob/'); // repository from the event payload
   });
 
