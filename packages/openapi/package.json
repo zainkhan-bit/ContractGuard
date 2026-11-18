@@ -39,6 +39,6 @@
   "dependencies": {
     "@zainkhan-bit/contractguard-core": "workspace:*",
     "yaml": "^2.9.1",
-    "@hyperjump/json-schema": "~1.18.0"
+    "@hyperjump/json-schema": "~1.18.1"
   }
 }

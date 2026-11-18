@@ -122,8 +122,8 @@ importers:
   packages/openapi:
     dependencies:
       '@hyperjump/json-schema':
-        specifier: ~1.18.0
-        version: 1.18.0(@hyperjump/browser@1.6.0)
+        specifier: ~1.18.1
+        version: 1.18.1(@hyperjump/browser@1.6.0)
       '@zainkhan-bit/contractguard-core':
         specifier: workspace:*
         version: link:../core
@@ -138,8 +138,8 @@ importers:
         version: link:../core
     devDependencies:
       '@hyperjump/json-schema':
-        specifier: ~1.18.0
-        version: 1.18.0(@hyperjump/browser@1.6.0)
+        specifier: ~1.18.1
+        version: 1.18.1(@hyperjump/browser@1.6.0)
       '@zainkhan-bit/contractguard-engine':
         specifier: workspace:*
         version: link:../engine
@@ -560,10 +560,10 @@ packages:
   '@hyperjump/json-schema-formats@1.1.0':
     resolution: {integrity: sha512-vLMIOwMThlgWgPJBV39Ds7kaTaygK0+UxjvQShTmKB8rRy8HXq472jnHP8/uaik+77HDx2M+W5Bvzhq6zFc2zQ==}
 
-  '@hyperjump/json-schema@1.18.0':
-    resolution: {integrity: sha512-YPLJsCosW6pHhulKrFogUsl1WxQVRy+fY0pROt66FDFygjIWZkMxXyiy8HLRR1JKeAd5OE6NSZs0NVjSBNwb2Q==}
+  '@hyperjump/json-schema@1.18.1':
+    resolution: {integrity: sha512-RJkZloGX6BupKOdkWINajsityuyn8RG9XZA1EbLf98HCEzfcWI9V7sSMpQOTOU/DrUY/0ceBNuw0VXAhnJE34Q==}
     peerDependencies:
-      '@hyperjump/browser': ^1.1.0
+      '@hyperjump/browser': ^1.6.0
 
   '@hyperjump/pact@1.5.1':
     resolution: {integrity: sha512-AmMAUpM5FzqMo5Ip4r9XQ7P8eAEuRlyeeMaOPqcv9ItS0Gogl+Sbod19CZZlzSO5n16SNPFijFwEwrid1eCY9Q==}
@@ -2537,7 +2537,7 @@ snapshots:
       '@hyperjump/uri': 1.4.1
       idn-hostname: 15.1.19
 
-  '@hyperjump/json-schema@1.18.0(@hyperjump/browser@1.6.0)':
+  '@hyperjump/json-schema@1.18.1(@hyperjump/browser@1.6.0)':
     dependencies:
       '@hyperjump/browser': 1.6.0
       '@hyperjump/json-pointer': 1.1.4
