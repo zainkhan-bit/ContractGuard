@@ -113,7 +113,7 @@ export const DEFAULT_CLASSIFICATION_POLICY: ClassificationPolicy = Object.freeze
 export const DEFAULT_LIMITS: AnalysisLimits = Object.freeze({
   maxDocumentBytes: 20 * MB,
   maxTotalBytes: 100 * MB,
-  maxDocuments: 500,
+  maxDocuments: 5000, // split specifications such as DigitalOcean's have ~3,600 files
   maxDepth: 256,
   maxRefHops: 64,
   maxSchemaPairs: 250_000,

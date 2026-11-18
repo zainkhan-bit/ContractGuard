@@ -139,7 +139,7 @@ const ConfigSchema = z
               .describe('Total size of all documents of one side. Default: 100MB.'),
             maxDocuments: positiveInt(100_000)
               .optional()
-              .describe('Documents reachable through $ref per side. Default: 500.'),
+              .describe('Documents reachable through $ref per side. Default: 5000.'),
             maxDepth: positiveInt(10_000).optional().describe('Maximum nesting depth of a document. Default: 256.'),
             maxRefHops: positiveInt(10_000).optional().describe('Maximum length of a $ref chain. Default: 64.'),
             maxSchemaPairs: positiveInt(100_000_000)

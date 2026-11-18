@@ -62,29 +62,29 @@ export async function loadContract(
       : { value, diagnostics: sortDiagnostics(diagnostics) };
 
   const loaded = await options.loader.load(rootUri, ctx);
-  diagnostics.push(...loaded.diagnostics);
+  for (const d of loaded.diagnostics) diagnostics.push(d);
   if (loaded.value === undefined) return done();
 
   const parsed = parseDocument(loaded.value, { limits: options.limits, ...side });
-  diagnostics.push(...parsed.diagnostics);
+  for (const d of parsed.diagnostics) diagnostics.push(d);
   if (parsed.value === undefined) return done();
 
   const version = detectVersion(parsed.value, options.side);
-  diagnostics.push(...version.diagnostics);
+  for (const d of version.diagnostics) diagnostics.push(d);
   if (version.value === undefined) return done();
 
   const resolved = await resolveReferences(parsed.value, version.value.dialect, { loader: options.loader, ctx });
-  diagnostics.push(...resolved.diagnostics);
+  for (const d of resolved.diagnostics) diagnostics.push(d);
   if (resolved.value === undefined || errorsIn(diagnostics, ALWAYS_FATAL).length > 0) return done();
 
   if (options.validator !== false) {
     const validator = options.validator ?? (defaultValidator ??= new HyperjumpSpecValidator());
     const structural = await validator.validate(parsed.value, version.value.dialect, options.side);
-    diagnostics.push(...structural.diagnostics);
+    for (const d of structural.diagnostics) diagnostics.push(d);
   }
 
   const normalized = normalize(resolved.value, version.value, { limits: options.limits, ...side });
-  diagnostics.push(...normalized.diagnostics);
+  for (const d of normalized.diagnostics) diagnostics.push(d);
   if (normalized.value === undefined || errorsIn(diagnostics, ALWAYS_FATAL).length > 0) return done();
 
   const specErrors = errorsIn(diagnostics, FATAL_UNLESS_ALLOWED);

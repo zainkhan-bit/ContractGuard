@@ -91,8 +91,8 @@ function parseSpecs(
     }
     const base = parseSourceSpecifier(rb, dir);
     const candidate = parseSourceSpecifier(rc, dir);
-    diagnostics.push(...base.diagnostics.map((d) => ({ ...d, message: `${s.id} (base): ${d.message}` })));
-    diagnostics.push(...candidate.diagnostics.map((d) => ({ ...d, message: `${s.id} (candidate): ${d.message}` })));
+    for (const d of base.diagnostics) diagnostics.push({ ...d, message: `${s.id} (base): ${d.message}` });
+    for (const d of candidate.diagnostics) diagnostics.push({ ...d, message: `${s.id} (candidate): ${d.message}` });
     if (base.value?.kind === 'stdin') {
       diagnostics.push(diagnostic('CGD-CONFIG-002', `${s.id}: stdin ("-") can only be the candidate`));
     }

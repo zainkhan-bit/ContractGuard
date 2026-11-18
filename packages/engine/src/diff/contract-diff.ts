@@ -134,7 +134,8 @@ class ContractDiff {
     this.#differ.finalize();
     // Projection work is bounded relative to the comparison budget (default 4 × 250,000 visited pairs).
     const budget = { remaining: 4 * this.#maxSchemaPairs };
-    for (const u of this.#usages) this.#out.push(...projectUsage(this.#differ, u.pair, u, budget));
+    // No spread: a single usage can project far more changes than a call accepts arguments.
+    for (const u of this.#usages) for (const c of projectUsage(this.#differ, u.pair, u, budget)) this.#out.push(c);
     return { changes: sortChanges(this.#out), schemaPairs: this.#differ.pairCount };
   }
 

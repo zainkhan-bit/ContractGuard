@@ -38,7 +38,7 @@ version: 1
 | `analysis.limits` | object | Resource limits; inputs above them are rejected or reported as undetermined, never silently passed. |
 | `analysis.limits.maxDocumentBytes` | integer or string | Largest single document, e.g. 20MB (default). |
 | `analysis.limits.maxTotalBytes` | integer or string | Total size of all documents of one side. Default: 100MB. |
-| `analysis.limits.maxDocuments` | integer | Documents reachable through $ref per side. Default: 500. |
+| `analysis.limits.maxDocuments` | integer | Documents reachable through $ref per side. Default: 5000. |
 | `analysis.limits.maxDepth` | integer | Maximum nesting depth of a document. Default: 256. |
 | `analysis.limits.maxRefHops` | integer | Maximum length of a $ref chain. Default: 64. |
 | `analysis.limits.maxSchemaPairs` | integer | Schema pairs compared before the rest becomes undetermined. Default: 250000. |

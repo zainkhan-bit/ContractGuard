@@ -180,7 +180,7 @@
               ]
             },
             "maxDocuments": {
-              "description": "Documents reachable through $ref per side. Default: 500.",
+              "description": "Documents reachable through $ref per side. Default: 5000.",
               "type": "integer",
               "exclusiveMinimum": 0,
               "maximum": 100000

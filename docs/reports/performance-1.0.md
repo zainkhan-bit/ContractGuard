@@ -6,7 +6,14 @@ Wall time includes Node.js startup, loading, structural validation of both sides
 
 ## Results
 
-<!-- runner-results -->
+**GitHub-hosted runner** (`ubuntu-latest`, 4 vCPU, Node.js 24, corpus workflow):
+
+| Scenario                                                                  | Size per side |  Time | Peak RSS |
+| ------------------------------------------------------------------------- | ------------: | ----: | -------: |
+| YAML, changed                                                             |        3.8 MB | 7.9 s |   996 MB |
+| JSON, changed                                                             |        4.9 MB | 5.3 s |   843 MB |
+| YAML, self-comparison                                                     |        3.8 MB | 7.1 s |   871 MB |
+| Pathological: one 2,000-schema `$ref` cycle reached from 1,000 operations |        2.3 MB | 8.4 s |   774 MB |
 
 **Development container** (2 vCPU, Node.js 24.12, median of 3 runs):
 
@@ -35,8 +42,9 @@ Comparison is cheap; loading dominates. JSON input avoids most of the parsing co
 
 ## NFR-03 status
 
-NFR-03 asks for < 5 s and < 1 GB on a GitHub-hosted runner for this size. **JSON meets it; YAML at ~4–5 MB per side
-does not yet**, and peak memory is at the 1 GB line. Mitigations in 1.0: the work queue fix (the normalizer was
+NFR-03 asks for < 5 s and < 1 GB on a GitHub-hosted runner for this size. **It is not met in 1.0:** on the runner JSON
+takes 5.3 s (just over) and YAML 7.9 s, with peak memory just under the 1 GB line. Real APIs of this size in the
+[corpus](./corpus-1.0.md) take 1–11 s per pair. Mitigations in 1.0: the work queue fix (the normalizer was
 quadratic), pointer helpers that do not allocate in the common case, and bounded comparison work. Planned:
 validating and loading the two sides in parallel worker threads, and a streaming YAML front end.
 
