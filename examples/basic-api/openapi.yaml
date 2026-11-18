@@ -32,11 +32,11 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/Book' }
-  /books/{id}:
+  /books/{bookId}:
     get:
       operationId: getBook
       parameters:
-        - name: id
+        - name: bookId
           in: path
           required: true
           schema: { type: string }
@@ -52,7 +52,7 @@ components:
   schemas:
     NewBook:
       type: object
-      required: [title]
+      required: [title, author]
       properties:
         title: { type: string }
         author: { type: string }
