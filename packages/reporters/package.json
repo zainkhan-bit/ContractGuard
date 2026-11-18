@@ -45,6 +45,6 @@
   "devDependencies": {
     "@zainkhan-bit/contractguard-engine": "workspace:*",
     "@zainkhan-bit/contractguard-openapi": "workspace:*",
-    "@hyperjump/json-schema": "~1.18.0"
+    "@hyperjump/json-schema": "~1.18.1"
   }
 }

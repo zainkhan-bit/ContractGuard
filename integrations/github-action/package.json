@@ -18,6 +18,6 @@
     "@zainkhan-bit/contractguard-reporters": "workspace:*"
   },
   "devDependencies": {
-    "rolldown": "1.2.19"
+    "rolldown": "1.3.2"
   }
 }
