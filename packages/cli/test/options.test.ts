@@ -126,6 +126,13 @@ describe('check options', () => {
     expect((await cli(['check', '-q', '--config', 'missing.yaml'], d)).code).toBe(EXIT.usage);
   });
 
+  it('--base-ref resolves git:@base: sources', async () => {
+    const d = project();
+    const args = ['check', 'git:@base:openapi.yaml', 'openapi.yaml', '--no-config', '-q'];
+    expect((await cli(args, d)).code).toBe(EXIT.usage);
+    expect((await cli([...args, '--base-ref', 'main'], d)).code).toBe(EXIT.policyFailed);
+  });
+
   it('an already-aborted signal → 130', async () => {
     const d = project();
     expect((await cli(A, d, {}, AbortSignal.abort())).code).toBe(EXIT.interrupted);

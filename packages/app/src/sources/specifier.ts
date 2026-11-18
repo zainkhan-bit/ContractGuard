@@ -84,7 +84,11 @@ export function describeSpecifier(spec: SourceSpecifier, sha?: string): string {
     case 'path':
       return 'working tree';
     case 'git':
-      return sha === undefined ? `git:${spec.ref}` : `git:${spec.ref}@${sha.slice(0, 7)}`;
+      if (sha === undefined) return `git:${spec.ref}`;
+      // A ref that is itself (a prefix of) the commit SHA, e.g. the Action's base commit: show it once.
+      return /^[0-9a-f]{7,40}$/i.test(spec.ref) && sha.startsWith(spec.ref.toLowerCase())
+        ? `git:${sha.slice(0, 7)}`
+        : `git:${spec.ref}@${sha.slice(0, 7)}`;
     case 'snapshot':
       return `snapshot`;
     case 'url':

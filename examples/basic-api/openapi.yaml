@@ -1,0 +1,66 @@
+openapi: 3.1.0
+info:
+  title: Bookshelf API
+  version: 1.0.0
+  description: Example API used by ContractGuard's own pull request check.
+paths:
+  /books:
+    get:
+      operationId: listBooks
+      parameters:
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100 }
+      responses:
+        '200':
+          description: A page of books.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Book' }
+    post:
+      operationId: createBook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewBook' }
+      responses:
+        '201':
+          description: Created.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Book' }
+  /books/{id}:
+    get:
+      operationId: getBook
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: The book.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Book' }
+        '404':
+          description: Not found.
+components:
+  schemas:
+    NewBook:
+      type: object
+      required: [title]
+      properties:
+        title: { type: string }
+        author: { type: string }
+        year: { type: integer }
+    Book:
+      allOf:
+        - $ref: '#/components/schemas/NewBook'
+        - type: object
+          required: [id]
+          properties:
+            id: { type: string }

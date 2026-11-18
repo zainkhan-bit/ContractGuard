@@ -1,0 +1,11 @@
+# ContractGuard configuration for the example API (used by .github/workflows/contract.yml).
+version: 1
+specs:
+  - id: bookshelf
+    # git:@base: is the pull request's base commit (or --base-ref on the command line).
+    base: 'git:@base:openapi.yaml'
+    candidate: openapi.yaml
+policy:
+  failOn: [breaking]
+  minSeverity: low
+  undetermined: review

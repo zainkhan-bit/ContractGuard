@@ -31,6 +31,20 @@ module.exports = {
       to: { path: '^packages/(engine|openapi|app|cli)/' },
     },
     {
+      name: 'packages-do-not-depend-on-integrations',
+      severity: 'error',
+      comment: 'Integrations (the GitHub Action) sit on top of the app layer; nothing in packages/ may import them.',
+      from: { path: '^packages/' },
+      to: { path: '^integrations/' },
+    },
+    {
+      name: 'action-uses-the-app-layer',
+      severity: 'error',
+      comment: 'The Action shares the CLI use cases through @contractguard/app; it must not reach into the CLI (§6).',
+      from: { path: '^integrations/' },
+      to: { path: '^packages/cli/' },
+    },
+    {
       name: 'nothing-depends-on-cli',
       severity: 'error',
       from: { path: '^packages/(?!cli/)' },

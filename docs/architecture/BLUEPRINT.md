@@ -4,7 +4,7 @@
 |---|---|
 | **Status** | Approved 2026-11-15 (D1–D22 with recommended defaults) — implementation in progress |
 | **Scope of this document** | Stage 0 investigation results + complete Stage 1 architecture blueprint |
-| **Implementation status** | M0–M7 complete (core, OpenAPI front end, diff engine, compatibility engine with the 83-rule catalog, reporters, CLI). See §19 and §19.1. |
+| **Implementation status** | M0–M8 complete (core, OpenAPI front end, diff engine, compatibility engine with the 83-rule catalog, reporters, CLI, GitHub Action). See §19 and §19.1. |
 | **Date** | 2026-11-15 |
 | **Repository state at time of writing** | `github.com/zainkhan-bit/ContractGuard` — empty (no commits); local working copy empty |
 
@@ -3333,6 +3333,12 @@ Decisions and deviations discovered during implementation. Each entry names the 
 - **M7 · §13.5 — removed-element anchors** are resolved in `analyze()` with the candidate document's `nearestExisting` pointer, so SARIF and annotations land on the closest surviving ancestor (e.g. `#/paths` for a removed path).
 - **M7 · §12.4 — `validate --allow-invalid-spec`** reports specification errors as warnings when the document still loads, matching what `check --allow-invalid-spec` does. Sizes accept `MiB`-style spellings as well as `MB` (both binary).
 - **M7 · §18.9 — release smoke test.** CI packs every package, installs the tarballs into an empty project and runs `npx contractguard` on Linux, macOS and Windows (`scripts/pack-smoke.mjs`).
+- **M8 · §13.6 — no `@actions/*` or Octokit dependencies.** The runner protocol (inputs, `GITHUB_OUTPUT` heredocs, `GITHUB_STEP_SUMMARY`, workflow commands) and the four REST calls of the sticky comment are implemented directly with `fetch`, including retries on 5xx/429/secondary rate limits that honour `retry-after`. User-controlled text in the log is wrapped in `::stop-commands::<random token>`. The bundle has 10 third-party packages, all MIT/ISC.
+- **M8 · §13.6 — bundled with rolldown, not esbuild.** Rolldown is already in the toolchain through Vite; one ESM file for node24, minified, byte-identical across rebuilds, plus `dist/licenses.txt`. The `action-dist` CI job fails when `dist/` is stale.
+- **M8 · §13.6 — the changed-spec fast path compares document contents, not `git diff`.** Both sides are loaded anyway (their `$ref` sets are only known after loading); when every document has the same relative path and SHA-256, the comparison is skipped and the spec is reported unchanged. Correct for every source kind, with no extra git calls.
+- **M8 · §13.6 — new specifications pass.** When the base document does not exist and the candidate loads, the Action reports `CGD-FS-101` (info) and passes: adding an API breaks no consumer. The CLI keeps this an input error unless `newSpecs: 'pass'` is requested through the library. Git sources now report a path missing at a revision as `CGD-FS-001` (File not found) instead of `CGD-FS-011`.
+- **M8 · §12.2 — `git:@base:<path>`** resolves against the Action's base commit, or `--base-ref` on the command line. Ad-hoc comparisons accept several specs (the Action's `specs` input); duplicate ids get `-2`, `-3` suffixes.
+- **M8 · Q3 — location.** The Action lives at `integrations/github-action` (`uses: zainkhan-bit/ContractGuard/integrations/github-action@<ref>`) until the 1.0 mirror repository. This repository dogfoods it on `examples/basic-api` (`.github/workflows/contract.yml`).
 
 # 20. Open-source release strategy
 

@@ -1,0 +1,36 @@
+# Dogfooding: runs the GitHub Action from this repository (./integrations/github-action) on the example API.
+name: API contract
+
+on:
+  pull_request:
+    paths:
+      - 'examples/basic-api/**'
+      - 'integrations/github-action/**'
+      - '.github/workflows/contract.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'examples/basic-api/**'
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    name: ContractGuard (example API)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write # only for comment: true; fork PRs get a read-only token and skip the comment
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - id: contractguard
+        uses: ./integrations/github-action
+        with:
+          working-directory: examples/basic-api
+          comment: true
+          sarif-file: contractguard.sarif
+      - name: Outputs
+        if: always()
+        run: |
+          echo "result=${{ steps.contractguard.outputs.result }} breaking=${{ steps.contractguard.outputs.breaking }}"

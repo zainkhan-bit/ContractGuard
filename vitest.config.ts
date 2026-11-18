@@ -45,6 +45,14 @@ export default defineConfig({
       },
       {
         test: {
+          name: 'action',
+          root: './integrations/github-action',
+          include: ['test/**/*.test.ts'],
+          environment: 'node',
+        },
+      },
+      {
+        test: {
           name: 'core',
           root: './packages/core',
           include: ['test/**/*.test.ts'],
@@ -54,7 +62,7 @@ export default defineConfig({
     ],
     coverage: {
       provider: 'v8',
-      include: ['packages/*/src/**/*.ts'],
+      include: ['packages/*/src/**/*.ts', 'integrations/*/src/**/*.ts'],
       exclude: ['**/index.ts'],
       reporter: ['text', 'json-summary', 'lcov'],
       // Raised per package as packages land (§18.10: core and engine ≥ 90%, target 95% for core).

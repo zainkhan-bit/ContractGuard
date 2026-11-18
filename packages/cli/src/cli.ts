@@ -160,6 +160,7 @@ const check: Command = {
   maxPositionals: 2,
   options: {
     ...CONFIG_OPTS,
+    'base-ref': { type: 'string', arg: 'ref', help: 'Revision used for git:@base:<path> sources (e.g. origin/main)' },
     spec: { type: 'string', multiple: true, arg: 'id', help: 'Only run the configured spec with this id (repeatable)' },
     perspective: { type: 'string', short: 'p', arg: 'id', help: 'Compatibility perspective (provider-backward)' },
     format: { type: 'string', short: 'f', arg: 'list', help: 'Report formats: console,markdown,json,sarif' },
@@ -235,6 +236,7 @@ const check: Command = {
       trust: { ci, allowRemoteReferences: values['allow-remote-references'] === true },
       today: io.today,
       toolVersion: version(),
+      ...(typeof values['base-ref'] === 'string' ? { baseRef: values['base-ref'] } : {}),
       ...(needsStdin ? { stdinText: await io.readStdin() } : {}),
       ...(io.signal === undefined ? {} : { signal: io.signal }),
     });

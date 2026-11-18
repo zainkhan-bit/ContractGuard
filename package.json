@@ -11,14 +11,14 @@
   "scripts": {
     "build": "tsc -b",
     "clean": "tsc -b --clean",
-    "typecheck": "tsc -b && tsc -p packages/core/test && tsc -p packages/openapi/test && tsc -p packages/engine/test && tsc -p packages/reporters/test && tsc -p packages/app/test && tsc -p packages/cli/test",
+    "typecheck": "tsc -b && tsc -p packages/core/test && tsc -p packages/openapi/test && tsc -p packages/engine/test && tsc -p packages/reporters/test && tsc -p packages/app/test && tsc -p packages/cli/test && tsc -p integrations/github-action/test",
     "test": "vitest run",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
     "lint": "eslint . && prettier --check . && pnpm run deps:check",
     "lint:fix": "eslint . --fix && prettier --write .",
     "format": "prettier --write .",
-    "deps:check": "depcruise packages --config .dependency-cruiser.cjs",
+    "deps:check": "depcruise packages integrations/github-action/src --config .dependency-cruiser.cjs",
     "smoke:pack": "node scripts/pack-smoke.mjs",
     "check": "pnpm run build && pnpm run lint && pnpm run coverage",
     "changeset": "changeset"

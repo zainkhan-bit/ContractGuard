@@ -62,8 +62,13 @@ function compareUnknown(a: unknown, b: unknown): number {
   return compareCodeUnits(typeof a === 'string' ? a : toJsonText(a, 0), typeof b === 'string' ? b : toJsonText(b, 0));
 }
 
-/** `file:` URI or path → path relative to srcRoot (forward slashes); other URIs are returned unchanged. */
+/**
+ * `file:` URI or path → path relative to srcRoot (forward slashes); `git://<sha>/<path>` → `<path>@<sha7>`; other
+ * URIs are returned unchanged.
+ */
 export function displayPath(uri: string, srcRoot?: string): string {
+  const git = /^git:\/\/([0-9a-f]{40})\/(.+)$/i.exec(uri);
+  if (git !== null) return `${decodeURIComponent(git[2] as string)}@${(git[1] as string).slice(0, 7)}`;
   if (!uri.startsWith('file:')) return uri;
   let path = decodeURIComponent(uri.replace(/^file:\/\//, ''));
   if (srcRoot !== undefined) {

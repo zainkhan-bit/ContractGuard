@@ -11,6 +11,7 @@ export type DiagnosticCode =
   | 'CGD-FS-010'
   | 'CGD-FS-011'
   | 'CGD-FS-012'
+  | 'CGD-FS-101'
   | 'CGD-PARSE-001'
   | 'CGD-PARSE-002'
   | 'CGD-PARSE-003'
@@ -79,6 +80,7 @@ export const DIAGNOSTIC_CODES: Readonly<Record<DiagnosticCode, DiagnosticCodeInf
   'CGD-FS-010': { category: 'filesystem', severity: 'error', title: 'git is not available' },
   'CGD-FS-011': { category: 'filesystem', severity: 'error', title: 'git revision or path not found' },
   'CGD-FS-012': { category: 'filesystem', severity: 'error', title: 'Invalid git reference' },
+  'CGD-FS-101': { category: 'filesystem', severity: 'info', title: 'New specification: no baseline to compare' },
   'CGD-PARSE-001': { category: 'parse', severity: 'error', title: 'Syntax error' },
   'CGD-PARSE-002': { category: 'parse', severity: 'error', title: 'Invalid UTF-8' },
   'CGD-PARSE-003': { category: 'parse', severity: 'error', title: 'Duplicate key' },

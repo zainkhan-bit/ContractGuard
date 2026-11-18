@@ -1,7 +1,7 @@
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { analyze, createBaseline, loadConfiguration, validateSource } from '../src/index.js';
-import { repo, spec, tempDir, TODAY, write } from './helpers.js';
+import { git, repo, spec, tempDir, TODAY, write } from './helpers.js';
 
 const BASE = 'version: 1\nspecs:\n  - {id: a, base: a.yaml, candidate: b.yaml}\n';
 
@@ -164,5 +164,73 @@ filters:
     const r = await analyze({ cwd: d, today: TODAY, toolVersion: '1' });
     const ids = r.value?.results[0]?.findings.map((f) => f.ruleId) ?? [];
     expect(ids).toEqual(['CG-RES-003']);
+  });
+});
+
+describe('@base and multiple ad-hoc specs', () => {
+  it('git:@base: needs baseRef and resolves against it', async () => {
+    const d = repo([{ 'openapi.yaml': spec() }]);
+    write(d, { 'openapi.yaml': spec({ requiredAge: true }) });
+    const adHoc = { base: 'git:@base:openapi.yaml', candidate: 'openapi.yaml' };
+    const missing = await analyze({ cwd: d, configPath: false, adHoc, today: TODAY, toolVersion: '1' });
+    expect(missing.value).toBeUndefined();
+    expect(missing.diagnostics[0]?.hint).toContain('--base-ref');
+    const sha = git(d, 'rev-parse', 'HEAD').trim();
+    const r = await analyze({ cwd: d, configPath: false, adHoc, baseRef: sha, today: TODAY, toolVersion: '1' });
+    expect(r.value?.outcome).toBe('policy-failed');
+    expect(r.value?.results[0]?.base?.revision).toBe(`git:${sha.slice(0, 7)}`);
+    const named = await analyze({ cwd: d, configPath: false, adHoc, baseRef: 'main', today: TODAY, toolVersion: '1' });
+    expect(named.value?.results[0]?.base?.revision).toBe(`git:main@${sha.slice(0, 7)}`);
+  });
+
+  it('several ad-hoc specs get unique ids; identical files are reported unchanged', async () => {
+    const d = repo([{ 'a/openapi.yaml': spec(), 'b/openapi.yaml': spec() }]);
+    write(d, { 'b/openapi.yaml': spec({ requiredAge: true }) });
+    const r = await analyze({
+      cwd: d,
+      configPath: false,
+      adHoc: [
+        { base: 'git:@base:a/openapi.yaml', candidate: 'a/openapi.yaml' },
+        { base: 'git:@base:b/openapi.yaml', candidate: 'b/openapi.yaml' },
+      ],
+      baseRef: 'HEAD',
+      today: TODAY,
+      toolVersion: '1',
+    });
+    expect(r.value?.results.map((x) => x.specId)).toEqual(['openapi', 'openapi-2']);
+    expect(r.value?.unchanged).toEqual(['openapi']);
+    expect(r.value?.outcome).toBe('policy-failed');
+  });
+});
+
+describe('new specifications', () => {
+  it('are input errors by default and pass with newSpecs: pass', async () => {
+    const d = repo([{ 'README.md': 'x' }]);
+    write(d, { 'openapi.yaml': spec() });
+    const adHoc = { base: 'git:HEAD:openapi.yaml', candidate: 'openapi.yaml' };
+    const strict = await analyze({ cwd: d, configPath: false, adHoc, today: TODAY, toolVersion: '1' });
+    expect(strict.value?.outcome).toBe('input-error');
+    expect(strict.value?.results[0]?.diagnostics[0]?.code).toBe('CGD-FS-001');
+    const lenient = await analyze({
+      cwd: d,
+      configPath: false,
+      adHoc,
+      newSpecs: 'pass',
+      today: TODAY,
+      toolVersion: '1',
+    });
+    expect(lenient.value?.outcome).toBe('passed');
+    expect(lenient.value?.added).toEqual(['openapi']);
+    expect(lenient.value?.results[0]?.diagnostics.map((x) => x.code)).toEqual(['CGD-FS-101']);
+    // A missing candidate is never "new".
+    const gone = await analyze({
+      cwd: d,
+      configPath: false,
+      adHoc: { base: 'git:HEAD:README.md', candidate: 'gone.yaml' },
+      newSpecs: 'pass',
+      today: TODAY,
+      toolVersion: '1',
+    });
+    expect(gone.value?.outcome).toBe('input-error');
   });
 });

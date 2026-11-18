@@ -4,6 +4,7 @@ export {
   discoverConfig,
   findGitRoot,
   loadConfiguration,
+  type AdHocSpec,
   type CliOverrides,
   type ConfigRequest,
   type LoadedConfiguration,
@@ -18,7 +19,7 @@ export {
   type ConfigIssue,
 } from './config/schema.js';
 export { didYouMean, editDistance } from './text.js';
-export { analyze, type AnalysisRequest, type AnalysisRun, type ExitOutcome } from './analyze.js';
+export { analyze, BASE_TOKEN, type AnalysisRequest, type AnalysisRun, type ExitOutcome } from './analyze.js';
 export { defaultBranch, gitUri, GitSourceLoader, resolveGitSource, type ResolvedGitSource } from './sources/git.js';
 export { openSource, STDIN_URI, type OpenedSource } from './sources/open.js';
 export {

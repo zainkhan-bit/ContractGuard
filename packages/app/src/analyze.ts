@@ -19,6 +19,13 @@ import { parseSourceSpecifier, type SourceSpecifier } from './sources/specifier.
 
 export interface AnalysisRequest extends ConfigRequest {
   readonly toolVersion: string;
+  /** Revision substituted for the `@base` token in `git:@base:<path>` (the Action's base commit, or `--base-ref`). */
+  readonly baseRef?: string;
+  /**
+   * A spec whose base document does not exist (and whose candidate loads) is an input error by default. With
+   * `'pass'` it is reported as new (CGD-FS-101) and passes: adding an API breaks no existing consumer.
+   */
+  readonly newSpecs?: 'error' | 'pass';
   /** Text read from stdin when a specifier is "-". */
   readonly stdinText?: string;
   readonly signal?: AbortSignal;
@@ -31,6 +38,10 @@ export type ExitOutcome = 'passed' | 'policy-failed' | 'input-error';
 export interface AnalysisRun {
   readonly loaded: LoadedConfiguration;
   readonly results: readonly AnalysisResult[];
+  /** Specs whose base and candidate document sets are byte-identical (comparison skipped, §13.6 fast path). */
+  readonly unchanged: readonly string[];
+  /** Specs that are new at the candidate (no base document; only with `newSpecs: 'pass'`). */
+  readonly added: readonly string[];
   readonly outcome: ExitOutcome;
 }
 
@@ -41,15 +52,35 @@ interface SideLoad {
 }
 
 /** Parses both specifiers of every spec up front so syntax errors are configuration errors (exit 3). */
+/** `git:@base:<path>` is resolved against {@link AnalysisRequest.baseRef}. */
+export const BASE_TOKEN = 'git:@base:';
+
 function parseSpecs(
   config: ResolvedConfiguration,
   dir: string,
+  baseRef: string | undefined,
 ): StageResult<Map<string, { base: SourceSpecifier; candidate: SourceSpecifier }>> {
   const out = new Map<string, { base: SourceSpecifier; candidate: SourceSpecifier }>();
   const diagnostics: Diagnostic[] = [];
   for (const s of config.specs) {
-    const base = parseSourceSpecifier(s.base, dir);
-    const candidate = parseSourceSpecifier(s.candidate, dir);
+    const raw = (v: string): string | undefined =>
+      v.startsWith(BASE_TOKEN)
+        ? baseRef === undefined
+          ? undefined
+          : `git:${baseRef}:${v.slice(BASE_TOKEN.length)}`
+        : v;
+    const rb = raw(s.base);
+    const rc = raw(s.candidate);
+    if (rb === undefined || rc === undefined) {
+      diagnostics.push(
+        diagnostic('CGD-CONFIG-002', `${s.id}: "git:@base:<path>" needs a base revision`, {
+          hint: 'the GitHub Action sets it from the event; on the command line pass --base-ref <ref>',
+        }),
+      );
+      continue;
+    }
+    const base = parseSourceSpecifier(rb, dir);
+    const candidate = parseSourceSpecifier(rc, dir);
     diagnostics.push(...base.diagnostics.map((d) => ({ ...d, message: `${s.id} (base): ${d.message}` })));
     diagnostics.push(...candidate.diagnostics.map((d) => ({ ...d, message: `${s.id} (candidate): ${d.message}` })));
     if (base.value?.kind === 'stdin') {
@@ -158,12 +189,25 @@ function timeoutReason(signal: AbortSignal): Diagnostic | undefined {
 }
 
 /** Runs one configured comparison. Never throws for expected failures; they become an input-error result. */
+/** Relative path + content hash of every document; equal sets mean the comparison cannot find anything. */
+function documentKey(set: DocumentSet): string {
+  const dir = new URL('.', set.root).href;
+  const rows = [...set.documents.values()].map(
+    (d) => `${d.uri.startsWith(dir) ? d.uri.slice(dir.length) : d.uri}\0${d.sha256}`,
+  );
+  return `${set.root.slice(dir.length)}\n${rows.sort().join('\n')}`;
+}
+
+function sameDocuments(a: DocumentSet, b: DocumentSet): boolean {
+  return documentKey(a) === documentKey(b);
+}
+
 async function analyzeSpec(
   specId: string,
   specs: { base: SourceSpecifier; candidate: SourceSpecifier },
   loaded: LoadedConfiguration,
   req: AnalysisRequest,
-): Promise<AnalysisResult> {
+): Promise<{ result: AnalysisResult; unchanged: boolean; added: boolean }> {
   const config = loaded.config;
   const signals = [
     AbortSignal.timeout(config.analysis.limits.timeoutMs),
@@ -174,11 +218,42 @@ async function analyzeSpec(
     loadSide(specs.base, 'base', config, req, signal),
     loadSide(specs.candidate, 'candidate', config, req, signal),
   ]);
-  const diagnostics: Diagnostic[] = [...b.diagnostics, ...c.diagnostics];
   const timeout = timeoutReason(signal);
+  // A new specification: the base root document does not exist, the candidate loads.
+  const added =
+    req.newSpecs === 'pass' &&
+    timeout === undefined &&
+    b.loaded === undefined &&
+    c.loaded !== undefined &&
+    b.diagnostics.length === 1 &&
+    b.diagnostics[0]?.code === 'CGD-FS-001';
+  if (added) {
+    const result = assembleResult({
+      specId,
+      perspective: config.compatibility.perspective,
+      toolVersion: req.toolVersion,
+      rulesetVersion: RULESET_VERSION,
+      base: { contract: c.loaded.contract, revision: 'none (new specification)' },
+      candidate: { contract: c.loaded.contract, ...(c.opened === undefined ? {} : { revision: c.opened.revision }) },
+      findings: [],
+      diagnostics: sortDiagnostics([
+        diagnostic('CGD-FS-101', `${specId} is new: ${b.diagnostics[0]?.message ?? 'no base document'}`, {
+          hint: 'nothing to compare yet; it will be checked against this version from the next change on',
+        }),
+        ...c.diagnostics,
+      ]),
+      degraded: c.loaded.degraded,
+      policy: config.policy,
+      ...(config.report.deterministic ? {} : { generatedAt: new Date().toISOString() }),
+    });
+    return { result, unchanged: false, added: true };
+  }
+  const diagnostics: Diagnostic[] = [...b.diagnostics, ...c.diagnostics];
   if (timeout !== undefined) diagnostics.push(timeout);
   let findings: CompatibilityFinding[] = [];
-  if (b.loaded !== undefined && c.loaded !== undefined && timeout === undefined) {
+  const unchanged =
+    b.loaded !== undefined && c.loaded !== undefined && sameDocuments(b.loaded.documents, c.loaded.documents);
+  if (b.loaded !== undefined && c.loaded !== undefined && timeout === undefined && !unchanged) {
     const checked = checkCompatibility(b.loaded.contract, c.loaded.contract, {
       policy: config.analysis,
       overrides: config.rules.overrides,
@@ -196,7 +271,7 @@ async function analyzeSpec(
     );
   }
   const ok = timeout === undefined;
-  return assembleResult({
+  const result = assembleResult({
     specId,
     perspective: config.compatibility.perspective,
     toolVersion: req.toolVersion,
@@ -213,6 +288,7 @@ async function analyzeSpec(
     policy: config.policy,
     ...(config.report.deterministic ? {} : { generatedAt: new Date().toISOString() }),
   });
+  return { result, unchanged: unchanged && ok, added: false };
 }
 
 /** The `check` use case: configuration → per-spec analysis → results and an exit outcome (§6.2). */
@@ -220,23 +296,26 @@ export async function analyze(req: AnalysisRequest): Promise<StageResult<Analysi
   const loaded = await loadConfiguration(req);
   if (loaded.value === undefined) return { diagnostics: loaded.diagnostics };
   const dir = req.adHoc === undefined ? loaded.value.baseDir : req.cwd;
-  const parsed = parseSpecs(loaded.value.config, dir);
+  const parsed = parseSpecs(loaded.value.config, dir, req.baseRef);
   if (parsed.value === undefined) return { diagnostics: [...loaded.diagnostics, ...parsed.diagnostics] };
   const results: AnalysisResult[] = [];
+  const unchanged: string[] = [];
+  const added: string[] = [];
   for (const s of loaded.value.config.specs) {
-    results.push(
-      await analyzeSpec(
-        s.id,
-        parsed.value.get(s.id) as { base: SourceSpecifier; candidate: SourceSpecifier },
-        loaded.value,
-        req,
-      ),
+    const r = await analyzeSpec(
+      s.id,
+      parsed.value.get(s.id) as { base: SourceSpecifier; candidate: SourceSpecifier },
+      loaded.value,
+      req,
     );
+    results.push(r.result);
+    if (r.unchanged) unchanged.push(s.id);
+    if (r.added) added.push(s.id);
   }
   const outcome: ExitOutcome = results.some((r) => r.status === 'input-error')
     ? 'input-error'
     : results.some((r) => !r.policy.passed)
       ? 'policy-failed'
       : 'passed';
-  return { value: { loaded: loaded.value, results, outcome }, diagnostics: loaded.diagnostics };
+  return { value: { loaded: loaded.value, results, unchanged, added, outcome }, diagnostics: loaded.diagnostics };
 }

@@ -51,12 +51,18 @@ export interface Trust {
   readonly allowRemoteReferences: boolean;
 }
 
+export interface AdHocSpec {
+  readonly base: string;
+  readonly candidate: string;
+}
+
 export interface ConfigRequest {
   readonly cwd: string;
   /** Explicit config path; `false` disables discovery (`--no-config`). */
   readonly configPath?: string | false;
   /** Raw specifier strings from the command line (ad-hoc comparison). */
-  readonly adHoc?: { readonly base: string; readonly candidate: string };
+  /** Ad-hoc comparisons (positionals, or the Action's `specs` input); replace the configured specs. */
+  readonly adHoc?: AdHocSpec | readonly AdHocSpec[];
   readonly specIds?: readonly string[];
   readonly overrides?: CliOverrides;
   readonly trust?: Trust;
@@ -301,7 +307,14 @@ export async function loadConfiguration(req: ConfigRequest): Promise<StageResult
   // Specs: ad-hoc positionals replace configured specs; ids select configured ones.
   let specs: ResolvedConfiguration['specs'];
   if (req.adHoc !== undefined) {
-    specs = [{ id: adHocSpecId(req.adHoc.candidate), base: req.adHoc.base, candidate: req.adHoc.candidate }];
+    const pairs: readonly AdHocSpec[] = Array.isArray(req.adHoc) ? req.adHoc : [req.adHoc as AdHocSpec];
+    const used = new Map<string, number>();
+    specs = pairs.map((p) => {
+      const stem = adHocSpecId(p.candidate);
+      const n = (used.get(stem) ?? 0) + 1;
+      used.set(stem, n);
+      return { id: n === 1 ? stem : `${stem}-${String(n)}`, base: p.base, candidate: p.candidate };
+    });
   } else {
     const all = (file as ConfigFile).specs;
     const wanted = req.specIds ?? [];

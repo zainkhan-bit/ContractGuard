@@ -1,0 +1,77 @@
+name: ContractGuard
+description: Detect breaking changes in OpenAPI 3.0/3.1 contracts on pull requests, with clear explanations.
+author: Muhammad Zain Khan
+branding:
+  icon: shield
+  color: blue
+
+inputs:
+  config:
+    description: 'Path to .contractguard.yaml (default: discovered from working-directory up to the repository root).'
+    required: false
+  specs:
+    description: >
+      Specification paths to check when there is no configuration file, one per line. Each is compared with the same
+      path at the base revision (git:@base:<path>).
+    required: false
+  base-ref:
+    description: >
+      Revision to compare against. Default: the pull request base commit, or the previous commit on push.
+      Required for other events (e.g. origin/main).
+    required: false
+  fail-on:
+    description: Classifications that fail the job, comma-separated (default from config, else breaking).
+    required: false
+  min-severity:
+    description: Findings below this severity never fail the job (critical, high, medium, low, info).
+    required: false
+  undetermined:
+    description: How to treat findings whose compatibility cannot be determined (fail, review, ignore).
+    required: false
+  annotations:
+    description: Annotate the changed lines (at most 10 errors and 10 warnings, GitHub's limit).
+    required: false
+    default: 'true'
+  summary:
+    description: Write the Markdown report to the job summary.
+    required: false
+    default: 'true'
+  comment:
+    description: 'Create or update one sticky PR comment with the report. Needs "pull-requests: write"; skipped on fork PRs.'
+    required: false
+    default: 'false'
+  sarif-file:
+    description: Write a SARIF 2.1.0 file to this path (upload it with github/codeql-action/upload-sarif).
+    required: false
+  allow-remote-references:
+    description: Allow references.allowRemote from the configuration file to take effect (CI trust boundary).
+    required: false
+    default: 'false'
+  working-directory:
+    description: Directory to run in, relative to the repository root.
+    required: false
+    default: .
+  token:
+    description: Token used only to write the optional PR comment.
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  result:
+    description: passed, failed or input-error.
+  breaking:
+    description: Number of breaking findings across all specs.
+  potentially-breaking:
+    description: Number of potentially breaking findings.
+  undetermined:
+    description: Number of findings whose compatibility could not be determined.
+  non-breaking:
+    description: Number of non-breaking findings.
+  report-json:
+    description: Path of the JSON report (report.v1.json schema).
+  fingerprints:
+    description: Space-separated fingerprints of the findings that failed the policy.
+
+runs:
+  using: node24
+  main: dist/index.js

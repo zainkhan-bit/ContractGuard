@@ -190,7 +190,7 @@ describe('analyze()', () => {
     const d = repo([{ 'openapi.yaml': spec() }]);
     const r = await analyze(base(d, { adHoc: { base: 'git:nope:openapi.yaml', candidate: 'openapi.yaml' } }));
     expect(r.value?.outcome).toBe('input-error');
-    expect(r.value?.results[0]?.diagnostics.map((x) => x.code)).toContain('CGD-FS-011');
+    expect(r.value?.results[0]?.diagnostics.map((x) => x.code)).toContain('CGD-FS-011'); // unknown ref
   });
 
   it('a syntax error in a specifier is a configuration error', async () => {

@@ -131,7 +131,7 @@ export class GitSourceLoader implements SourceLoader {
     if (shown.code === 'ERR_CHILD_PROCESS_STDIO_MAXBUFFER') {
       return fail(diagnostic('CGD-LIMIT-001', `Document exceeds maxDocumentBytes: ${uri}`, side));
     }
-    if (shown.code !== 0) return fail(diagnostic('CGD-FS-011', `${path} not found at ${sha.slice(0, 7)}`, side));
+    if (shown.code !== 0) return fail(diagnostic('CGD-FS-001', `${path} not found at ${sha.slice(0, 7)}`, side));
     const formatHint = formatHintFromUri(uri);
     return {
       value: { uri, bytes: new Uint8Array(shown.stdout), ...(formatHint === undefined ? {} : { formatHint }) },

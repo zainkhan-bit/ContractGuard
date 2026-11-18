@@ -26,8 +26,8 @@ ContractGuard compares a baseline and a candidate API specification and tells yo
 | M5        | Compatibility engine + 83-rule catalog         | ✅ Done |
 | M6        | Reporters (console, Markdown, JSON, SARIF)     | ✅ Done |
 | M7        | CLI                                            | ✅ Done |
-| M8        | GitHub Action                                  | ⏳ Next |
-| M9        | 1.0 production readiness                       |         |
+| M8        | GitHub Action                                  | ✅ Done |
+| M9        | 1.0 production readiness                       | ⏳ Next |
 
 ## Try the CLI (from a clone)
 
@@ -40,6 +40,19 @@ node packages/cli/bin/contractguard.js explain --list
 
 Exit codes: `0` passed · `1` policy failed · `2` invalid input · `3` usage/config error · `4` internal error · `130` interrupted.
 See [packages/cli/README.md](packages/cli/README.md) for every command and source type.
+
+## GitHub Action
+
+```yaml
+- uses: actions/checkout@v7
+- uses: zainkhan-bit/ContractGuard/integrations/github-action@main
+  with:
+    specs: api/openapi.yaml
+    comment: true # needs permissions: pull-requests: write
+```
+
+Annotations on the changed lines, the report in the job summary, a sticky PR comment and SARIF. It works on fork pull
+requests with a read-only token. See [integrations/github-action](integrations/github-action/README.md).
 
 ## Development
 
