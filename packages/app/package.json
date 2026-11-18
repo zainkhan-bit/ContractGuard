@@ -1,6 +1,6 @@
 {
   "name": "@zainkhan-bit/contractguard-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ContractGuard application layer: configuration, sources (path, git, snapshot) and the analyze() use case.",
   "license": "MIT",
   "type": "module",

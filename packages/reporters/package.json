@@ -1,6 +1,6 @@
 {
   "name": "@zainkhan-bit/contractguard-reporters",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ContractGuard reporters: console, Markdown, JSON (with published schema) and SARIF 2.1.0 renderers for analysis results.",
   "license": "MIT",
   "type": "module",

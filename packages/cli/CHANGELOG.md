@@ -1,5 +1,18 @@
 # contractguard
 
+## 1.0.1
+
+### Patch Changes
+
+- b3328bc: The CLI is published as `@zainkhan-bit/contractguard` (npm does not accept the unscoped name `contractguard`, which is
+  too close to an existing package). The command is still `contractguard`: run `npx @zainkhan-bit/contractguard check` or
+  install it with `npm install -D @zainkhan-bit/contractguard`. "Reproduce locally" lines in reports use the new name.
+- Updated dependencies [b3328bc]
+  - @zainkhan-bit/contractguard-core@1.0.1
+  - @zainkhan-bit/contractguard-engine@1.0.1
+  - @zainkhan-bit/contractguard-reporters@1.0.1
+  - @zainkhan-bit/contractguard-app@1.0.1
+
 ## 1.0.0
 
 ### Major Changes
