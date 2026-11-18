@@ -8,6 +8,14 @@ updates:
     groups:
       dev-tooling:
         dependency-type: development
+        update-types: [minor, patch]
+    ignore:
+      # Major upgrades are deliberate: TypeScript 7 (native compiler) and Node.js type
+      # definitions beyond the supported runtime (Node.js 24) need their own migration.
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
+      - dependency-name: '@types/node'
+        update-types: [version-update:semver-major]
   - package-ecosystem: github-actions
     directory: /
     schedule:
