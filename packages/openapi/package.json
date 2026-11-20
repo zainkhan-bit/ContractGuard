@@ -1,6 +1,6 @@
 {
   "name": "@zainkhan-bit/contractguard-openapi",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ContractGuard OpenAPI front end: loading, parsing with source maps, reference resolution, validation and normalization into the canonical contract model.",
   "license": "MIT",
   "type": "module",

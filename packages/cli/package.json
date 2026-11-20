@@ -1,6 +1,6 @@
 {
   "name": "@zainkhan-bit/contractguard",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Detect breaking changes between two versions of an OpenAPI contract, with clear explanations, CI-ready reports and SARIF.",
   "license": "MIT",
   "type": "module",
